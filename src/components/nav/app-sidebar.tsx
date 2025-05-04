@@ -42,15 +42,15 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="inset">
-      <SidebarContent>
+    <Sidebar variant="sidebar">
+      <SidebarContent className="bg-primary-foreground dark:bg-background">
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton size={'default'} asChild>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
