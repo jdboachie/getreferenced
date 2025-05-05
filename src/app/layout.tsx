@@ -4,7 +4,6 @@ import LocalFont from "next/font/local";
 import Topbar from "@/components/nav/topbar";
 import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import Nav from "@/components/nav/top-nav";
 
 const sans = LocalFont({
   variable: "--font-sans",
@@ -42,11 +41,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
+        {/* <script
           async
           crossOrigin="anonymous"
           src="//unpkg.com/react-scan/dist/auto.global.js"
-        />
+        /> */}
       </head>
       <body
         className={`${sans.variable} ${geistMono.variable} antialiased`}
@@ -57,9 +56,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="relative size-full min-h-dvh">
-            <Topbar />
-            <Nav />
+          <Topbar />
+          <main className="relative size-full min-h-dvh p-4 sm:p-8">
             {children}
           </main>
         </ThemeProvider>

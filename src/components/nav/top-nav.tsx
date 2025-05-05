@@ -15,7 +15,7 @@ interface Tab {
 const tabs: Tab[] = [
   {
     title: 'Requests',
-    link: '/app'
+    link: '/'
   },
   {
     title: 'Deadlines',

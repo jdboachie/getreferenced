@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-8 p-8 w-full">
+    <div className="flex flex-col gap-8 w-full">
       <div className="flex sm:justify-between max-sm:flex-col gap-2">
         <div className="z-10 relative rounded-md bg-background h-10 w-full">
           <SearchIcon className="absolute bottom-3 left-3 [&_svg]:size-4 text-muted-foreground" />

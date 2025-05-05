@@ -28,7 +28,7 @@ const Topbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant={'outline'} size={'icon'} className="rounded-full p-1">
-                <Avatar name={Math.random().toString()} size={24} className='rounded-full size-full' />
+                <Avatar name={'321'} size={24} className='rounded-full size-full' />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
