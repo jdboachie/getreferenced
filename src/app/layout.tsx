@@ -1,11 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import LocalFont from "next/font/local"
+import LocalFont from "next/font/local";
+import Topbar from "@/components/nav/topbar";
 import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/nav/app-sidebar";
-import Topbar from "@/components/nav/topbar";
+import Nav from "@/components/nav/top-nav";
 
 const sans = LocalFont({
   variable: "--font-sans",
@@ -42,6 +41,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          crossOrigin="anonymous"
+          src="//unpkg.com/react-scan/dist/auto.global.js"
+        />
+      </head>
       <body
         className={`${sans.variable} ${geistMono.variable} antialiased`}
       >
@@ -51,13 +57,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <AppSidebar />
-            <main className="bg-background size-full min-h-dvh">
-              <Topbar />
-              {children}
-            </main>
-          </SidebarProvider>
+          <main className="relative size-full min-h-dvh">
+            <Topbar />
+            <Nav />
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>
