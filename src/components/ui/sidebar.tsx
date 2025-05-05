@@ -25,6 +25,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { PanelLeftCloseIcon } from "../icons/panel-left-close"
+import { PanelLeftOpenIcon } from "../icons/panel-left-open"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -185,12 +187,12 @@ function Sidebar({
     return (
       <Drawer open={openMobile} onOpenChange={setOpenMobile} shouldScaleBackground={true}>
         <DrawerContent>
-          <DrawerHeader className="sr-only dev">
+          <DrawerHeader className="sr-only">
             <DrawerTitle>Are you absolutely sure?</DrawerTitle>
             <DrawerDescription>This action cannot be undone.</DrawerDescription>
           </DrawerHeader>
-          <DrawerClose className="absolute right-0 top-0 m-2" asChild>
-            <Button variant="outline" size={'icon'} className="rounded-full">
+          <DrawerClose className="absolute right-0 top-0 m-4" asChild>
+            <Button variant="secondary" size={'icon'} className="rounded-full">
               <XIcon />
             </Button>
           </DrawerClose>
@@ -253,22 +255,28 @@ function SidebarTrigger({
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, open } = useSidebar()
 
   return (
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      variant="ghost"
+      variant="outline"
       size="icon"
-      className={cn("size-10 rounded-full", className)}
+      className={cn("size-10 rounded-full grid", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon className="md:hidden block" />
+      {open ?
+        <PanelLeftCloseIcon className="max-md:hidden grid place-items-center size-10 rounded-full" />
+        :
+        <PanelLeftOpenIcon className="max-md:hidden grid place-items-center size-10 rounded-full" />
+      }
+
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
@@ -382,7 +390,7 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
-      className={cn("relative flex w-full min-w-0 flex-col p-4", className)}
+      className={cn("relative flex w-full min-w-0 flex-col p-4 py-0", className)}
       {...props}
     />
   )
@@ -469,11 +477,11 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 px-3 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-background dark:hover:bg-accent/50 hover:text-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        default: "hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))] hover:bg-background dark:hover:bg-accent/50 hover:text-accent-foreground",
         outline:
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },

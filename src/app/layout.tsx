@@ -53,7 +53,7 @@ export default function RootLayout({
         >
           <SidebarProvider>
             <AppSidebar />
-            <main className="bg-primary-foreground dark:bg-background size-full min-h-dvh">
+            <main className="bg-background size-full min-h-dvh">
               <Topbar />
               {children}
             </main>

@@ -5,7 +5,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  // SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -14,27 +14,27 @@ import {
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Requests",
     url: "#",
     icon: Home,
   },
   {
-    title: "Inbox",
+    title: "Deadlines",
     url: "#",
     icon: Inbox,
   },
   {
-    title: "Calendar",
+    title: "Meetings",
     url: "#",
     icon: Calendar,
   },
   {
-    title: "Search",
+    title: "Billing",
     url: "#",
     icon: Search,
   },
   {
-    title: "Settings",
+    title: "Profile",
     url: "#",
     icon: Settings,
   },
@@ -43,9 +43,9 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar variant="sidebar">
-      <SidebarContent className="bg-primary-foreground dark:bg-background">
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+      <SidebarContent className="bg-background max-md:bg-transparent">
+        <SidebarGroup className="my-8 md:mt-[92px]">
+          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

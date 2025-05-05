@@ -5,14 +5,14 @@ import {
 } from "@/components/ui/popover";
 import Avatar from "boring-avatars";
 import { SidebarTrigger } from '../ui/sidebar';
-import { ModeToggle } from '../theme/theme-toggle';
+import ThemeToggle from '../theme/theme-toggle';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { BellIcon } from "../icons/bell";
 
 const Topbar = () => {
   return (
-    <div className='p-3 px-4 mb-2 flex justify-between sticky top-0 right-0'>
+    <div className='p-4 z-50 bg-background mb-2 flex justify-between sticky top-0 right-0 topbar'>
       <SidebarTrigger />
       <div className="flex gap-2">
         <Popover>
@@ -26,7 +26,7 @@ const Topbar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant={'outline'} size={'icon'} className="rounded-full p-1">
-              <Avatar name='recommendme' size={24} className='rounded-full size-full' />
+              <Avatar name={Math.random().toString()} size={24} className='rounded-full size-full' />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
@@ -35,7 +35,7 @@ const Topbar = () => {
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Billing</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <ModeToggle />
+            <div className="flex justify-between items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none"><span className="text-sm">Theme</span><ThemeToggle /></div>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Log out</DropdownMenuItem>
           </DropdownMenuContent>
