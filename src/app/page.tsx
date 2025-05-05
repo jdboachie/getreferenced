@@ -1,12 +1,13 @@
 'use client';
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import RequestCard from "@/components/cards/request-card";
 import PageTitle from "@/components/page-title";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "@/components/ui/search";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowDownUpIcon, PlusIcon } from "lucide-react";
+import { ArrowDownUpIcon, LayoutGridIcon, ListIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 
 
@@ -40,22 +41,24 @@ export default function Home() {
         </Link>
       </div>
       <div className="flex sm:justify-between max-sm:flex-col gap-2">
-        <div className="flex gap-1 sm:gap-2">
-          <div className="z-10 relative rounded-md bg-background h-10 w-full">
-            <SearchIcon className="absolute bottom-3 left-3 [&_svg]:size-4 text-muted-foreground" />
-            <Input className="h-10 px-10 w-full bg-background" placeholder="Search anything..." />
-            <kbd className='absolute max-md:hidden bg-primary-foreground border size-5 grid place-items-center text-xs rounded-sm right-0 bottom-0 m-2.5'>/</kbd>
-          </div>
+        <div className="z-10 relative rounded-md bg-background h-10 w-full">
+          <SearchIcon className="absolute bottom-3 left-3 [&_svg]:size-4 text-muted-foreground" />
+          <Input className="h-10 px-10 w-full bg-background" placeholder="Search anything..." />
+          <kbd className='absolute max-md:hidden bg-primary-foreground border size-5 grid place-items-center text-xs rounded-sm right-0 bottom-0 m-2.5'>/</kbd>
         </div>
         <div className="flex gap-2">
+          <ToggleGroup type="single" size={'sm'} className="border bg-background p-0.5">
+            <ToggleGroupItem className="size-8" value="list"><ListIcon /></ToggleGroupItem>
+            <ToggleGroupItem className="size-8" value="grid"><LayoutGridIcon /></ToggleGroupItem>
+          </ToggleGroup>
           <Select>
             <SelectTrigger size="lg" className="w-full sm:min-w-[160px]">
               <ArrowDownUpIcon /><SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Due date</SelectItem>
-              <SelectItem value="dark">Updated</SelectItem>
-              <SelectItem value="system">Status</SelectItem>
+              <SelectItem value="deadline">Sort by deadline</SelectItem>
+              <SelectItem value="updated">Sort by updated</SelectItem>
+              <SelectItem value="status">Sort by status</SelectItem>
             </SelectContent>
           </Select>
           <Select>
@@ -63,7 +66,7 @@ export default function Home() {
               <SelectValue placeholder="Group by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">School</SelectItem>
+              <SelectItem value="light">Institution</SelectItem>
               <SelectItem value="dark">Purpose</SelectItem>
               <SelectItem value="system">Recommender</SelectItem>
             </SelectContent>
