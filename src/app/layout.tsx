@@ -57,7 +57,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Topbar />
-          <main className="relative size-full min-h-dvh p-4 sm:p-8">
+          <main className="relative size-full min-h-[calc(100dvh-120)] p-5 sm:p-8">
             {children}
           </main>
         </ThemeProvider>

@@ -18,12 +18,12 @@ const Breadcrumbs = () => {
   const segments = pathname.split('/').filter(Boolean);
 
   return (
-    <Breadcrumb className="px-3">
+    <Breadcrumb className="ml-1">
       <BreadcrumbList className="size-full">
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/">
-              <BadgeIcon />
+              <BadgeIcon className="size-8 stroke-[1.3] text-primary hover:rotate-90 transition-transform duration-300 ease-out" />
             </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -33,7 +33,7 @@ const Breadcrumbs = () => {
           const isLast = index === segments.length - 1;
 
           return (
-            <div key={href} className="flex items-center gap-1 hidden">
+            <div key={href} className="flex/disabled items-center gap-1 hidden">
               <BreadcrumbSeparator>
                 <Slash />
               </BreadcrumbSeparator>

@@ -41,7 +41,7 @@ const Nav = () => {
   const pathname = usePathname()
 
   return (
-    <nav className='p-4 py-2 sticky left-0 top-0 z-10 max-w-screen overflow-x-scroll overflow-y-hidden flex border-b bg-background'>
+    <nav className='p-4 max-sm:px-2 py-2 sticky left-0 top-0 z-10 max-w-screen overflow-x-scroll overflow-y-hidden flex border-b bg-background'>
       {tabs.map((tab, index) => (
         <Link
           key={index}
@@ -49,12 +49,12 @@ const Nav = () => {
           prefetch={true}
           className={`
             ${buttonVariants({size: 'sm', variant: 'ghost'})}
-            ${!pathname.startsWith(tab.link) && 'text-muted-foreground'}
+            ${!(pathname === tab.link) && 'text-muted-foreground'}
             relative transition-all duration-200 ease-out font-normal
           `}
         >
           <span className='relative z-10'>{tab.title}</span>
-            {pathname.startsWith(tab.link) && (
+            {pathname === tab.link && (
               <motion.div
                 transition={{ type: "spring", duration: 0.4 }}
                 layoutId="active-pill"

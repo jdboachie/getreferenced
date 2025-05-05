@@ -11,10 +11,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import Breadcrumbs from "./breadcrumbs";
 import Nav from "./top-nav";
 
+
 const Topbar = () => {
   return (
-    <div className="grid z-50 bg-background">
-      <div className='p-4 flex justify-between'>
+    <div className="grid sticky top-0 z-50 bg-background">
+      <div className='p-3 sm:p-4 flex justify-between'>
         <Breadcrumbs />
         <div className="flex gap-2">
           <Popover>
