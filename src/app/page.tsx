@@ -7,7 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "@/components/ui/search";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowDownUpIcon, LayoutGridIcon, ListIcon, PlusIcon } from "lucide-react";
+import { ArrowDownUpIcon, LayoutGridIcon, ListIcon, PlusIcon, Rows3Icon } from "lucide-react";
 import Link from "next/link";
 
 
@@ -41,19 +41,21 @@ export default function Home() {
         </Link>
       </div>
       <div className="flex sm:justify-between max-sm:flex-col gap-2">
-        <div className="z-10 relative rounded-md bg-background h-10 w-full">
-          <SearchIcon className="absolute bottom-3 left-3 [&_svg]:size-4 text-muted-foreground" />
-          <Input className="h-10 px-10 w-full bg-background" placeholder="Search anything..." />
-          <kbd className='absolute max-md:hidden bg-primary-foreground border size-5 grid place-items-center text-xs rounded-sm right-0 bottom-0 m-2.5'>/</kbd>
-        </div>
-        <div className="flex gap-2">
-          <ToggleGroup type="single" size={'sm'} className="border bg-background p-0.5">
+        <div className="w-full flex gap-2">
+          <div className="z-10 relative rounded-md bg-background h-10 w-full">
+            <SearchIcon className="absolute bottom-3 left-3 [&_svg]:size-4 text-muted-foreground" />
+            <Input className="h-10 px-10 w-full bg-background" placeholder="Search anything..." />
+            <kbd className='absolute max-md:hidden dark:bg-primary-foreground border size-5 grid place-items-center text-xs rounded-sm right-0 bottom-0 m-2.5'>/</kbd>
+          </div>
+          <ToggleGroup type="single" size={'sm'} className="border bg-background px-1">
             <ToggleGroupItem className="size-8" value="list"><ListIcon /></ToggleGroupItem>
             <ToggleGroupItem className="size-8" value="grid"><LayoutGridIcon /></ToggleGroupItem>
           </ToggleGroup>
+        </div>
+        <div className="gap-2 grid grid-cols-2 sm:flex">
           <Select>
-            <SelectTrigger size="lg" className="w-full sm:min-w-[160px]">
-              <ArrowDownUpIcon /><SelectValue placeholder="Sort by" />
+            <SelectTrigger size="lg" className="w-full sm:min-w-[180px] sm:w-[180px]">
+              <ArrowDownUpIcon /><SelectValue className="truncate" placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="deadline">Sort by deadline</SelectItem>
@@ -62,7 +64,8 @@ export default function Home() {
             </SelectContent>
           </Select>
           <Select>
-            <SelectTrigger size="lg" className="w-full sm:min-w-[160px]">
+            <SelectTrigger size="lg" className="w-full sm:min-w-[180px] sm:w-[180px]">
+              <Rows3Icon />
               <SelectValue placeholder="Group by" />
             </SelectTrigger>
             <SelectContent>
