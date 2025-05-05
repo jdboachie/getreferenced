@@ -14,7 +14,7 @@ import Nav from "./top-nav";
 
 const Topbar = () => {
   return (
-    <div className="grid sticky top-0 z-50 bg-background">
+    <div className="grid stick fixed top-0 z-50 bg-background">
       <div className='p-3 sm:p-4 flex justify-between'>
         <Breadcrumbs />
         <div className="flex gap-2">
