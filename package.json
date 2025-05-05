@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@base-ui-components/react": "^1.0.0-alpha.8",
     "@dicebear/collection": "^9.2.2",
     "@dicebear/core": "^9.2.2",
     "@radix-ui/react-dialog": "^1.1.11",

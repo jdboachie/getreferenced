@@ -2,9 +2,7 @@ import React from 'react'
 
 const PageTitte = ({title}: {title: string}) => {
   return (
-    <div className='py-2'>
-      <h1 className="font-medium text-3xl">{title}</h1>
-    </div>
+    <h1 className="font-medium text-3xl py-2">{title}</h1>
   )
 }
 
