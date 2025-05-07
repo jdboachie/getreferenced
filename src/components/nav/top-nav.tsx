@@ -15,7 +15,7 @@ interface Tab {
 const tabs: Tab[] = [
   {
     title: 'Requests',
-    link: '/'
+    link: '/requests'
   },
   {
     title: 'Deadlines',
@@ -49,12 +49,12 @@ const Nav = () => {
           prefetch={true}
           className={`
             ${buttonVariants({size: 'sm', variant: 'ghost'})}
-            ${!(pathname === tab.link) && 'text-muted-foreground'}
+            ${!pathname.startsWith(tab.link) && 'text-muted-foreground'}
             relative transition-all duration-200 ease-out font-normal
           `}
         >
           <span className='relative z-10'>{tab.title}</span>
-            {pathname === tab.link && (
+            {pathname.startsWith(tab.link) && (
               <motion.div
                 transition={{ type: "spring", duration: 0.4 }}
                 layoutId="active-pill"
