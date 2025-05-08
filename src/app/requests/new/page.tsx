@@ -10,7 +10,7 @@ export default function Page() {
           <h3 className="text-lg font-medium mb-2">Summary</h3>
           <RecommendationSummary />
         </div>
-        <div className="form lg:col-span-8 bg-background border px-8 py-12 rounded-lg">
+        <div className="form lg:col-span-8 bg-background border p-2 sm:px-8 sm:py-12 rounded-lg">
           <RecommendationForm />
         </div>
       </div>
