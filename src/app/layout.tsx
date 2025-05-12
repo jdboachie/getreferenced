@@ -4,6 +4,8 @@ import LocalFont from "next/font/local";
 import Topbar from "@/components/nav/topbar";
 import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/nav/app-sidebar";
 
 const sans = LocalFont({
   variable: "--font-sans",
@@ -56,10 +58,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Topbar />
-          <main className="relative size-full min-h-[calc(100dvh-120)] p-5 md:p-8">
-            {children}
-          </main>
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="flex flex-col p-2 max-sm:px-0 max-sm:pb-0 w-full max-h-screen overflow-hidden">
+              <Topbar />
+              <main className="relative w-full grow overflow-y-scroll p-6">
+                {children}
+              </main>
+            </div>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>

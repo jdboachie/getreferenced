@@ -1,8 +1,15 @@
-import React from 'react'
+'use client';
+
+import * as React from 'react'
 
 const Page = () => {
+
+  const randomID = React.useId()
+
   return (
-    <div>Page</div>
+    <div>
+      {randomID}
+    </div>
   )
 }
 
