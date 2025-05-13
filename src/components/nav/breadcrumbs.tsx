@@ -1,6 +1,6 @@
 'use client';
 
-import { BadgeIcon, Slash } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -13,40 +13,42 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
+const capitalize = (s: string) =>
+  s
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
 const Breadcrumbs = () => {
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
 
   return (
-    <Breadcrumb className="ml-1">
-      <BreadcrumbList className="size-full">
-        <BreadcrumbItem>
+    <Breadcrumb className="mb-8 mt-4">
+      <BreadcrumbList>
+        {/* <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/">
-              <BadgeIcon className="size-7 stroke-[1.3] text-primary hover:rotate-90 transition-transform duration-300 ease-out" />
-            </Link>
+            <Link className="text-2xl sm:text-2xl font-bold" href="/">Overview</Link>
           </BreadcrumbLink>
-        </BreadcrumbItem>
+        </BreadcrumbItem> */}
 
         {segments.map((segment, index) => {
           const href = '/' + segments.slice(0, index + 1).join('/');
+          const isFirst = index === 0;
           const isLast = index === segments.length - 1;
 
           return (
-            <div key={href} className="flex/disabled hidden items-center gap-1">
-              <BreadcrumbSeparator>
-                <Slash />
-              </BreadcrumbSeparator>
+            <div key={href} className="flex items-center gap-1">
+              {!isFirst &&
+                <BreadcrumbSeparator className="[&>svg]:size-6">
+                  <ChevronRightIcon className="stroke-[1.5]" />
+                </BreadcrumbSeparator>
+              }
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage>
-                    {decodeURIComponent(segment).replace(/-/g, ' ')}
-                  </BreadcrumbPage>
+                  <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">{capitalize(segment)}</BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
-                    <Link href={href}>
-                      {decodeURIComponent(segment).replace(/-/g, ' ')}
-                    </Link>
+                    <Link className="text-2xl sm:text-3xl font-medium" href={href}>{capitalize(segment)}</Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
