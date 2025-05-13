@@ -43,7 +43,7 @@ function Header() {
                 <BellIcon />
               </Button>
             </PopoverTrigger>
-            <PopoverContent align="end">Place content for the popover here.</PopoverContent>
+            <PopoverContent align="center">Lorem ipsum dolor sit amet consectetur adipisicing.</PopoverContent>
           </Popover>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

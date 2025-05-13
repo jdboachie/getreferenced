@@ -37,10 +37,13 @@ const navLinks = [
 export default function Navbar() {
 
   const containerRef = useRef<HTMLDivElement>(null)
-  
+
   const pathname = usePathname();
   const isActive = (url: string) => {
-    return pathname === url;
+    if (url === "/") {
+      return pathname === url;
+    }
+    return pathname.startsWith(url);
   };
 
   useEffect(() => {

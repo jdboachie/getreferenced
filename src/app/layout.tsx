@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LocalFont from "next/font/local";
+import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -49,7 +50,14 @@ export default function RootLayout({
       <body
         className={`${sans.variable} ${geistMono.variable} antialiased max-w-screen-2xl mx-auto`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
