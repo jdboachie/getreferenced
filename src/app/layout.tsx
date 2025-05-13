@@ -1,32 +1,28 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import LocalFont from "next/font/local";
-import Topbar from "@/components/nav/topbar";
 import { Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme/theme-provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/nav/app-sidebar";
+import "./globals.css";
 
 const sans = LocalFont({
   variable: "--font-sans",
   src: [
     {
-      path: 'bold.woff2',
+      path: 'fonts/bold.woff2',
       weight: '700',
     },
     {
-      path: 'medium.woff2',
+      path: 'fonts/medium.woff2',
       weight: '500',
     },
     {
-      path: 'regular.woff2',
+      path: 'fonts/regular.woff2',
       weight: '400',
     },
   ]
 })
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -41,33 +37,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* <script
-          async
-          crossOrigin="anonymous"
-          src="//unpkg.com/react-scan/dist/auto.global.js"
-        /> */}
-      </head>
+    <html lang="en">
       <body
         className={`${sans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SidebarProvider>
-            <AppSidebar />
-            <div className="flex flex-col p-2 max-sm:px-0 max-sm:pb-0 w-full max-h-screen overflow-hidden">
-              <Topbar />
-              <main className="relative w-full grow overflow-y-scroll p-6">
-                {children}
-              </main>
-            </div>
-          </SidebarProvider>
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );
