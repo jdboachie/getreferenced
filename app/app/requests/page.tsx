@@ -1,13 +1,26 @@
 'use client';
 
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useAuthActions } from '@convex-dev/auth/react'
-import { useConvexAuth } from 'convex/react'
-import { ArrowDownUpIcon, LayoutGridIcon, ListIcon, Rows3Icon, SearchIcon } from 'lucide-react'
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'
+import {
+  ArrowDownUpIcon,
+  LayoutGridIcon,
+  ListIcon,
+  Rows3Icon,
+  SearchIcon
+} from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
+import {
+  ToggleGroup,
+  ToggleGroupItem
+} from '@/components/ui/toggle-group';
+import { Input } from '@/components/ui/input';
+import { buttonVariants } from '@/components/ui/button';
 
 
 function Page() {
@@ -49,34 +62,11 @@ function Page() {
           </Select>
         </div>
       </div>
-      <div className='mt-6 border'>
-        <Link prefetch href="/app/requests/new">new</Link>
-        <SignOutButton />
+      <div className='mt-6'>
+        <Link className={buttonVariants({ size: 'lg', variant: 'default'})} prefetch href="/app/requests/new">new</Link>
       </div>
     </div>
   )
 }
 
 export default Page
-
-function SignOutButton() {
-  const { isAuthenticated } = useConvexAuth();
-  const { signOut } = useAuthActions();
-  const router = useRouter();
-  return (
-    <>
-      {isAuthenticated && (
-        <button
-          className="bg-slate-200 dark:bg-slate-800 text-foreground rounded-md px-2 py-1"
-          onClick={() =>
-            void signOut().then(() => {
-              router.push("/signin");
-            })
-          }
-        >
-          Sign out
-        </button>
-      )}
-    </>
-  );
-}

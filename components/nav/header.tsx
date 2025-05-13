@@ -3,32 +3,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Navbar from './navbar'
 import { Button } from "@/components/ui/button"
-import { BellIcon } from "lucide-react"
-import Avatar from "boring-avatars";
-import UserButtonLabel from "../auth/user-button-label";
+import { BadgeIcon, BellIcon } from "lucide-react"
+import UserButton from "../auth/user-button";
+
 
 function Header() {
   return (
     <header className='sticky top-0 z-50 border-b bg-surface'>
-      <div className='flex justify-between items-center p-2 px-4'>
-        <span className="size-8 rounded-full flex bg-gradient-to-br from-rose-500 via-sky-500 to-sky-700" />
+      <div className='flex justify-between items-center p-4'>
+        <BadgeIcon className="size-8 stroke-[1.5]" />
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-1 mr-2">
+          <div className="hidden md:flex items-center gap-1 mr-2">
             <Button variant={"ghost"} className="text-muted-foreground">
               Feedback
             </Button>
@@ -38,70 +25,14 @@ function Header() {
           </div>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant={"outline"} size={"icon"} className="shadow-2xs active:shadow-none active:translate-y-[1px]">
+              <Button variant={"outline"} size={"icon"} className="shadow-2xs active:shadow-none active:translate-y-[1px] rounded-full">
                 <BellIcon />
+                <span className="sr-only">Notifications</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="text-muted-foreground">No notifications yet</PopoverContent>
           </Popover>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size={"icon"}>
-                <Avatar name={"Emelie Lupert"} variant="beam" size={32} />
-                <span className="sr-only">Open user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <UserButtonLabel />
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  Profile
-                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Billing
-                  <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Settings
-                  <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Keyboard shortcuts
-                  <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-                  <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                      <DropdownMenuItem>Email</DropdownMenuItem>
-                      <DropdownMenuItem>Message</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>More...</DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
-                </DropdownMenuSub>
-                <DropdownMenuItem>
-                  New Team
-                  <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>GitHub</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuItem disabled>API</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                Log out
-                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <UserButton />
         </div>
       </div>
       <Navbar />

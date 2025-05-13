@@ -1,6 +1,5 @@
-import Breadcrumbs from "@/components/nav/breadcrumbs";
 import Header from "@/components/nav/header";
-import { ModeToggle } from "@/components/theme/theme-toggle";
+import Breadcrumbs from "@/components/nav/breadcrumbs";
 
 export default function Layout({
   children,
@@ -14,7 +13,6 @@ export default function Layout({
         <Breadcrumbs />
         {children}
       </div>
-      <ModeToggle />
     </div>
   );
 }
