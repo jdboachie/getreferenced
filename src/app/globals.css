@@ -118,7 +118,17 @@
   * {
     @apply border-border outline-ring/50 font-sans;
   }
+  *::selection {
+    @apply bg-pink-500/50 text-accent-foreground;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  .hidden-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  .hidden-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
   }
 }

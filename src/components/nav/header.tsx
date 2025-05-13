@@ -29,11 +29,11 @@ function Header() {
       <div className='flex justify-between items-center p-2 px-4'>
         <span className="size-8 rounded-full flex bg-gradient-to-br from-rose-500 via-pink-500 to-pink-700" />
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 mr-2">
-            <Button variant={"ghost"} size={"sm"} className="text-muted-foreground">
+          <div className="hidden sm:flex items-center gap-1 mr-2">
+            <Button variant={"ghost"} className="text-muted-foreground">
               Feedback
             </Button>
-            <Button variant={"ghost"} size={"sm"} className="text-muted-foreground">
+            <Button variant={"ghost"} className="text-muted-foreground">
               Help
             </Button>
           </div>

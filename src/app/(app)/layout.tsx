@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <div>
       <Header />
-      <div className="p-4 max-w-screen-2xl">
+      <div className="p-4">
         {children}
       </div>
     </div>

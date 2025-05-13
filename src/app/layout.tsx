@@ -47,7 +47,7 @@ export default function RootLayout({
         {/* rest of your scripts go under */}
       </head>
       <body
-        className={`${sans.variable} ${geistMono.variable} antialiased`}
+        className={`${sans.variable} ${geistMono.variable} antialiased max-w-screen-2xl mx-auto`}
       >
         {children}
       </body>
