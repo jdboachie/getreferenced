@@ -44,10 +44,10 @@ const Breadcrumbs = () => {
                   }
                   <BreadcrumbItem>
                     {isLast ? (
-                      <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">{capitalize(segment)}</BreadcrumbPage>
+                      <BreadcrumbPage className="text-2xl sm:text-3xl font-semibold">{capitalize(segment)}</BreadcrumbPage>
                     ) : (
                       <BreadcrumbLink asChild>
-                        <Link className="text-2xl sm:text-3xl font-medium" href={href}>{capitalize(segment)}</Link>
+                        <Link className="text-2xl sm:text-3xl font-semibold" href={href}>{capitalize(segment)}</Link>
                       </BreadcrumbLink>
                     )}
                   </BreadcrumbItem>
