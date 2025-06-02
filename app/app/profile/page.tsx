@@ -5,6 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Avatar from "boring-avatars";
+import Loading from "./loading";
 
 
 function Page() {
@@ -19,7 +20,7 @@ function Page() {
           <p className="text-sm">Click on the avatar to upload a custom one from your files.</p>
           <Avatar name={user.email} variant="marble" size={32} className="size-16 sm:size-20 cursor-pointer" />
         </div>
-        <div className="flex max-md:grid md:gap-2 gap-4 sm:items-center justify-between rounded-b-lg border-t p-4">
+        <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <p className="text-sm text-muted-foreground">A display picture is optional but strongly recommended.</p>
         </div>
       </div>
@@ -33,7 +34,7 @@ function Page() {
             className="w-full shadow-none"
           />
         </div>
-        <div className="flex max-md:grid md:gap-2 gap-4 sm:items-center justify-between rounded-b-lg border-t p-4">
+        <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <p className="text-sm text-muted-foreground">Email must be verified to be able to login with it or receive notifications.</p>
           <Button>Save</Button>
         </div>
@@ -49,7 +50,7 @@ function Page() {
             className="w-full shadow-none"
           />
         </div>
-        <div className="flex max-md:grid md:gap-2 gap-4 sm:items-center justify-between rounded-b-lg border-t p-4">
+        <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <p className="text-sm text-muted-foreground">{user.phoneVerificationTime ?? 'Phone number must be verified to allow recommenders to contact you.'}</p>
           <Button>Save</Button>
         </div>
@@ -65,7 +66,7 @@ function Page() {
             className="w-full shadow-none"
           />
         </div>
-        <div className="flex max-md:grid md:gap-2 gap-4 sm:items-center justify-between rounded-b-lg border-t p-4">
+        <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <p className="text-sm text-muted-foreground">Name should be as it appears on official documents.</p>
           <Button>Save</Button>
         </div>
@@ -75,14 +76,14 @@ function Page() {
           <h3 className="font-medium text-lg">Delete Account</h3>
           <p className="text-sm">Permanently remove your account and all its contents from the Recommendme platform. This action is not reversible, so please continue with caution.</p>
         </div>
-        <div className="md:flex grid md:gap-2 gap-4 sm:items-center justify-between rounded-b-lg border-t p-4">
+        <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <Button variant={'destructive'}>Delete Account</Button>
         </div>
       </div>
     </div>
   )}
   else {
-    return 'loading...'
+    return <Loading />
   }
 }
 

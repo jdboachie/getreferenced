@@ -1,5 +1,6 @@
 import Header from "@/components/nav/header";
 import Breadcrumbs from "@/components/nav/breadcrumbs";
+import Footer from "@/components/nav/footer";
 
 export default function Layout({
   children,
@@ -9,10 +10,11 @@ export default function Layout({
   return (
     <div>
       <Header />
-      <div className="p-4">
+      <div className="p-4 pb-8">
         <Breadcrumbs />
         {children}
       </div>
+      <Footer />
     </div>
   );
 }
