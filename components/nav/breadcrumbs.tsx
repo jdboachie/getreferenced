@@ -26,14 +26,8 @@ const Breadcrumbs = () => {
   return (
     <Breadcrumb className="mb-8 mt-4">
       <BreadcrumbList>
-        {/* <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link className="text-2xl sm:text-2xl font-bold" href="/">Overview</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem> */}
-
         {segments.length === 1 ? (
-          <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">Overview</BreadcrumbPage>
+          <BreadcrumbPage className="text-2xl sm:text-3xl font-semibold">Overview</BreadcrumbPage>
         ) :
           <>
             {segments.slice(1).map((segment, index) => {

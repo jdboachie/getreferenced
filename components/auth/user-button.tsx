@@ -33,7 +33,7 @@ export default function UserButton() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-2xs">
-          <Avatar name={user.email} variant="beam" size={32} className="size-7" />
+          <Avatar name={user.email} variant="marble" size={32} className="size-7" />
           <span className="sr-only">Open user menu</span>
         </Button>
       </DropdownMenuTrigger>
