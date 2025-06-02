@@ -3,15 +3,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Navbar from './navbar'
-import { Button } from "@/components/ui/button"
-import { BadgeIcon, BellIcon } from "lucide-react"
+import Navbar from './navbar';
 import UserButton from "../auth/user-button";
+import { Button } from "@/components/ui/button";
+import { BadgeIcon, BellIcon } from "lucide-react";
 
 
 function Header() {
   return (
-    <header className='sticky top-0 z-50 border-b bg-surface'>
+    <header className='sticky top-0 z-50 border-b bg-background'>
       <div className='flex justify-between items-center p-4'>
         <BadgeIcon className="size-8 stroke-[1.5]" />
         <div className="flex items-center gap-2">
@@ -25,7 +25,7 @@ function Header() {
           </div>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant={"outline"} size={"icon"} className="shadow-2xs active:shadow-none active:translate-y-[1px] rounded-full">
+              <Button variant={"outline"} size={"icon"} className="shadow-none active:translate-y-[1px] rounded-full">
                 <BellIcon />
                 <span className="sr-only">Notifications</span>
               </Button>

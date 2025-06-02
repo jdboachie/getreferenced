@@ -4,6 +4,7 @@ import LocalFont from "next/font/local";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
@@ -57,7 +58,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ConvexClientProvider>
-              {children}
+              <main>{children}</main>
+              <Toaster duration={6000} position="top-center" richColors closeButton />
             </ConvexClientProvider>
           </ThemeProvider>
         </body>

@@ -7,7 +7,7 @@ export default function Home() {
       <Link
         prefetch
         href="/app"
-        className="bg-cyan-500 text-white rounded-full px-4 py-2 font-medium text-sm"
+        className="bg-blue-500 text-white rounded-full px-4 py-2 font-medium text-sm"
       >
         Go to application
       </Link>

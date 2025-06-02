@@ -55,7 +55,7 @@ export default function ThemeToggle() {
         variant={theme === "system" ? "outline" : "ghost"}
         size="icon"
         onClick={() => setTheme("system")}
-        className={`size-6 text-muted-foreground rounded-full ${theme === "system" && "text-primary dark:bg-secondary"}`}
+        className={`size-6 text-muted-foreground rounded-full ${theme === "system" && "text-foreground dark:bg-secondary"}`}
       >
         <span className="sr-only">system</span>
         <svg data-testid="geist-icon" height="16" strokeLinejoin="round" viewBox="0 0 16 16" width="16">
@@ -67,7 +67,7 @@ export default function ThemeToggle() {
         variant={theme === "light" ? "outline" : "ghost"}
         size="icon"
         onClick={() => setTheme("light")}
-        className={`size-6 text-muted-foreground rounded-full ${theme === "light" && "text-primary dark:bg-secondary"}`}
+        className={`size-6 text-muted-foreground rounded-full ${theme === "light" && "text-foreground dark:bg-secondary"}`}
       >
         <span className="sr-only">light</span>
         <svg data-testid="geist-icon" height="16" strokeLinejoin="round" viewBox="0 0 16 16" width="16">
@@ -79,7 +79,7 @@ export default function ThemeToggle() {
         variant={theme === "dark" ? "outline" : "ghost"}
         size="icon"
         onClick={() => setTheme("dark")}
-        className={`size-6 text-muted-foreground rounded-full ${theme === "dark" && "text-primary dark:bg-secondary"}`}
+        className={`size-6 text-muted-foreground rounded-full ${theme === "dark" && "text-foreground dark:bg-secondary"}`}
       >
         <span className="sr-only">dark</span>
         <svg data-testid="geist-icon" height="16" strokeLinejoin="round" viewBox="0 0 16 16" width="16">
