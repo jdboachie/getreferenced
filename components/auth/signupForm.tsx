@@ -1,0 +1,208 @@
+"use client";
+
+import { z } from "zod";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthActions } from "@convex-dev/auth/react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormDescription
+} from "@/components/ui/form";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { SpinnerIcon } from "@/components/icons";
+import { AnimatedState } from "@/components/motion/animated-state";
+
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Your password must be at least 6 characters long." }),
+  confirmPassword: z.string(),
+  role: z.enum(["requester", "recommender"], {
+    required_error: "Please select a role",
+  }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+
+export default function SignUpForm() {
+
+  const router = useRouter();
+  const { signIn } = useAuthActions();
+
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: undefined,
+    },
+  });
+
+  const onSubmit = React.useCallback((values: z.infer<typeof formSchema>) => {
+    setIsSubmitting(true);
+      void signIn("password", {
+        email: values.email,
+        password: values.password,
+        role: values.role,
+        flow: 'signUp',
+      })
+      .then(() => {
+        router.push("/app/profile");
+      })
+      .catch((error) => {
+        setError(error.message);
+        setTimeout(() => setError(null), 5000);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  }, [router, signIn]);
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input required placeholder="you@example.edu" {...field} />
+              </FormControl>
+              <FormMessage />
+              <FormDescription>This will be your primary email address</FormDescription>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    {...field}
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    aria-invalid={!!form.formState.errors.password}
+                    aria-describedby="password-error"
+                    />
+                </FormControl>
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+                  onClick={() => setShowPassword((v) => !v)}
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+              <FormDescription>Your password should have a minimum of 6 characters</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    {...field}
+                    type={showConfirmPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                  />
+                </FormControl>
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+                  onClick={() => setShowConfirmPassword((v) => !v)}
+                  tabIndex={-1}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Role</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="grid sm:grid-cols-2 gap-2"
+                >
+                  <FormItem data-checked={field.value==="requester"} className="data-[checked=true]:border-primary relative border rounded-lg space-x-3 space-y-0">
+                    <FormControl className="absolute top-4 left-4">
+                      <RadioGroupItem value="requester"/>
+                    </FormControl>
+                    <FormLabel className="font-normal grid p-4 gap-3">
+                      <p className="ml-6">Requester</p>
+                      <p className="text-xs text-muted-foreground">Students, grads, jobseekers</p>
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem data-checked={field.value==="recommender"} className="data-[checked=true]:border-primary relative border rounded-lg space-x-3 space-y-0">
+                    <FormControl className="absolute top-4 left-4">
+                      <RadioGroupItem value="recommender"/>
+                    </FormControl>
+                    <FormLabel className="font-normal grid p-4 gap-3">
+                      <p className="ml-6">Recommender</p>
+                      <p className="text-xs text-muted-foreground">Lecturers, employers, staff</p>
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" size="lg" disabled={isSubmitting} className="w-full">
+          <AnimatedState>
+            {isSubmitting ?
+              <div className="flex gap-2"><SpinnerIcon />Creating account</div>
+             :
+              <>Continue</>
+            }
+          </AnimatedState>
+        </Button>
+      </form>
+      {error && (
+        <div className="mt-4 text-sm text-destructive animate-fade-in">{error}</div>
+      )}
+    </Form>
+  );
+}

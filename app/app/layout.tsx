@@ -10,7 +10,7 @@ export default function Layout({
   return (
     <div>
       <Header />
-      <div className="p-4 pb-8">
+      <div className="p-4 sm:p-6 pb-8">
         <Breadcrumbs />
         {children}
       </div>

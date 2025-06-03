@@ -62,8 +62,14 @@ function Page() {
           <Input
             value={user.name}
             readOnly
-            placeholder="Firstname Lastname"
-            className="w-full shadow-none"
+            placeholder="Firstname"
+            className="max-md:w-full shadow-none"
+          />
+          <Input
+            value={user.name}
+            readOnly
+            placeholder="Lastname"
+            className="max-md:w-full shadow-none"
           />
         </div>
         <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">

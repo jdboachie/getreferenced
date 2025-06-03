@@ -1,9 +1,10 @@
-import React from 'react'
-
-function Loading() {
+export default function Loading() {
   return (
-    <div className='size-full min-h-4 rounded-lg bg-secondary animate-pulse'/>
+    <div className='grid gap-8'>
+      <div className='size-full min-h-56 rounded-lg bg-secondary animate-pulse'/>
+      <div className='size-full min-h-56 rounded-lg bg-secondary animate-pulse'/>
+      <div className='size-full min-h-56 rounded-lg bg-secondary animate-pulse'/>
+      <div className='size-full min-h-56 rounded-lg bg-secondary animate-pulse'/>
+    </div>
   )
 }
-
-export default Loading

@@ -1,5 +1,5 @@
-import React from 'react'
-
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircleIcon } from "lucide-react";
 
 export default function Layout({
   children,
@@ -7,6 +7,15 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>{children}</div>
+    <div className="grid gap-6">
+      <Alert variant="destructive">
+        <AlertCircleIcon />
+        <AlertTitle>Account Incomplete</AlertTitle>
+        <AlertDescription>
+          You are yet to create your account and upload the relevant documents.
+        </AlertDescription>
+      </Alert>
+      {children}
+    </div>
   )
 }
