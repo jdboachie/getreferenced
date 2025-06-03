@@ -16,7 +16,6 @@ export default defineSchema({
     phoneVerificationTime: v.optional(v.number()),
     isAnonymous: v.optional(v.boolean()),
 
-    // New fields
     indexNumber: v.optional(v.string()),
     studentNumber: v.optional(v.string()),
     firstName: v.optional(v.string()),

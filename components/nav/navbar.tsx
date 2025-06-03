@@ -77,7 +77,7 @@ export default function Navbar() {
             'font-normali relative duration-500',
           )}
         >
-          {isActive(link.url) && <div className="pointer-events-none absolute -bottom-2 w-full h-0.5 rounded-full bg-blue-500" />}
+          {isActive(link.url) && <div className="pointer-events-none absolute -bottom-2 w-full h-0.5 rounded-full bg-primary" />}
           {link.title}
         </Link>
       ))}
