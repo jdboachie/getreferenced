@@ -2,11 +2,9 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
 
-// The schema is normally optional, but Convex Auth
-// requires indexes defined on `authTables`.
-// The schema provides more precise TypeScript types.
-export default defineSchema({
+const schema = defineSchema({
   ...authTables,
+
   users: defineTable({
     name: v.optional(v.string()),
     image: v.optional(v.string()),
@@ -14,19 +12,34 @@ export default defineSchema({
     emailVerificationTime: v.optional(v.number()),
     phone: v.optional(v.string()),
     phoneVerificationTime: v.optional(v.number()),
-    isAnonymous: v.optional(v.boolean()),
+    role: v.optional(v.union(v.literal("requester"), v.literal("recommender"))),
+  }).index("email", ["email"]),
 
+  requesters: defineTable({
+    userId: v.id("users"),
     indexNumber: v.optional(v.string()),
     studentNumber: v.optional(v.string()),
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
-    transcriptFile: v.optional(v.string()), // Expecting file storage ID
-    cvFile: v.optional(v.string()),         // Expecting file storage ID
-    yearOfCompletion: v.optional(v.number()),
+    transcriptFile: v.optional(v.string()),
+    cvFile: v.optional(v.string()),
+    yearOfCompletion: v.optional(v.string()),
     programOfStudy: v.optional(v.string()),
-    certificateFile: v.optional(v.string()) // Optional file
-  }).index("email", ["email"]),
-  numbers: defineTable({
-    value: v.number(),
-  }),
+    certificateFile: v.optional(v.string()),
+  }).index("userId", ["userId"]),
+
+  recommenders: defineTable({
+    userId: v.id("users"),
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
+    staffNumber: v.optional(v.string()),
+    primaryEmail: v.optional(v.string()),
+    secondaryEmail: v.optional(v.string()),
+    department: v.optional(v.string()),
+    yearOfEmployment: v.optional(v.string()),
+    phoneNumber: v.optional(v.string()),
+    currentRank: v.optional(v.string()),
+  }).index("userId", ["userId"]),
 });
+
+export default schema;
