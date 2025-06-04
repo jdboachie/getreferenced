@@ -1,9 +1,6 @@
 'use client';
 
-import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,6 +9,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { usePathname } from "next/navigation";
+import { ChevronRightIcon } from "lucide-react";
 
 const capitalize = (s: string) =>
   s
@@ -25,38 +24,38 @@ const Breadcrumbs = () => {
 
   return (
     <Breadcrumb className="mb-8 mt-4">
-      <BreadcrumbList>
-        {segments.length === 1 ? (
+      {segments.length === 1 ?
+        <BreadcrumbList>
           <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">Overview</BreadcrumbPage>
-        ) :
-          <>
-            {segments.slice(1).map((segment, index) => {
-              const href = '/' + segments.slice(0, index + 2).join('/');
-              const isFirst = index === 0;
-              const isLast = index === segments.length - 2;
+        </BreadcrumbList>
+        :
+        <BreadcrumbList>
+          {segments.slice(1).map((segment, index) => {
+            const href = '/' + segments.slice(0, index + 2).join('/');
+            const isFirst = index === 0;
+            const isLast = index === segments.length - 2;
 
-              return (
-                <div key={href} className="flex items-center gap-1">
-                  {!isFirst &&
-                    <BreadcrumbSeparator className="[&>svg]:size-6">
-                      <ChevronRightIcon className="stroke-2" />
-                    </BreadcrumbSeparator>
-                  }
-                  <BreadcrumbItem>
-                    {isLast ? (
-                      <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">{capitalize(segment)}</BreadcrumbPage>
-                    ) : (
-                      <BreadcrumbLink asChild>
-                        <Link className="text-2xl sm:text-3xl font-medium" href={href}>{capitalize(segment)}</Link>
-                      </BreadcrumbLink>
-                    )}
-                  </BreadcrumbItem>
-                </div>
-              );
-            })}
-          </>
-        }
-      </BreadcrumbList>
+            return (
+              <div key={href} className="flex items-center gap-1">
+                {!isFirst &&
+                  <BreadcrumbSeparator className="[&>svg]:size-6">
+                    <ChevronRightIcon className="stroke-2" />
+                  </BreadcrumbSeparator>
+                }
+                <BreadcrumbItem>
+                  {isLast ? (
+                    <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">{capitalize(segment)}</BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink asChild>
+                      <Link prefetch className="text-2xl sm:text-3xl font-medium" href={href}>{capitalize(segment)}</Link>
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+              </div>
+            );
+          })}
+        </BreadcrumbList>
+      }
     </Breadcrumb>
   );
 };

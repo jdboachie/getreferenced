@@ -71,6 +71,7 @@ export default function SignUpForm() {
       flow: 'signUp',
     })
     .then(async () => {
+      setStatus('creating')
       if (values.role === 'requester') {
         await createRequesterProfile({})
         .then(() => router.push("/app/profile"))

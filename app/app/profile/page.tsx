@@ -9,13 +9,14 @@ import { Button } from "@/components/ui/button";
 
 
 function Page() {
-  const profile = useQuery(api.users.getAuthRequesterProfile);
+
+  const profile = useQuery(api.users.getUserProfile);
 
   if (profile && profile.user){
   return (
     <div className="flex flex-col gap-12">
       <p className="border text-xs bg-secondary p-2 rounded-md w-fit">{profile.user.role}</p>
-      <div className="border bg-muted dark:bg-background rounded-lg">
+      <div className="border bg-primary-foreground dark:bg-background rounded-lg">
         <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
           <h3 className="font-medium text-lg">Display Picture</h3>
           <p className="text-sm">Click on the avatar to upload a custom one from your files.</p>
@@ -25,7 +26,7 @@ function Page() {
           <p className="text-sm text-muted-foreground">A display picture is optional but strongly recommended.</p>
         </div>
       </div>
-      <div className="border bg-muted dark:bg-background rounded-lg">
+      <div className="border bg-primary-foreground dark:bg-background rounded-lg">
         <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
           <h3 className="font-medium text-lg">Email</h3>
           <p className="text-sm">This is the email address you will use to sign in to Recommendme.</p>
@@ -40,7 +41,7 @@ function Page() {
           {/* <Button>Save</Button> */}
         </div>
       </div>
-      <div className="border bg-muted dark:bg-background rounded-lg">
+      <div className="border bg-primary-foreground dark:bg-background rounded-lg">
         <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
           <h3 className="font-medium text-lg">Phone Number</h3>
           <p className="text-sm">Your Whatsapp number is preferred.</p>
@@ -56,9 +57,9 @@ function Page() {
           {/* <Button>Save</Button> */}
         </div>
       </div>
-      <div className="border bg-muted dark:bg-background rounded-lg">
+      <div className="border bg-primary-foreground dark:bg-background rounded-lg">
         <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
-          <h3 className="font-medium text-lg">Full name</h3>
+          <h3 className="font-medium text-lg">Full Name</h3>
           <p className="text-sm">This will be the name on your requests</p>
           <Input
             value={profile.firstName}
@@ -78,7 +79,7 @@ function Page() {
           {/* <Button>Save</Button> */}
         </div>
       </div>
-      <div className="border bg-muted dark:bg-background rounded-lg">
+      <div className="border bg-primary-foreground dark:bg-background rounded-lg">
         <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
           <h3 className="font-medium text-lg">Delete Account</h3>
           <p className="text-sm">Permanently remove your account and all its contents from the Recommendme platform. This action is not reversible, so please continue with caution.</p>

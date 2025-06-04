@@ -1,25 +1,22 @@
 // import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 
-export const getAuthRequesterProfile = query({
-  handler: async (ctx,) => {
+export const getUserProfile = query({
+  handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
-    if (userId === null) {
-      return null;
-    }
-    const requester = await ctx.db
-      .query("requesters")
+    if (!userId) return null;
+
+    const user = await ctx.db.get(userId);
+    if (!user?.role) return null;
+
+    const table = user.role === "requester" ? "requesters" : "recommenders";
+    const profile = await ctx.db
+      .query(table)
       .withIndex("userId", (q) => q.eq("userId", userId))
       .unique();
-    if (!requester) {
-      return null;
-    }
-    const user = await ctx.db.get(requester.userId);
-    return {
-      ...requester,
-      user,
-    };
+
+    return profile ? { ...profile, user } : null;
   },
 });
 
