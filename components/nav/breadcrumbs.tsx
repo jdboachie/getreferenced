@@ -39,7 +39,7 @@ const Breadcrumbs = () => {
                 <div key={href} className="flex items-center gap-1">
                   {!isFirst &&
                     <BreadcrumbSeparator className="[&>svg]:size-6">
-                      <ChevronRightIcon className="stroke-[1.5]" />
+                      <ChevronRightIcon className="stroke-2" />
                     </BreadcrumbSeparator>
                   }
                   <BreadcrumbItem>

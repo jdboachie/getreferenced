@@ -41,7 +41,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const isActive = (url: string) => {
     if (url === "/app") {
-      console.log(pathname, url)
       return pathname === url;
     }
     return pathname.startsWith(url);
