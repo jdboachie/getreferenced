@@ -23,7 +23,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SpinnerIcon } from "@/components/icons";
 import { AnimatedState } from "@/components/motion/animated-state";
-
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -43,10 +44,13 @@ export default function SignUpForm() {
   const router = useRouter();
   const { signIn } = useAuthActions();
 
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [status, setStatus] = React.useState<'submitting' | 'creating' | 'success' | null>()
   const [error, setError] = React.useState<string | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+  const createRequesterProfile = useMutation(api.users.createRequesterProfile)
+  const createRecommenderProfile = useMutation(api.users.createRecommenderProfile)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,24 +63,30 @@ export default function SignUpForm() {
   });
 
   const onSubmit = React.useCallback((values: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
-      void signIn("password", {
-        email: values.email,
-        password: values.password,
-        role: values.role,
-        flow: 'signUp',
-      })
-      .then(() => {
-        router.push("/app/profile");
-      })
-      .catch((error) => {
-        setError(error.message);
-        setTimeout(() => setError(null), 5000);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  }, [router, signIn]);
+    setStatus('submitting')
+    void signIn("password", {
+      email: values.email,
+      password: values.password,
+      role: values.role,
+      flow: 'signUp',
+    })
+    .then(async () => {
+      if (values.role === 'requester') {
+        await createRequesterProfile({})
+        .then(() => router.push("/app/profile"))
+      } else {
+        await createRecommenderProfile({})
+        .then(() => router.push("/app/profile"));
+      }
+    })
+    .catch((error) => {
+      setError(error.message);
+      setTimeout(() => setError(null), 5000);
+    })
+    .finally(() => {
+      setStatus(null);
+    });
+  }, [createRecommenderProfile, createRequesterProfile, router, signIn]);
 
   return (
     <Form {...form}>
@@ -190,13 +200,11 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" size="lg" disabled={isSubmitting} className="w-full">
+        <Button type="submit" size="lg" disabled={status === 'creating' || status === 'submitting'} className="w-full">
           <AnimatedState>
-            {isSubmitting ?
-              <div className="flex gap-2"><SpinnerIcon />Creating account</div>
-             :
-              <>Continue</>
-            }
+            {status === 'submitting' && <div className="flex gap-1.5 items-center"><SpinnerIcon /> Submitting...</div>}
+            {status === 'creating' && <div className="flex gap-1.5 items-center"><SpinnerIcon /> Creating profile...</div>}
+            {!status && 'Submit'}
           </AnimatedState>
         </Button>
       </form>

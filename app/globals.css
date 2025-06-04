@@ -132,4 +132,8 @@
   .hidden-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
   }
+
+  .header:stuck {
+    @apply shadow-2xl;
+  }
 }

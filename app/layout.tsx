@@ -58,8 +58,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ConvexClientProvider>
-              <main>{children}</main>
               <Toaster duration={6000} position="top-center" richColors closeButton />
+              <main>{children}</main>
             </ConvexClientProvider>
           </ThemeProvider>
         </body>

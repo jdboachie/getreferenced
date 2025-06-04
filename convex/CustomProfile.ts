@@ -5,7 +5,6 @@ export default Password<DataModel>({
   profile(params) {
     return {
       email: params.email as string,
-      name: params.name as string,
       role: params.role as "recommender" | "requester" | undefined,
     };
   },

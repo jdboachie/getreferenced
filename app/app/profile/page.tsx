@@ -1,24 +1,25 @@
 'use client';
 
+import Loading from "./loading";
+import Avatar from "boring-avatars";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Avatar from "boring-avatars";
-import Loading from "./loading";
 
 
 function Page() {
-  const user = useQuery(api.auth.getCurrentUser);
+  const profile = useQuery(api.users.getAuthRequesterProfile);
 
-  if (user){
+  if (profile && profile.user){
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-12">
+      <p className="border text-xs bg-secondary p-2 rounded-md w-fit">{profile.user.role}</p>
       <div className="border bg-muted dark:bg-background rounded-lg">
         <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
           <h3 className="font-medium text-lg">Display Picture</h3>
           <p className="text-sm">Click on the avatar to upload a custom one from your files.</p>
-          <Avatar name={user.email} variant="marble" size={32} className="size-16 sm:size-20 cursor-pointer" />
+          <Avatar name={profile.user.email} variant="marble" size={32} className="size-16 sm:size-20 cursor-pointer" />
         </div>
         <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <p className="text-sm text-muted-foreground">A display picture is optional but strongly recommended.</p>
@@ -29,14 +30,14 @@ function Page() {
           <h3 className="font-medium text-lg">Email</h3>
           <p className="text-sm">This is the email address you will use to sign in to Recommendme.</p>
           <Input
-            value={user.email}
+            value={profile.user.email}
             readOnly
             className="w-full shadow-none"
           />
         </div>
         <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <p className="text-sm text-muted-foreground">Email must be verified to be able to login with it or receive notifications.</p>
-          <Button>Save</Button>
+          {/* <Button>Save</Button> */}
         </div>
       </div>
       <div className="border bg-muted dark:bg-background rounded-lg">
@@ -45,14 +46,14 @@ function Page() {
           <p className="text-sm">Your Whatsapp number is preferred.</p>
           <Input
             type="phone"
-            value={user.phone}
+            value={profile.user.phone}
             readOnly
             className="w-full shadow-none"
           />
         </div>
         <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
-          <p className="text-sm text-muted-foreground">{user.phoneVerificationTime ?? 'Phone number must be verified to allow recommenders to contact you.'}</p>
-          <Button>Save</Button>
+          <p className="text-sm text-muted-foreground">{profile.user.phoneVerificationTime ?? 'Phone number must be verified to allow recommenders to contact you.'}</p>
+          {/* <Button>Save</Button> */}
         </div>
       </div>
       <div className="border bg-muted dark:bg-background rounded-lg">
@@ -60,13 +61,13 @@ function Page() {
           <h3 className="font-medium text-lg">Full name</h3>
           <p className="text-sm">This will be the name on your requests</p>
           <Input
-            value={user.name}
+            value={profile.firstName}
             readOnly
             placeholder="Firstname"
             className="max-md:w-full shadow-none"
           />
           <Input
-            value={user.name}
+            value={profile.lastName}
             readOnly
             placeholder="Lastname"
             className="max-md:w-full shadow-none"
@@ -74,7 +75,7 @@ function Page() {
         </div>
         <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
           <p className="text-sm text-muted-foreground">Name should be as it appears on official documents.</p>
-          <Button>Save</Button>
+          {/* <Button>Save</Button> */}
         </div>
       </div>
       <div className="border bg-muted dark:bg-background rounded-lg">
