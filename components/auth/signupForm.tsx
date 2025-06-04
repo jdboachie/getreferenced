@@ -74,10 +74,10 @@ export default function SignUpForm() {
       setStatus('creating')
       if (values.role === 'requester') {
         await createRequesterProfile({})
-        .then(() => router.push("/app/profile"))
+        .then(() => router.push("/app/settings"))
       } else {
         await createRecommenderProfile({})
-        .then(() => router.push("/app/profile"));
+        .then(() => router.push("/app/settings"));
       }
     })
     .catch((error) => {

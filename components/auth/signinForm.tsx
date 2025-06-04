@@ -63,7 +63,7 @@ export default function SignInForm() {
         flow: 'signIn',
       })
         .then(() => {
-          router.push("/app/profile")
+          router.push("/app")
         })
         .catch((error) => {
           setError(error.message);

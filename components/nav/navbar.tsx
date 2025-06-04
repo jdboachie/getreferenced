@@ -16,10 +16,6 @@ const navLinks = [
     url: "/app/requests",
   },
   {
-    title: "Deadlines",
-    url: "/app/deadlines",
-  },
-  {
     title: "Meetings",
     url: "/app/meetings",
   },
@@ -28,8 +24,8 @@ const navLinks = [
     url: "/app/billing",
   },
   {
-    title: "Profile",
-    url: "/app/profile",
+    title: "Settings",
+    url: "/app/settings",
   },
 ];
 

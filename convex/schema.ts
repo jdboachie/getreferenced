@@ -11,6 +11,8 @@ const schema = defineSchema({
     emailVerificationTime: v.optional(v.number()),
     phone: v.optional(v.string()),
     phoneVerificationTime: v.optional(v.number()),
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
     role: v.optional(v.union(v.literal("requester"), v.literal("recommender"))),
   }).index("email", ["email"]),
 
@@ -18,8 +20,6 @@ const schema = defineSchema({
     userId: v.id("users"),
     indexNumber: v.optional(v.string()),
     studentNumber: v.optional(v.string()),
-    firstName: v.optional(v.string()),
-    lastName: v.optional(v.string()),
     transcriptFile: v.optional(v.string()),
     cvFile: v.optional(v.string()),
     yearOfCompletion: v.optional(v.string()),
@@ -29,8 +29,6 @@ const schema = defineSchema({
 
   recommenders: defineTable({
     userId: v.id("users"),
-    firstName: v.optional(v.string()),
-    lastName: v.optional(v.string()),
     staffNumber: v.optional(v.string()),
     primaryEmail: v.optional(v.string()),
     secondaryEmail: v.optional(v.string()),

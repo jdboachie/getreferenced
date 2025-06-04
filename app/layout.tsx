@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+import { RoleProvider } from "@/hooks/use-role";
 
 const sans = LocalFont({
   variable: "--font-sans",
@@ -57,10 +58,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ConvexClientProvider>
-              <Toaster duration={6000} position="top-center" richColors closeButton />
-              <main>{children}</main>
-            </ConvexClientProvider>
+          <ConvexClientProvider>
+          <RoleProvider>
+            <Toaster duration={6000} position="top-center" richColors closeButton />
+            <main>{children}</main>
+          </RoleProvider>
+          </ConvexClientProvider>
           </ThemeProvider>
         </body>
       </html>
