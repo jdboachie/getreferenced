@@ -1,11 +1,16 @@
 "use client";
 
-import { z } from "zod";
 import * as React from "react";
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+// import { useMutation, useQuery } from "convex/react";
+// import { api } from "@/convex/_generated/api";
 import { useAuthActions } from "@convex-dev/auth/react";
+
 import {
   Form,
   FormControl,
@@ -23,8 +28,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SpinnerIcon } from "@/components/icons";
 import { AnimatedState } from "@/components/motion/animated-state";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 
 
 const formSchema = z.object({
@@ -42,15 +45,16 @@ const formSchema = z.object({
 
 export default function SignUpForm() {
 
-  const router = useRouter();
+  const router = useRouter()
+  // const searchParams = useSearchParams();
+  // const verify = searchParams.get('verify');
+
   const { signIn } = useAuthActions();
 
-  const [status, setStatus] = React.useState<'submitting' | 'creating' | 'success' | null>()
   const [error, setError] = React.useState<string | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-
-  const createProfile = useMutation(api.users.createProfile)
+  const [status, setStatus] = React.useState<'submitting' | 'creating' | 'success' | null>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,28 +74,16 @@ export default function SignUpForm() {
         password: values.password,
         role: values.role,
         flow: 'signUp',
+        // redirectTo: `/auth/verify?email=${values.email}`
       });
-
-      setTimeout(async () => {
-        setStatus('creating')
-        await signIn("password", {
-          email: values.email,
-          password: values.password,
-          flow: 'signIn',
-        });
-        await createProfile({role: values.role})
-        router.push("/app/settings");
-      }, 700);
-
-
-
+      router.push(`/auth/verify?email=${values.email}&role=${values.role}`)
     } catch (error) {
       setError((error as Error).message);
       setTimeout(() => setError(null), 5000);
     } finally {
       setStatus(null);
     }
-  }, [createProfile, router, signIn]);
+  }, [router, signIn]);
 
 
   return (

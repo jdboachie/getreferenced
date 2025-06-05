@@ -1,17 +1,26 @@
+"use client";
+
+import * as React from "react";
+import { useSearchParams } from 'next/navigation';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import SignInForm from '@/components/auth/signinForm'
 import SignUpForm from '@/components/auth/signupForm'
 
 export default function Page() {
+
+  const searchParams = useSearchParams();
+  const action = searchParams.get('action')!
+
   return (
-    <div className="grid sm:max-w-md max-sm:w-full p-4 sm:rounded-lg border max-sm:border-x-0 md:shadow-xs bg-background w-full h-fit">
-      <Tabs defaultValue="signUp" className="w-full">
+    <div className="grid sm:max-w-md max-sm:w-full p-4 w-full h-fit">
+      <Tabs defaultValue={action ?? "signup"} className="w-full">
         <TabsList className='w-full mb-8'>
-          <TabsTrigger value="signIn">Sign In</TabsTrigger>
-          <TabsTrigger value="signUp">Sign Up</TabsTrigger>
+          <TabsTrigger value="signin">Sign In</TabsTrigger>
+          <TabsTrigger value="signup">Sign Up</TabsTrigger>
         </TabsList>
-        <TabsContent value="signIn"><SignInForm /></TabsContent>
-        <TabsContent value="signUp"><SignUpForm /></TabsContent>
+        <TabsContent value="signin"><SignInForm /></TabsContent>
+        <TabsContent value="signup"><SignUpForm /></TabsContent>
       </Tabs>
     </div>
   )

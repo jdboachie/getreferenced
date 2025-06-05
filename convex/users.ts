@@ -47,11 +47,11 @@ export const createRecommenderProfile = mutation({
     if (userId === null) {
       return null;
     }
-    const recommenderId = await ctx.db.insert("recommenders", {
+    await ctx.db.insert("recommenders", {
       userId: userId,
     });
 
-    return recommenderId;
+    // return recommenderId;
   }
 })
 

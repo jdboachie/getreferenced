@@ -1,5 +1,5 @@
-import { query } from "./_generated/server";
 import Password from "./CustomProfile";
+import { query } from "./_generated/server";
 import { convexAuth, getAuthUserId } from "@convex-dev/auth/server";
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
