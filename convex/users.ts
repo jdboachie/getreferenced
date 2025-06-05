@@ -69,7 +69,9 @@ export const createProfile = mutation({
         userId: userId
       });
     } else if (args.role === "recommender") {
-
+      await ctx.runMutation(api.users.createRecommenderProfile, {
+        userId: userId
+      });
     } else {
       throw new Error("Invalid role specified");
     }

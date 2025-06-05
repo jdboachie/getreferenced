@@ -15,7 +15,7 @@ function Header() {
       <div className='flex justify-between items-center p-4'>
         <BadgeIcon className="size-8 stroke-[1.5]" />
         <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-1 mr-2">
+          <div className="hidden sm:flex items-center gap-1 mr-2">
             <Button variant={"ghost"} className="text-muted-foreground">
               Feedback
             </Button>

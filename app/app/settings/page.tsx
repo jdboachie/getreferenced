@@ -11,6 +11,7 @@ import { useMutation, useQuery } from "convex/react";
 import { User2Icon } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
 import { SpinnerIcon } from "@/components/icons";
+import { Badge } from "@/components/ui/badge";
 
 function Page() {
   const profile = useQuery(api.users.getUserProfile);
@@ -47,24 +48,26 @@ function Page() {
           <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
             <h3 className="font-medium text-lg">Full Name</h3>
             <p className="text-sm">This will be the name on your requests</p>
-            <Input
-              name="firstName"
-              defaultValue={profile.user.firstName}
-              placeholder="Firstname"
-              className="max-md:w-full shadow-none"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') e.preventDefault();
-              }}
-            />
-            <Input
-              name="lastName"
-              defaultValue={profile.user.lastName}
-              placeholder="Lastname"
-              className="max-md:w-full shadow-none"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') e.preventDefault();
-              }}
-            />
+            <div className="grid gap-2 sm:grid-cols-2">
+              <Input
+                name="firstName"
+                defaultValue={profile.user.firstName}
+                placeholder="Firstname"
+                className="max-md:w-full shadow-none"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') e.preventDefault();
+                }}
+              />
+              <Input
+                name="lastName"
+                defaultValue={profile.user.lastName}
+                placeholder="Lastname"
+                className="max-md:w-full shadow-none"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') e.preventDefault();
+                }}
+              />
+            </div>
           </div>
           <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
@@ -89,16 +92,25 @@ function Page() {
             <p className="text-sm">
               This is the email address you will use to sign in to Recommendme.
             </p>
-            <Input
-              readOnly
-              defaultValue={profile.user.email}
-              placeholder="Email"
-              className="w-full shadow-none"
-            />
+            <label htmlFor="email" className="relative w-full sm:max-w-sm">
+              <Input
+                readOnly
+                name="email"
+                defaultValue={profile.user.email}
+                placeholder="Email"
+                className="w-full shadow-none"
+              />
+              <Badge
+                variant={profile.user.emailVerificationTime ? 'secondary' : 'destructive'}
+                className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${profile.user.emailVerificationTime && 'bg-green-500'}`}
+              >
+                {profile.user.emailVerificationTime ? 'verified' : 'not verified'}
+              </Badge>
+            </label>
           </div>
           <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
-              Email must be verified to be able to login with it or receive notifications.
+              Email must be verified to be able to receive notifications.
             </p>
             <Button type="submit" disabled>Save</Button>
           </div>
@@ -126,13 +138,21 @@ function Page() {
           <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
             <h3 className="font-medium text-lg">Phone Number</h3>
             <p className="text-sm">Your Whatsapp number is preferred.</p>
-            <Input
-              type="tel"
-              name="phone"
-              defaultValue={profile.user.phone}
-              placeholder="+233123456789"
-              className="w-full shadow-none"
-            />
+              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+                <Input
+                  type="tel"
+                  name="phone"
+                  defaultValue={profile.user.phone}
+                  placeholder="+233123456789"
+                  className="w-full shadow-none"
+                />
+                <Badge
+                  variant={profile.user.phoneVerificationTime ? 'secondary' : 'destructive'}
+                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${profile.user.phoneVerificationTime && 'bg-green-500'}`}
+                >
+                  {profile.user.phoneVerificationTime ? 'verified' : 'not verified'}
+                </Badge>
+              </label>
           </div>
           <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
