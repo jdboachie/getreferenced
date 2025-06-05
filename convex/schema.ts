@@ -6,7 +6,7 @@ const schema = defineSchema({
   ...authTables,
 
   users: defineTable({
-    image: v.optional(v.string()),
+    image: v.optional(v.id("_storage")),
     email: v.optional(v.string()),
     emailVerificationTime: v.optional(v.number()),
     phone: v.optional(v.string()),

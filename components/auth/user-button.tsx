@@ -12,26 +12,39 @@ import {
   // DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Avatar from "boring-avatars";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/theme/theme-toggle";
 import { useRouter } from "next/navigation";
-import { useAuthActions } from '@convex-dev/auth/react'
+import { useAuthActions } from '@convex-dev/auth/react';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User2Icon } from "lucide-react";
 
 
 export default function UserButton() {
 
-  const { signOut } = useAuthActions();
   const router = useRouter();
+  const { signOut } = useAuthActions();
 
   const user = useQuery(api.auth.getCurrentUser);
+  const imageUrl = useQuery(api.storage.getFileUrl, { storageId: user?.image})
+
 
   if (!user) return <div className="size-9 rounded-full animate-pulse bg-accent border" />;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-2xs">
-          <Avatar name={user.email} variant="marble" size={32} className="size-7" />
+          {imageUrl ?
+            <Avatar>
+              <AvatarImage src={imageUrl} />
+              <AvatarFallback><User2Icon /></AvatarFallback>
+            </Avatar>
+            :
+            <Avatar
+            >
+              <AvatarFallback><User2Icon /></AvatarFallback>
+            </Avatar>
+          }
           <span className="sr-only">Open user menu</span>
         </Button>
       </DropdownMenuTrigger>

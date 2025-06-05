@@ -16,6 +16,7 @@ import type {
 import type * as CustomProfile from "../CustomProfile.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as storage from "../storage.js";
 import type * as users from "../users.js";
 
 /**
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   CustomProfile: typeof CustomProfile;
   auth: typeof auth;
   http: typeof http;
+  storage: typeof storage;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

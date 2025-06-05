@@ -67,9 +67,9 @@ export default function Navbar() {
           key={link.title}
           href={link.url}
           className={cn(
-            buttonVariants({ variant: "ghost" }),
+            buttonVariants({ variant: "ghost", size: "sm" }),
             !isActive(link.url) && "text-muted-foreground",
-            'font-normali relative duration-500',
+            'font-normal relative duration-500',
           )}
         >
           {isActive(link.url) && <div className="pointer-events-none absolute -bottom-2 w-full h-0.5 rounded-full bg-primary" />}
