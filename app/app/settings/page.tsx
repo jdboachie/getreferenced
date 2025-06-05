@@ -2,13 +2,15 @@
 
 import Loading from "./loading";
 import Avatar from "boring-avatars";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 function Page() {
   const profile = useQuery(api.users.getUserProfile);
+  const updateUser = useMutation(api.users.updateUser)
 
   if (profile && profile.user) {
     return (
@@ -43,12 +45,23 @@ function Page() {
 
         {/* Full Name */}
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             const firstName = formData.get('firstName');
             const lastName = formData.get('lastName');
-            alert(`Name update submitted: ${firstName} ${lastName}`);
+            toast.promise(
+              updateUser({
+              userId: profile.userId,
+              firstName: firstName?.toString(),
+              lastName: lastName?.toString()}
+              ),
+              {
+                loading: 'Saving...',
+                success: 'Name updated!',
+                error: 'Problem updating name',
+              }
+            );
           }}
           className="border bg-primary-foreground dark:bg-background rounded-lg"
         >
@@ -60,12 +73,18 @@ function Page() {
               defaultValue={profile.user.firstName}
               placeholder="Firstname"
               className="max-md:w-full shadow-none"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.preventDefault();
+              }}
             />
             <Input
               name="lastName"
               defaultValue={profile.user.lastName}
               placeholder="Lastname"
               className="max-md:w-full shadow-none"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.preventDefault();
+              }}
             />
           </div>
           <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
@@ -108,9 +127,20 @@ function Page() {
 
         {/* Phone Number */}
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            console.log("Phone number update submitted");
+            const formData = new FormData(e.currentTarget);
+            toast.promise(
+              updateUser({
+                userId: profile.userId,
+                phone: formData.get('phone')?.toString(),
+              }),
+              {
+                loading: 'Saving...',
+                success: 'Phone number updated!',
+                error: 'Problem updating phone number',
+              }
+            );
           }}
           className="border bg-primary-foreground dark:bg-background rounded-lg"
         >
@@ -118,10 +148,10 @@ function Page() {
             <h3 className="font-medium text-lg">Phone Number</h3>
             <p className="text-sm">Your Whatsapp number is preferred.</p>
             <Input
-              readOnly
               type="tel"
+              name="phone"
               defaultValue={profile.user.phone}
-              placeholder="Phone number"
+              placeholder="+233123456789"
               className="w-full shadow-none"
             />
           </div>
@@ -130,7 +160,7 @@ function Page() {
               {profile.user.phoneVerificationTime ??
                 "Phone number must be verified to allow recommenders to contact you."}
             </p>
-            <Button type="submit" disabled>Save</Button>
+            <Button type="submit">Save</Button>
           </div>
         </form>
 

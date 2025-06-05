@@ -36,7 +36,7 @@ export default function UserButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-56">
-        {/* <DropdownMenuLabel>{user.name ?? 'Jude Boachie'}</DropdownMenuLabel> */}
+        <DropdownMenuLabel>{user.firstName}{" "}{user.lastName}</DropdownMenuLabel>
         <DropdownMenuLabel className="pt-0 text-muted-foreground font-normal">{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

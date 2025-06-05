@@ -76,8 +76,27 @@ export const createProfile = mutation({
   },
 });
 
-// export const updateProfile = mutation({
-//   args: { },
-//   handler: async (ctx, args) => {
-//   }
-// })
+export const updateUser = mutation({
+  args: {
+    userId: v.id("users"),
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    image: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+
+    //drop the userId from args
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { userId, ...rest } = args;
+
+    // filter for args that are not undefined
+    const filteredArgs = Object.fromEntries(
+      Object.entries(rest).filter(([value]) => value !== undefined)
+    );
+
+    await ctx.db.patch(args.userId, {
+      ...filteredArgs,
+    });
+  },
+});

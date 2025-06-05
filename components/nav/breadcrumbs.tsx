@@ -23,10 +23,10 @@ const Breadcrumbs = () => {
   const segments = pathname.split('/').filter(Boolean);
 
   return (
-    <Breadcrumb className="mb-8 mt-4">
+    <Breadcrumb className="mb-10 mt-4">
       {segments.length === 1 ?
         <BreadcrumbList>
-          <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">Overview</BreadcrumbPage>
+          <BreadcrumbPage className="text-2xl sm:text-4xl font-medium">Overview</BreadcrumbPage>
         </BreadcrumbList>
         :
         <BreadcrumbList>
@@ -44,10 +44,10 @@ const Breadcrumbs = () => {
                 }
                 <BreadcrumbItem>
                   {isLast ? (
-                    <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">{capitalize(segment)}</BreadcrumbPage>
+                    <BreadcrumbPage className="text-2xl sm:text-4xl font-medium">{capitalize(segment)}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
-                      <Link prefetch className="text-2xl sm:text-3xl font-medium" href={href}>{capitalize(segment)}</Link>
+                      <Link prefetch className="text-2xl sm:text-4xl font-medium" href={href}>{capitalize(segment)}</Link>
                     </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>

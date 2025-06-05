@@ -60,7 +60,7 @@ export default function RootLayout({
           >
           <ConvexClientProvider>
           <RoleProvider>
-            <Toaster duration={6000} position="top-center" richColors closeButton />
+            <Toaster position="top-center" richColors closeButton />
             <main>{children}</main>
           </RoleProvider>
           </ConvexClientProvider>
