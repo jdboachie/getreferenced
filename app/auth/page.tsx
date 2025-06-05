@@ -1,4 +1,3 @@
-import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import SignInForm from '@/components/auth/signinForm'
 import SignUpForm from '@/components/auth/signupForm'

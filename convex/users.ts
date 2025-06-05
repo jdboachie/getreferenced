@@ -1,6 +1,7 @@
-// import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
+import { v } from "convex/values";
+import { api } from "./_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { query, mutation } from "./_generated/server";
 
 export const getUserProfile = query({
   handler: async (ctx) => {
@@ -21,26 +22,26 @@ export const getUserProfile = query({
 });
 
 export const createRequesterProfile = mutation({
-  // args: {
-  //   userId: v.id("users"),
-  // },
-  handler: async (ctx, ) => { //args
-    const userId = await getAuthUserId(ctx);
-    if (userId === null) {
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    if (args.userId === null) {
+      console.error("User ID is null, cannot create requester profile.");
       return null;
     }
-    const requesterId = await ctx.db.insert("requesters", {
-      userId: userId,
+    await ctx.db.insert("requesters", {
+      userId: args.userId,
     });
 
-    return requesterId;
+    // return requesterId;
   },
 });
 
 export const createRecommenderProfile = mutation({
-  // args: {
-  //   userId: v.id("users"),
-  // },
+  args: {
+    userId: v.id("users"),
+  },
   handler: async (ctx, ) => { //args
     const userId = await getAuthUserId(ctx);
     if (userId === null) {
@@ -53,3 +54,30 @@ export const createRecommenderProfile = mutation({
     return recommenderId;
   }
 })
+
+
+export const createProfile = mutation({
+  args: { role: v.union(v.literal("requester"), v.literal("recommender")) },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("User is not authenticated");
+    }
+
+    if (args.role === "requester") {
+      await ctx.runMutation(api.users.createRequesterProfile, {
+        userId: userId
+      });
+    } else if (args.role === "recommender") {
+
+    } else {
+      throw new Error("Invalid role specified");
+    }
+  },
+});
+
+// export const updateProfile = mutation({
+//   args: { },
+//   handler: async (ctx, args) => {
+//   }
+// })

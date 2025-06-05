@@ -26,6 +26,7 @@ import { AnimatedState } from "@/components/motion/animated-state";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
+
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(6, { message: "Your password must be at least 6 characters long." }),
@@ -49,8 +50,7 @@ export default function SignUpForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
-  const createRequesterProfile = useMutation(api.users.createRequesterProfile)
-  const createRecommenderProfile = useMutation(api.users.createRecommenderProfile)
+  const createProfile = useMutation(api.users.createProfile)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,32 +62,37 @@ export default function SignUpForm() {
     },
   });
 
-  const onSubmit = React.useCallback((values: z.infer<typeof formSchema>) => {
-    setStatus('submitting')
-    void signIn("password", {
-      email: values.email,
-      password: values.password,
-      role: values.role,
-      flow: 'signUp',
-    })
-    .then(async () => {
-      setStatus('creating')
-      if (values.role === 'requester') {
-        await createRequesterProfile({})
-        .then(() => router.push("/app/settings"))
-      } else {
-        await createRecommenderProfile({})
-        .then(() => router.push("/app/settings"));
-      }
-    })
-    .catch((error) => {
-      setError(error.message);
+  const onSubmit = React.useCallback(async (values: z.infer<typeof formSchema>) => {
+    try {
+      setStatus('submitting');
+      await signIn("password", {
+        email: values.email,
+        password: values.password,
+        role: values.role,
+        flow: 'signUp',
+      });
+
+      setTimeout(async () => {
+        setStatus('creating')
+        await signIn("password", {
+          email: values.email,
+          password: values.password,
+          flow: 'signIn',
+        });
+        await createProfile({role: values.role})
+        router.push("/app/settings");
+      }, 700);
+
+
+
+    } catch (error) {
+      setError((error as Error).message);
       setTimeout(() => setError(null), 5000);
-    })
-    .finally(() => {
+    } finally {
       setStatus(null);
-    });
-  }, [createRecommenderProfile, createRequesterProfile, router, signIn]);
+    }
+  }, [createProfile, router, signIn]);
+
 
   return (
     <Form {...form}>

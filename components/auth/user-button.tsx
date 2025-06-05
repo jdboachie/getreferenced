@@ -16,13 +16,11 @@ import Avatar from "boring-avatars";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/theme/theme-toggle";
 import { useRouter } from "next/navigation";
-// import { useConvexAuth } from 'convex/react'
 import { useAuthActions } from '@convex-dev/auth/react'
 
 
 export default function UserButton() {
 
-  // const { isAuthenticated } = useConvexAuth();
   const { signOut } = useAuthActions();
   const router = useRouter();
 
