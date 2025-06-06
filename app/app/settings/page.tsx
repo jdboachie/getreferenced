@@ -48,28 +48,34 @@ function Page() {
           <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
             <h3 className="font-medium text-lg">Full Name</h3>
             <p className="text-sm">This will be the name on your requests</p>
-            <div className="grid gap-2 sm:grid-cols-2">
-              <Input
-                name="firstName"
-                defaultValue={profile.user.firstName}
-                placeholder="Firstname"
-                className="max-md:w-full shadow-none"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') e.preventDefault();
-                }}
-              />
-              <Input
-                name="lastName"
-                defaultValue={profile.user.lastName}
-                placeholder="Lastname"
-                className="max-md:w-full shadow-none"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') e.preventDefault();
-                }}
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="grid gap-1">
+                <span className="text-sm font-medium text-muted-foreground">First name</span>
+                <Input
+                  name="firstName"
+                  defaultValue={profile.user.firstName}
+                  placeholder="Firstname"
+                  className="max-md:w-full shadow-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') e.preventDefault();
+                  }}
+                />
+              </label>
+              <label className="grid gap-1">
+                <span className="text-sm font-medium text-muted-foreground">Last name</span>
+                <Input
+                  name="lastName"
+                  defaultValue={profile.user.lastName}
+                  placeholder="Lastname"
+                  className="max-md:w-full shadow-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') e.preventDefault();
+                  }}
+                />
+              </label>
             </div>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
+          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
               Name should be as it appears on official documents.
             </p>
@@ -102,13 +108,13 @@ function Page() {
               />
               <Badge
                 variant={profile.user.emailVerificationTime ? 'secondary' : 'destructive'}
-                className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${profile.user.emailVerificationTime && 'bg-green-500'}`}
+                className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${profile.user.emailVerificationTime && 'bg-green-400 dark:bg-green-500/80'}`}
               >
                 {profile.user.emailVerificationTime ? 'verified' : 'not verified'}
               </Badge>
             </label>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
+          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
               Email must be verified to be able to receive notifications.
             </p>
@@ -154,7 +160,7 @@ function Page() {
                 </Badge>
               </label>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
+          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
               {profile.user.phoneVerificationTime ??
                 "Phone number must be verified to allow recommenders to contact you."}
@@ -178,7 +184,7 @@ function Page() {
               platform. This action is not reversible, so please continue with caution.
             </p>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
+          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
               Disabled while I work on other things
             </p>
@@ -264,7 +270,7 @@ function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, u
           </Avatar>
         }
       </div>
-      <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between rounded-b-lg border-t p-4">
+      <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
         <p className="text-sm text-muted-foreground">
           A display picture is optional but strongly recommended.
         </p>

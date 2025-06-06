@@ -14,7 +14,7 @@ export default function Page() {
 
   return (
     <div className="grid sm:max-w-md max-sm:w-full p-4 w-full h-fit">
-      <Tabs defaultValue={action ?? "signup"} className="w-full">
+      <Tabs defaultValue={action ?? "signin"} className="w-full">
         <TabsList className='w-full mb-8'>
           <TabsTrigger value="signin">Sign In</TabsTrigger>
           <TabsTrigger value="signup">Sign Up</TabsTrigger>

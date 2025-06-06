@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Page() {
 
+  console.log("render")
   // TODO: Handle malformed urls (remove not null assertion!)
 
-  // const router = useRouter()
+  const router = useRouter()
   const searchParams = useSearchParams();
   const role = searchParams.get('role')! as "requester" | "recommender"
   const email = searchParams.get('email')!;
@@ -24,11 +25,14 @@ export default function Page() {
   return (
     <form
       className="space-y-8 w-full grid"
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        signIn("password", formData)
-        createProfile({ role })
+        await signIn("password", formData)
+        setTimeout(async () => {
+          await createProfile({ role })
+          router.push('/app/settings')
+        }, 700);
       }}
     >
       <p>Enter the code sent to {email}</p>
