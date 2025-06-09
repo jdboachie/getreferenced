@@ -479,7 +479,7 @@ function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, u
                 onClick={() => imageInput.current?.click()}
                 className="size-24 border hover:bg-muted/50"
               >
-                <AvatarImage src={previewUrl || imageUrl || undefined} />
+                <AvatarImage alt="avatar" src={previewUrl || imageUrl || undefined} />
                 <AvatarFallback><User2Icon /></AvatarFallback>
               </Avatar>
               :

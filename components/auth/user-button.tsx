@@ -36,7 +36,7 @@ export default function UserButton() {
         <Button variant="outline" size={"icon"} className="rounded-full shadow-2xs">
           {imageUrl ?
             <Avatar>
-              <AvatarImage src={imageUrl} />
+              <AvatarImage alt="avatar" src={imageUrl} />
               <AvatarFallback><User2Icon /></AvatarFallback>
             </Avatar>
             :
