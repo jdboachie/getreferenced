@@ -19,8 +19,10 @@ export default function Page() {
   if (profile){
     return (
       <div className="flex flex-col gap-12">
-        {"cvFile" in profile &&
+        {"cvFile" in profile ?
           <CVCard userId={profile?.userId} cvFileId={profile.cvFile} />
+          :
+          <CVCard userId={profile?.userId} />
         }
       </div>
     )
@@ -30,7 +32,7 @@ export default function Page() {
 }
 
 
-function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId: Id<"_storage"> | undefined}) {
+function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storage">}) {
   const uploadCV = useMutation(api.users.updateUserProfile);
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
 
