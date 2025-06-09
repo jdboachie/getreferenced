@@ -366,7 +366,7 @@ export default function Page() {
             </div>
             <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
               <p className="text-sm text-muted-foreground">
-                8-digit number given you when you applied to KNUST
+                8-digit number given when you applied to KNUST
               </p>
               <Button size={'sm'} type="submit">Save</Button>
             </div>
