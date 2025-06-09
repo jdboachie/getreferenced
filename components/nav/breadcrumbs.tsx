@@ -29,6 +29,7 @@ const Breadcrumbs = () => {
           <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">Overview</BreadcrumbPage>
         </BreadcrumbList>
         :
+        // TODO: FIX THE SEMANTICS HERE
         <BreadcrumbList>
           {segments.slice(1).map((segment, index) => {
             const href = '/' + segments.slice(0, index + 2).join('/');
