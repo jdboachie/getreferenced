@@ -21,11 +21,11 @@ const schema = defineSchema({
     userId: v.id("users"),
     indexNumber: v.optional(v.string()),
     studentNumber: v.optional(v.string()),
-    transcriptFile: v.optional(v.string()),
+    transcriptFile: v.optional(v.id("_storage")),
     cvFile: v.optional(v.id("_storage")),
     yearOfCompletion: v.optional(v.string()),
     programOfStudy: v.optional(v.string()),
-    certificateFile: v.optional(v.string()),
+    certificateFile: v.optional(v.id("_storage")),
   }).index("userId", ["userId"]),
 
   recommenders: defineTable({

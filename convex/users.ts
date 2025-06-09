@@ -71,7 +71,12 @@ export const updateUserProfile = mutation({
     role: v.union(v.literal("requester"), v.literal("recommender")),
     userId: v.id("users"),
     cvFile: v.optional(v.id("_storage")),
-    transcriptFile: v.optional(v.string()),
+    transcriptFile: v.optional(v.id("_storage")),
+    certificateFile: v.optional(v.id("_storage")),
+    indexNumber: v.optional(v.string()),
+    studentNumber: v.optional(v.string()),
+    programOfStudy: v.optional(v.string()),
+    yearOfCompletion: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const profile = await ctx.db
@@ -81,7 +86,13 @@ export const updateUserProfile = mutation({
 
     if (!profile) throw new Error("Profile not found");
 
-    await ctx.db.patch(profile._id, {cvFile: args.cvFile});
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { role, ...rest } = args;
+    const filteredArgs = Object.fromEntries(
+      Object.entries(rest).filter(([value]) => value !== undefined)
+    );
+
+    await ctx.db.patch(profile._id, filteredArgs);
   },
 });
 

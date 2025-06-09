@@ -15,12 +15,13 @@ import { Badge } from "@/components/ui/badge";
 import { useRole } from '@/hooks/use-role';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-function Page() {
+export default function Page() {
   const user = useQuery(api.auth.getCurrentUser)
   const { role } = useRole();
   const endPoint = role === "recommender" ? api.users.getRecommenderProfile : api.users.getRequesterProfile
   const profile = useQuery(endPoint) ;
   const updateUser = useMutation(api.users.updateUser)
+  const updateProfile = useMutation(api.users.updateUserProfile)
 
   if (profile && user) {
     return (
@@ -53,7 +54,7 @@ function Page() {
           <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
             <h3 className="font-medium text-lg">Full Name</h3>
             <p className="text-sm">This will be the name on your requests</p>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               <label className="grid gap-1">
                 <span className="text-sm font-medium text-muted-foreground">First name</span>
                 <Input
@@ -84,9 +85,7 @@ function Page() {
             <p className="text-sm text-muted-foreground">
               Name should be as it appears on official documents.
             </p>
-            <Button type="submit" size="sm">
-              Save
-            </Button>
+            <Button size={'sm'} type="submit">Save</Button>
           </div>
         </form>
 
@@ -123,7 +122,7 @@ function Page() {
             <p className="text-sm text-muted-foreground">
               Email must be verified to be able to receive notifications.
             </p>
-            <Button type="submit" disabled>Save</Button>
+            <Button size={'sm'} type="submit" disabled>Save</Button>
           </div>
         </form>
 
@@ -170,9 +169,209 @@ function Page() {
               {user.phoneVerificationTime ??
                 "Phone number must be verified to allow recommenders to contact you."}
             </p>
-            <Button type="submit">Save</Button>
+            <Button size={'sm'} type="submit" disabled>Save</Button>
           </div>
         </form>
+
+        {/* Program of study */}
+        {(role === "requester") &&
+          <form
+            id="programOfStudy"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              console.log(formData.get('programOfStudy') ? Number(formData.get('programOfStudy')) : undefined)
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  programOfStudy: formData.get('programOfStudy')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Program of study updated!',
+                  error: 'Problem updating program of study',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Program of study</h3>
+              {/* <p className="text-sm">Very much needed.</p> */}
+              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+                <Input
+                  name="programOfStudy"
+                  defaultValue={("programOfStudy" in profile ? profile.programOfStudy : '')}
+                  placeholder="Bsc Dondology"
+                  className="w-full shadow-none"
+                />
+                {/* <Badge
+                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
+                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
+                >
+                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
+                </Badge> */}
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                Program should be as is on your certificate.
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+        }
+
+        {/* Year of completion */}
+        {(role === "requester") &&
+          <form
+            id="yearOfCompletion"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              console.log(formData.get('yearOfCompletion') ? Number(formData.get('yearOfCompletion')) : undefined)
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  yearOfCompletion: formData.get('yearOfCompletion')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Program of study updated!',
+                  error: 'Problem updating program of study',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Year of completion</h3>
+              {/* <p className="text-sm">Very much needed.</p> */}
+              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+                <Input
+                  name="yearOfCompletion"
+                  defaultValue={("yearOfCompletion" in profile ? profile.yearOfCompletion : '')}
+                  placeholder="2025"
+                  className="w-full shadow-none"
+                />
+                {/* <Badge
+                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
+                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
+                >
+                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
+                </Badge> */}
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                TODO: Make this into a datepicker component
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+        }
+
+        {/* Index number */}
+        {(role === "requester") &&
+          <form
+            id="indexNumber"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              console.log(formData.get('indexNumber') ? Number(formData.get('indexNumber')) : undefined)
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  indexNumber: formData.get('indexNumber')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Index number updated!',
+                  error: 'Problem updating index number',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Index Number</h3>
+              {/* <p className="text-sm">Very much needed.</p> */}
+              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+                <Input
+                  name="indexNumber"
+                  defaultValue={("indexNumber" in profile ? profile.indexNumber : '')}
+                  placeholder="1234567"
+                  className="w-full shadow-none"
+                />
+                {/* <Badge
+                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
+                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
+                >
+                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
+                </Badge> */}
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                What you used for exams
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+        }
+
+        {/* Student number */}
+        {(role === "requester") &&
+          <form
+            id="studentNumber"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              console.log(formData.get('studentNumber') ? Number(formData.get('indexNumber')) : undefined)
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  studentNumber: formData.get('studentNumber')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Student number updated!',
+                  error: 'Problem updating student number',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Student Number</h3>
+              {/* <p className="text-sm">Very much needed.</p> */}
+              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+                <Input
+                  name="studentNumber"
+                  defaultValue={("studentNumber" in profile ? profile.studentNumber : '')}
+                  placeholder="12345678"
+                  className="w-full shadow-none"
+                />
+                {/* <Badge
+                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
+                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
+                >
+                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
+                </Badge> */}
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                8-digit number given you when you applied to KNUST
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+        }
 
         {/* Delete Account */}
         <form
@@ -204,9 +403,6 @@ function Page() {
     return <Loading />;
   }
 }
-
-export default Page;
-
 
 
 function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, userId: Id<"users">}) {
@@ -274,14 +470,14 @@ function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, u
             width={100}
             height={100}
             onClick={() => imageInput.current?.click()}
-            className="size-16 sm:size-20 border rounded-full"
+            className="size-24 border rounded-full"
           />
           :
           <>
             {imageUrl  ?
               <Avatar
                 onClick={() => imageInput.current?.click()}
-                className="size-16 sm:size-20 border hover:bg-muted/50"
+                className="size-24 border hover:bg-muted/50"
               >
                 <AvatarImage src={previewUrl || imageUrl || undefined} />
                 <AvatarFallback><User2Icon /></AvatarFallback>
@@ -289,7 +485,7 @@ function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, u
               :
               <Avatar
                 onClick={() => imageInput.current?.click()}
-                className="size-16 sm:size-20 border hover:bg-muted/50"
+                className="size-24 border hover:bg-muted/50"
               >
                 <AvatarFallback><User2Icon /></AvatarFallback>
               </Avatar>
