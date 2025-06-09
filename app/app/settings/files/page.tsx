@@ -82,9 +82,9 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
               </div>
             </TabsContent>
             <TabsContent value="details" className='p-4 grid gap-1 text-sm'>
-              <div className='sm:flex gap-4'><div className="min-w-24 text-muted-foreground">Last updated</div> <p className='text-primary'>{fileMetadata?._creationTime && <>{new Date(fileMetadata?._creationTime).toDateString()}</>}</p></div>
-              <div className='sm:flex gap-4'><div className="min-w-24 text-muted-foreground">File type</div> <p className='text-primary'>{fileMetadata?.contentType}</p></div>
-              <div className='sm:flex gap-4'><div className="min-w-24 text-muted-foreground">Size</div> <p className='text-primary'>{fileMetadata?.size}</p></div>
+              <div className='flex gap-4'><div className="min-w-24 text-muted-foreground">Last updated</div> <p className='text-primary'>{fileMetadata?._creationTime && <>{new Date(fileMetadata?._creationTime).toDateString()}</>}</p></div>
+              <div className='flex gap-4'><div className="min-w-24 text-muted-foreground">File type</div> <p className='text-primary'>{fileMetadata?.contentType}</p></div>
+              <div className='flex gap-4'><div className="min-w-24 text-muted-foreground">Size</div> <p className='text-primary'>{fileMetadata?.size}</p></div>
             </TabsContent>
           </div>
         </Tabs>
