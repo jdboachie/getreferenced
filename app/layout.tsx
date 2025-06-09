@@ -34,8 +34,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Approved 🤌",
-  description: "Recommendme - by us at fastfast.computer",
+  title: "Recomenso",
+  description: "Recomenso - by us at fastfast.computer",
   icons: {
     icon: "/convex.svg",
   },

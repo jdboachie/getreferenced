@@ -1,45 +1,115 @@
-"use client";
 
-import * as React from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useRouter, useSearchParams } from 'next/navigation';
+"use client"
+
+import * as React from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useAuthActions } from "@convex-dev/auth/react"
+
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { api } from "@/convex/_generated/api"
+import { useMutation } from "convex/react"
+// import { ForwardIcon } from "lucide-react"
+
+const FormSchema = z.object({
+  code: z.string().min(8, {
+    message: "The code must be 8 characters.",
+  }),
+})
 
 export default function Page() {
-
-  console.log("render")
-  // TODO: Handle malformed urls (remove not null assertion!)
-
   const router = useRouter()
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
+  const email = searchParams.get("email")!
   const role = searchParams.get('role')! as "requester" | "recommender"
-  const email = searchParams.get('email')!;
+
+  const { signIn } = useAuthActions()
 
   const createProfile = useMutation(api.users.createProfile)
 
-  const { signIn } = useAuthActions();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      code: "",
+    },
+  })
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const formData = new FormData()
+    formData.append("code", data.code)
+    formData.append("flow", "email-verification")
+    formData.append("email", email)
+
+    await signIn("password", formData)
+    setTimeout(async() => {
+      await createProfile({ role })
+      router.push("/app/settings")
+    }, 700)
+  }
 
   return (
-    <form
-      className="space-y-8 w-full grid"
-      onSubmit={async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        await signIn("password", formData)
-        setTimeout(async () => {
-          await createProfile({ role })
-          router.push('/app/settings')
-        }, 700);
-      }}
-    >
-      <p>Enter the code sent to {email}</p>
-      <Input autoFocus name="code" placeholder="Code" type="text" />
-      <Input name="flow" type="hidden" value="email-verification" />
-      <Input name="email" value={email} type="hidden" />
-      <Button type="submit">Continue</Button>
-    </form>
+    <div className="w-full p-4">
+      <h1 className="text-2xl font-medium mb-1">Verify Email</h1>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full grid">
+          <p className="text-sm text-muted-foreground">
+            Enter the code sent to <span className="font-medium">{email}</span>
+          </p>
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Verification Code</FormLabel>
+                <FormControl>
+                  <div className="grid gap-6">
+                    <InputOTP maxLength={8} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSeparator />
+                        <InputOTPSlot className="border-l" index={4} />
+                        <InputOTPSlot index={5} />
+                        <InputOTPSlot index={6} />
+                        <InputOTPSlot index={7} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                    <Button type="submit">
+                      {/* <ForwardIcon className="stroke-[2.5]" /> */}
+                      Verify email
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormDescription>
+                  You can find the code in your email inbox.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <input type="hidden" name="flow" value="email-verification" />
+          <input type="hidden" name="email" value={email} />
+        </form>
+      </Form>
+    </div>
   )
 }

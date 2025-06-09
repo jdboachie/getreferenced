@@ -8,13 +8,14 @@ export const ResendOTP = Resend({
   async generateVerificationToken() {
     return generateRandomString(8, alphabet("0-9"));
   },
-  async sendVerificationRequest({ identifier: email, provider, token }) { 
+  async sendVerificationRequest({ identifier: email, provider, token }) {
     const resend = new ResendAPI(provider.apiKey);
+    const formattedToken = `${token.slice(0, 4)}-${token.slice(-4)}`;
     const { error } = await resend.emails.send({
-      from: "My App <onboarding@resend.dev>",
+      from: "Recommenso <onboarding@resend.dev>",
       to: [email],
-      subject: `Sign in to My App`,
-      text: "Your code is " + token,
+      subject: `Sign in to Recommenso`,
+      text: "Your code is " + formattedToken,
     });
 
     if (error) {

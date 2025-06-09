@@ -1,9 +1,9 @@
 'use client';
 
 import { toast } from "sonner";
+import Image from "next/image";
 import * as React from 'react';
 import Loading from "./loading";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,16 +12,21 @@ import { User2Icon } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
 import { SpinnerIcon } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
+import { useRole } from '@/hooks/use-role';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 function Page() {
-  const profile = useQuery(api.users.getUserProfile);
+  const user = useQuery(api.auth.getCurrentUser)
+  const { role } = useRole();
+  const endPoint = role === "recommender" ? api.users.getRecommenderProfile : api.users.getRequesterProfile
+  const profile = useQuery(endPoint) ;
   const updateUser = useMutation(api.users.updateUser)
 
-  if (profile && profile.user) {
+  if (profile && user) {
     return (
       <div className="flex flex-col gap-12">
 
-        <UserAvatarCard userImageUrl={profile.user.image} userId={profile.userId} />
+        <UserAvatarCard userImageUrl={user.image} userId={profile.userId} />
 
         {/* Full Name */}
         <form
@@ -53,7 +58,7 @@ function Page() {
                 <span className="text-sm font-medium text-muted-foreground">First name</span>
                 <Input
                   name="firstName"
-                  defaultValue={profile.user.firstName}
+                  defaultValue={user.firstName}
                   placeholder="Firstname"
                   className="max-md:w-full shadow-none"
                   onKeyDown={(e) => {
@@ -65,7 +70,7 @@ function Page() {
                 <span className="text-sm font-medium text-muted-foreground">Last name</span>
                 <Input
                   name="lastName"
-                  defaultValue={profile.user.lastName}
+                  defaultValue={user.lastName}
                   placeholder="Lastname"
                   className="max-md:w-full shadow-none"
                   onKeyDown={(e) => {
@@ -102,15 +107,15 @@ function Page() {
               <Input
                 readOnly
                 name="email"
-                defaultValue={profile.user.email}
+                defaultValue={user.email}
                 placeholder="Email"
                 className="w-full shadow-none"
               />
               <Badge
-                variant={profile.user.emailVerificationTime ? 'secondary' : 'destructive'}
-                className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${profile.user.emailVerificationTime && 'bg-green-400 dark:bg-green-500/80'}`}
+                variant={user.emailVerificationTime ? 'secondary' : 'destructive'}
+                className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.emailVerificationTime && 'bg-green-400 dark:bg-green-500/80'}`}
               >
-                {profile.user.emailVerificationTime ? 'verified' : 'not verified'}
+                {user.emailVerificationTime ? 'verified' : 'not verified'}
               </Badge>
             </label>
           </div>
@@ -148,21 +153,21 @@ function Page() {
                 <Input
                   type="tel"
                   name="phone"
-                  defaultValue={profile.user.phone}
+                  defaultValue={user.phone}
                   placeholder="+233123456789"
                   className="w-full shadow-none"
                 />
                 <Badge
-                  variant={profile.user.phoneVerificationTime ? 'secondary' : 'destructive'}
-                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${profile.user.phoneVerificationTime && 'bg-green-500'}`}
+                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
+                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
                 >
-                  {profile.user.phoneVerificationTime ? 'verified' : 'not verified'}
+                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
                 </Badge>
               </label>
           </div>
           <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
             <p className="text-sm text-muted-foreground">
-              {profile.user.phoneVerificationTime ??
+              {user.phoneVerificationTime ??
                 "Phone number must be verified to allow recommenders to contact you."}
             </p>
             <Button type="submit">Save</Button>
@@ -207,11 +212,13 @@ export default Page;
 function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, userId: Id<"users">}) {
 
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
 
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
   const uploadImage = useMutation(api.storage.uploadUserImage);
 
   const imageInput = React.useRef<HTMLInputElement>(null);
+  const cancelButton = React.useRef<HTMLButtonElement>(null);
   const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
 
   const imageUrl = useQuery(api.storage.getFileUrl, { storageId: userImageUrl})
@@ -232,6 +239,8 @@ function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, u
     // Step 3: Save the newly allocated storage id to the database
     await uploadImage({ storageId: storageId, userId: userId, prevStorageId: userImageUrl });
 
+    setPreviewUrl(null);
+    URL.revokeObjectURL(previewUrl!);
     setSelectedImage(null);
     imageInput.current!.value = "";
     setLoading(false)
@@ -249,25 +258,43 @@ function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, u
           type="file"
           accept="image/*"
           ref={imageInput}
-          onChange={(event) => setSelectedImage(event.target.files![0])}
-          disabled={selectedImage !== null}
+          onChange={(event) => {
+            const file = event.target.files?.[0] || null;
+            setSelectedImage(file);
+            setPreviewUrl(file ? URL.createObjectURL(file) : null);
+          }}
+          // disabled={selectedImage !== null}
           className="hidden"
         />
-        {imageUrl ?
-          <Avatar
+        <button ref={cancelButton} type="reset" className="hidden"></button>
+        {previewUrl ?
+          <Image
+            src={previewUrl}
+            alt="Preview"
+            width={100}
+            height={100}
             onClick={() => imageInput.current?.click()}
-            className="size-16 sm:size-20 border hover:bg-muted/50"
-          >
-            <AvatarImage src={imageUrl} />
-            <AvatarFallback><User2Icon /></AvatarFallback>
-          </Avatar>
+            className="size-16 sm:size-20 border rounded-full"
+          />
           :
-          <Avatar
-            onClick={() => imageInput.current?.click()}
-            className="size-16 sm:size-20 border hover:bg-muted/50"
-          >
-            <AvatarFallback><User2Icon /></AvatarFallback>
-          </Avatar>
+          <>
+            {imageUrl  ?
+              <Avatar
+                onClick={() => imageInput.current?.click()}
+                className="size-16 sm:size-20 border hover:bg-muted/50"
+              >
+                <AvatarImage src={previewUrl || imageUrl || undefined} />
+                <AvatarFallback><User2Icon /></AvatarFallback>
+              </Avatar>
+              :
+              <Avatar
+                onClick={() => imageInput.current?.click()}
+                className="size-16 sm:size-20 border hover:bg-muted/50"
+              >
+                <AvatarFallback><User2Icon /></AvatarFallback>
+              </Avatar>
+            }
+          </>
         }
       </div>
       <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">

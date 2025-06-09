@@ -28,3 +28,20 @@ export const getFileUrl = query({
     return await ctx.storage.getUrl(args.storageId);
   },
 })
+
+export const getMetadata = query({
+  args: {
+    storageId: v.optional(v.id("_storage")),
+  },
+  handler: async (ctx, args) => {
+    if (args.storageId)
+    return await ctx.db.system.get(args.storageId);
+  },
+});
+
+export const listAllFiles = query({
+  handler: async (ctx) => {
+    // You can use .paginate() as well
+    return await ctx.db.system.query("_storage").collect();
+  },
+});

@@ -12,7 +12,6 @@ export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
     return nextjsMiddlewareRedirect(request, "/app");
   }
   if (isProtectedRoute(request) && !(await convexAuth.isAuthenticated())) {
-    console.log("middleware: not authenticated")
     return nextjsMiddlewareRedirect(request, "/auth");
   }
 });

@@ -3,21 +3,85 @@ import { api } from "./_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { query, mutation } from "./_generated/server";
 
-export const getUserProfile = query({
+// export const getUserProfile = query({
+//   handler: async (ctx) => {
+//     const userId = await getAuthUserId(ctx);
+//     if (!userId) return null;
+
+//     const user = await ctx.db.get(userId);
+//     if (!user?.role) return null;
+
+//     if (user.role === "requester") {
+//       const requester = await ctx.db
+//         .query("requesters")
+//         .withIndex("userId", (q) => q.eq("userId", userId))
+//         .unique();
+
+//       return requester
+//     } else if (user.role === "recommender") {
+//       const recommender = await ctx.db
+//         .query("recommenders")
+//         .withIndex("userId", (q) => q.eq("userId", userId))
+//         .unique();
+
+//       return recommender
+//     }
+
+//     return null;
+
+//   },
+// });
+
+export const getRequesterProfile = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) return null;
 
     const user = await ctx.db.get(userId);
-    if (!user?.role) return null;
+    if (user?.role !== "requester") return null;
 
-    const table = user.role === "requester" ? "requesters" : "recommenders";
-    const profile = await ctx.db
-      .query(table)
+    const requester = await ctx.db
+      .query("requesters")
       .withIndex("userId", (q) => q.eq("userId", userId))
       .unique();
 
-    return profile ? { ...profile, user } : null;
+    return requester;
+  },
+});
+
+export const getRecommenderProfile = query({
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return null;
+
+    const user = await ctx.db.get(userId);
+    if (user?.role !== "recommender") return null;
+
+    const recommender = await ctx.db
+      .query("recommenders")
+      .withIndex("userId", (q) => q.eq("userId", userId))
+      .unique();
+
+    return recommender;
+  },
+});
+
+export const updateUserProfile = mutation({
+  args: {
+    role: v.union(v.literal("requester"), v.literal("recommender")),
+    userId: v.id("users"),
+    cvFile: v.optional(v.id("_storage")),
+    transcriptFile: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const profile = await ctx.db
+      .query(args.role === "requester" ? "requesters" : "recommenders")
+      .withIndex("userId", (q) => q.eq("userId", args.userId))
+      .unique();
+
+    if (!profile) throw new Error("Profile not found");
+
+    await ctx.db.patch(profile._id, {cvFile: args.cvFile});
   },
 });
 
@@ -26,10 +90,6 @@ export const createRequesterProfile = mutation({
     userId: v.id("users"),
   },
   handler: async (ctx, args) => {
-    if (args.userId === null) {
-      console.error("User ID is null, cannot create requester profile.");
-      return null;
-    }
     await ctx.db.insert("requesters", {
       userId: args.userId,
     });
@@ -42,19 +102,14 @@ export const createRecommenderProfile = mutation({
   args: {
     userId: v.id("users"),
   },
-  handler: async (ctx, ) => { //args
-    const userId = await getAuthUserId(ctx);
-    if (userId === null) {
-      return null;
-    }
+  handler: async (ctx, args) => { //args
     await ctx.db.insert("recommenders", {
-      userId: userId,
+      userId: args.userId,
     });
 
     // return recommenderId;
   }
 })
-
 
 export const createProfile = mutation({
   args: { role: v.union(v.literal("requester"), v.literal("recommender")) },
@@ -65,13 +120,9 @@ export const createProfile = mutation({
     }
 
     if (args.role === "requester") {
-      await ctx.runMutation(api.users.createRequesterProfile, {
-        userId: userId
-      });
+      await ctx.runMutation(api.users.createRequesterProfile, {userId});
     } else if (args.role === "recommender") {
-      await ctx.runMutation(api.users.createRecommenderProfile, {
-        userId: userId
-      });
+      await ctx.runMutation(api.users.createRecommenderProfile, {userId});
     } else {
       throw new Error("Invalid role specified");
     }
@@ -85,6 +136,7 @@ export const updateUser = mutation({
     lastName: v.optional(v.string()),
     phone: v.optional(v.string()),
     image: v.optional(v.string()),
+    profileCreatedTime: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
 

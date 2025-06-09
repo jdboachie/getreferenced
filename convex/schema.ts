@@ -13,7 +13,8 @@ const schema = defineSchema({
     phoneVerificationTime: v.optional(v.number()),
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
-    role: v.optional(v.union(v.literal("requester"), v.literal("recommender"))),
+    role: v.union(v.literal("requester"), v.literal("recommender")),
+    profileCreatedTime: v.optional(v.number()),
   }).index("email", ["email"]),
 
   requesters: defineTable({
@@ -21,7 +22,7 @@ const schema = defineSchema({
     indexNumber: v.optional(v.string()),
     studentNumber: v.optional(v.string()),
     transcriptFile: v.optional(v.string()),
-    cvFile: v.optional(v.string()),
+    cvFile: v.optional(v.id("_storage")),
     yearOfCompletion: v.optional(v.string()),
     programOfStudy: v.optional(v.string()),
     certificateFile: v.optional(v.string()),

@@ -6,7 +6,7 @@ export default Password<DataModel>({
   profile(params) {
     return {
       email: params.email as string,
-      role: params.role as "recommender" | "requester" | undefined,
+      role: params.role as "recommender" | "requester",
     };
   },
   verify: ResendOTP
