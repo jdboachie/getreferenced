@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-import { ChevronRightIcon } from "lucide-react";
+import { SlashIcon } from "lucide-react";
 
 const capitalize = (s: string) =>
   s
@@ -23,7 +23,7 @@ const Breadcrumbs = () => {
   const segments = pathname.split('/').filter(Boolean);
 
   return (
-    <Breadcrumb className="mb-10 mt-4">
+    <Breadcrumb className="mb-14 mt-4">
       {segments.length === 1 ?
         <BreadcrumbList>
           <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">Overview</BreadcrumbPage>
@@ -37,10 +37,10 @@ const Breadcrumbs = () => {
             const isLast = index === segments.length - 2;
 
             return (
-              <div key={href} className="flex items-center gap-1">
+              <div key={href} className="flex items-center gap-2">
                 {!isFirst &&
                   <BreadcrumbSeparator className="[&>svg]:size-6">
-                    <ChevronRightIcon className="stroke-2" />
+                    <SlashIcon className="stroke-[1.5]" />
                   </BreadcrumbSeparator>
                 }
                 <BreadcrumbItem>

@@ -49,6 +49,17 @@ export const getRequesterProfile = query({
   },
 });
 
+export const getAllRecommenders = query({
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return null;
+
+    const recommenders = await ctx.db.query("recommenders").collect()
+
+    return recommenders;
+  },
+})
+
 export const getRecommenderProfile = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);

@@ -9,18 +9,31 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  // DropdownMenuShortcut,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/theme/theme-toggle";
 import { useRouter } from "next/navigation";
 import { useAuthActions } from '@convex-dev/auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User2Icon } from "lucide-react";
+import { LogOut, User2Icon } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 
 export default function UserButton() {
+
+  const isMobile = useIsMobile();
 
   const router = useRouter();
   const { signOut } = useAuthActions();
@@ -30,7 +43,40 @@ export default function UserButton() {
 
 
   if (!user) return <div className="size-9 rounded-full animate-pulse bg-accent border" />;
+
   return (
+    isMobile ?
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button variant="outline" size={"icon"} className="rounded-full shadow-2xs">
+          {imageUrl ?
+            <Avatar>
+              <AvatarImage alt="avatar" src={imageUrl} />
+              <AvatarFallback><User2Icon /></AvatarFallback>
+            </Avatar>
+            :
+            <Avatar
+            >
+              <AvatarFallback><User2Icon /></AvatarFallback>
+            </Avatar>
+          }
+          <span className="sr-only">Open user menu</span>
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+          <DrawerDescription>This action cannot be undone.</DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter>
+          <Button>Submit</Button>
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+    :
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-2xs">
@@ -49,12 +95,12 @@ export default function UserButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-56">
-        <DropdownMenuLabel>{user.firstName}{" "}{user.lastName}</DropdownMenuLabel>
+        <DropdownMenuLabel className="pb-0">{user.firstName}{" "}{user.lastName}</DropdownMenuLabel>
         <DropdownMenuLabel className="pt-0 text-muted-foreground font-normal">{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            Profile
+            Account
             {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
           </DropdownMenuItem>
           <DropdownMenuItem>
@@ -76,15 +122,16 @@ export default function UserButton() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          variant="destructive"
           onClick={async () =>
             await Promise.all([
+              router.push("/"),
               signOut(),
-              router.push("/auth")
             ])
           }
         >
           Log out
-          {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
+          <DropdownMenuShortcut><LogOut className="text-destructive" /></DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

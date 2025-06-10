@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRole } from '@/hooks/use-role';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+
 export default function Page() {
   const user = useQuery(api.auth.getCurrentUser)
   const { role } = useRole();
@@ -173,8 +174,9 @@ export default function Page() {
           </div>
         </form>
 
-        {/* Program of study */}
-        {(role === "requester") &&
+        {role === 'requester' &&
+          <>
+          {/* Program of study */}
           <form
             id="programOfStudy"
             onSubmit={async (e) => {
@@ -221,10 +223,9 @@ export default function Page() {
               <Button size={'sm'} type="submit">Save</Button>
             </div>
           </form>
-        }
+
 
         {/* Year of completion */}
-        {(role === "requester") &&
           <form
             id="yearOfCompletion"
             onSubmit={async (e) => {
@@ -271,10 +272,8 @@ export default function Page() {
               <Button size={'sm'} type="submit">Save</Button>
             </div>
           </form>
-        }
 
         {/* Index number */}
-        {(role === "requester") &&
           <form
             id="indexNumber"
             onSubmit={async (e) => {
@@ -321,10 +320,8 @@ export default function Page() {
               <Button size={'sm'} type="submit">Save</Button>
             </div>
           </form>
-        }
 
         {/* Student number */}
-        {(role === "requester") &&
           <form
             id="studentNumber"
             onSubmit={async (e) => {
@@ -371,6 +368,13 @@ export default function Page() {
               <Button size={'sm'} type="submit">Save</Button>
             </div>
           </form>
+          </>
+        }
+
+        {role === 'recommender' &&
+          <>
+          Recommender-specific settings
+          </>
         }
 
         {/* Delete Account */}

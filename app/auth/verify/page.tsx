@@ -60,7 +60,7 @@ export default function Page() {
     await signIn("password", formData)
     setTimeout(async() => {
       await createProfile({ role })
-      router.push("/app/settings")
+      router.push("/app/account")
     }, 700)
   }
 

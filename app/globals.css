@@ -123,6 +123,7 @@
     @apply bg-foreground text-background;
   }
   body {
+    font-synthesis: none;
     @apply bg-ground text-foreground;
   }
   .hidden-scrollbar {

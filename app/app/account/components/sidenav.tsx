@@ -9,9 +9,9 @@ export const Sidenav = () => {
   const pathname = usePathname();
 
   const links = [
-    { href: "/app/settings", label: "Profile" },
-    { href: "/app/settings/files", label: "Files" },
-    { href: "/app/settings/billing", label: "Billing" },
+    { href: "/app/account", label: "Profile" },
+    { href: "/app/account/files", label: "Files" },
+    { href: "/app/account/billing", label: "Billing" },
   ];
 
   return (

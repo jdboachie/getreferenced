@@ -24,8 +24,8 @@ const navLinks = [
     url: "/app/billing",
   },
   {
-    title: "Settings",
-    url: "/app/settings",
+    title: "Account",
+    url: "/app/account",
   },
 ];
 

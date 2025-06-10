@@ -10,7 +10,7 @@ const Footer = () => {
         <ThemeToggle />
       </div>
       <div className="w-full flex justify-start px-2">
-        <p className='text-xs text-center text-muted-foreground'>&copy; 2025, Genios Computer.</p>
+        <p className='text-xs text-center text-muted-foreground'>&copy; 2025, Augustine Sandra & Jude.</p>
       </div>
     </footer>
   )

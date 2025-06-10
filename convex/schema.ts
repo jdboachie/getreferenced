@@ -38,6 +38,32 @@ const schema = defineSchema({
     phoneNumber: v.optional(v.string()),
     currentRank: v.optional(v.string()),
   }).index("userId", ["userId"]),
+
+  requests: defineTable({
+    additionalInfo: v.optional(v.string()),
+    deadline: v.float64(),
+    institutionAddress: v.string(),
+    institutionName: v.string(),
+    purpose: v.optional(
+      v.union(
+        v.literal("admission"),
+        v.literal("scholarship"),
+        v.literal("employment"),
+        v.literal("other")
+      )
+    ),
+    status: v.optional(
+      v.union(
+        v.literal("pending"),
+        v.literal("rejected"),
+        v.literal("accepted"),
+        v.literal("drafted"),
+      )
+    ),
+    recommenderId: v.id("recommender"),
+    sampleLetter: v.optional(v.id("_storage")),
+    userId: v.id("users"),
+  }),
 });
 
 export default schema;
