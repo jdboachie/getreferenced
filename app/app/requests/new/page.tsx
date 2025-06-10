@@ -1,14 +1,13 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { format } from "date-fns"
-import { cn } from "@/lib/utils"
+import { z } from "zod";
+import { toast } from "sonner";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { useQuery } from "convex/react";
+import { useForm } from "react-hook-form";
+import { api } from "@/convex/_generated/api";
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import {
   Form,
   FormControl,
@@ -19,17 +18,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { CalendarIcon } from "lucide-react"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { CalendarIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 const FormSchema = z.object({
@@ -66,10 +71,9 @@ export default function RequestForm() {
   const availableRecommenders = useQuery(api.users.getAllRecommenders)
 
   return (
-    <div className="flex max-lg:flex-col w-full gap-8">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 grid grow">
-          <Badge variant={'destructive'}>Work in progress</Badge>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-lg:flex-col w-full gap-8">
+        <div className="space-y-8 grid grow">
           <FormField
             control={form.control}
             name="institutionName"
@@ -108,7 +112,7 @@ export default function RequestForm() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
+                          "w-full pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -148,7 +152,8 @@ export default function RequestForm() {
                 <FormLabel>Purpose</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
+                      <span className="sr-only">Select purpose</span>
                       <SelectValue placeholder="Select purpose" />
                     </SelectTrigger>
                   </FormControl>
@@ -184,7 +189,7 @@ export default function RequestForm() {
                 <FormLabel>Recommender</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a recommender" />
                     </SelectTrigger>
                   </FormControl>
@@ -219,12 +224,21 @@ export default function RequestForm() {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
-      <div className="w-full lg:w-[350px] h-fit flex lg:flex-col gap-2 lg:sticky lg:top-38 bg-background p-4 rounded-lg border shadow-xs">
-        <h3 className="font-medium text-lg">Summary</h3>
-      </div>
-    </div>
+        </div>
+        <div className="w-full lg:w-[450px] h-fit flex flex-col gap-4 lg:sticky lg:top-38 bg-background p-4 rounded-lg border shadow-xs">
+          <h3 className="font-medium text-lg">Summary</h3>
+          <ul className="space-y-3">
+            <li className="grid text-sm"><span className="text-muted-foreground">Institution:</span> {form.watch("institutionName") || "—"}</li>
+            <li className="grid text-sm"><span className="text-muted-foreground">Address:</span> {form.watch("institutionAddress") || "—"}</li>
+            <li className="grid text-sm"><span className="text-muted-foreground">Deadline:</span> {form.watch("deadline") ? format(form.watch("deadline"), "PPP") : "—"}</li>
+            <li className="grid text-sm"><span className="text-muted-foreground">Purpose:</span> {form.watch("purpose") || "—"}</li>
+            <li className="grid text-sm"><span className="text-muted-foreground">Recommender ID:</span> {form.watch("recommenderId") || "—"}</li>
+            <li className="grid text-sm"><span className="text-muted-foreground">Additional Info:</span> {form.watch("additionalInfo") || "—"}</li>
+            <li className="grid text-sm"><span className="text-muted-foreground">Sample Letter File:</span> {form.watch("sampleLetter") || "—"}</li>
+          </ul>
+          <Button type="submit" className="mt-4">Submit request</Button>
+        </div>
+      </form>
+    </Form>
   )
 }
