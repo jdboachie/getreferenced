@@ -10,6 +10,7 @@ import { SpinnerIcon } from '@/components/icons';
 import { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from "convex/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { profileCardStyles } from '../page';
 
 
 export default function Page() {
@@ -89,8 +90,8 @@ function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, cert
   }
 
   return (
-    <div id='cv' className="border bg-primary-foreground dark:bg-background rounded-lg">
-      <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+    <div id='cv' className={profileCardStyles.card}>
+      <div className={profileCardStyles.cardContent}>
         <h3 className="font-medium text-lg">Certificate</h3>
         <p className="text-sm">Your most recent graduation certificate.</p>
         <Tabs defaultValue="details">
@@ -98,13 +99,13 @@ function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, cert
             <TabsTrigger value="details">Details</TabsTrigger>
             <TabsTrigger disabled={isMobile} value="preview">Preview</TabsTrigger>
           </TabsList>
-          <div className="h-fit rounded-md bg-ground">
+          <div className="h-fit rounded-md bg-ground dark:bg-background">
             <TabsContent value="preview" className="grid">
               <div className='grid h-[400px] relative'>
                 {cvFileUrl ?
                   <iframe src={cvFileUrl} className='rounded-md w-full h-full border' />
                   :
-                  <p className='p-4 grid place-items-center text-muted-foreground'>no preview available</p>
+                  <p className='p-4 grid place-items-center text-muted-foreground'>No preview available</p>
                 }
               </div>
             </TabsContent>
@@ -140,7 +141,7 @@ function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, cert
           </div>
         </Tabs>
       </div>
-      <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+      <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">
           Last updated {fileMetadata?._creationTime ? <>{new Date(fileMetadata?._creationTime).toDateString()}</>:'never'}
         </p>
@@ -206,8 +207,8 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
   }
 
   return (
-    <div id='cv' className="border bg-primary-foreground dark:bg-background rounded-lg">
-      <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+    <div id='cv' className={profileCardStyles.card}>
+      <div className={profileCardStyles.cardContent}>
         <h3 className="font-medium text-lg">Curriculum Vitae</h3>
         <p className="text-sm">Your CV gives recommenders a sense of your academic and professional background, and helps them write a more personalized letter.</p>
         <Tabs defaultValue="details">
@@ -215,13 +216,13 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
             <TabsTrigger value="details">Details</TabsTrigger>
             <TabsTrigger disabled={isMobile} value="preview">Preview</TabsTrigger>
           </TabsList>
-          <div className="h-fit rounded-md bg-ground">
+          <div className="h-fit rounded-md bg-ground dark:bg-background">
             <TabsContent value="preview" className="grid">
               <div className='grid h-[400px] relative'>
                 {cvFileUrl ?
                   <iframe src={cvFileUrl} className='rounded-md w-full h-full border' />
                   :
-                  <p className='p-4 grid place-items-center text-muted-foreground'>no preview available</p>
+                  <p className='p-4 grid place-items-center text-muted-foreground'>No preview available</p>
                 }
               </div>
             </TabsContent>
@@ -257,7 +258,7 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
           </div>
         </Tabs>
       </div>
-      <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+      <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">
           Last updated {fileMetadata?._creationTime ? <>{new Date(fileMetadata?._creationTime).toDateString()}</>:'never'}
         </p>
@@ -289,7 +290,6 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
     </div>
   );
 }
-
 
 function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, transcriptFileId?: Id<"_storage"> }) {
   const isMobile = useIsMobile()
@@ -323,8 +323,8 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
   }
 
   return (
-    <div id='transcript' className="border bg-primary-foreground dark:bg-background rounded-lg">
-      <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+    <div id='transcript' className={profileCardStyles.card}>
+      <div className={profileCardStyles.cardContent}>
         <h3 className="font-medium text-lg">Transcript</h3>
         <p className="text-sm">Your academic transcript gives recommenders insight into your academic history and achievements.</p>
         <Tabs defaultValue="details">
@@ -332,13 +332,13 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
             <TabsTrigger value="details">Details</TabsTrigger>
             <TabsTrigger disabled={isMobile} value="preview">Preview</TabsTrigger>
           </TabsList>
-          <div className="h-fit rounded-md bg-ground">
+          <div className="h-fit rounded-md bg-ground dark:bg-background">
             <TabsContent value="preview" className="grid">
               <div className='grid h-[400px] relative'>
                 {transcriptFileUrl ?
                   <iframe src={transcriptFileUrl} className='rounded-md w-full h-full border' />
                   :
-                  <p className='p-4 grid place-items-center text-muted-foreground'>no preview available</p>
+                  <p className='p-4 grid place-items-center text-muted-foreground'>No preview available</p>
                 }
               </div>
             </TabsContent>
@@ -374,7 +374,7 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
           </div>
         </Tabs>
       </div>
-      <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+      <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">
           Last updated {fileMetadata?._creationTime ? <>{new Date(fileMetadata?._creationTime).toDateString()}</>:'never'}
         </p>

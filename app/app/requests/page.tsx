@@ -36,7 +36,7 @@ function AllRequestsView() {
   const isLoading = requests === undefined;
 
   return (
-    <section className="space-y-6 mt-6">
+    <section className="space-y-6">
       <div className="flex justify-between">
         <div className='max-w-sm w-full relative bg-background rounded-md'>
           <Input className='w-full px-10' placeholder='Search requests...' />

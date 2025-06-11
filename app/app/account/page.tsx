@@ -12,6 +12,13 @@ import { useRole } from '@/hooks/use-role';
 import UserAvatarCard from "./components/user-avatar-card";
 
 
+export const profileCardStyles = {
+  card: 'border bg-primary-foreground dark:bg-background rounded-lg p-1',
+  cardContent: 'bg-background dark:bg-primary-foreground rounded-md shadow-xs border p-4 gap-4 flex flex-col',
+  cardFooter: 'md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg p-3'
+}
+
+
 export default function Page() {
   const { role } = useRole();
 
@@ -48,9 +55,9 @@ export default function Page() {
               }
             );
           }}
-          className="border bg-primary-foreground dark:bg-background rounded-lg"
+          className={profileCardStyles.card}
         >
-          <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+          <div className={profileCardStyles.cardContent}>
             <h3 className="font-medium text-lg">Full Name</h3>
             <p className="text-sm">This will be the name on your requests</p>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -80,7 +87,7 @@ export default function Page() {
               </label>
             </div>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+          <div className={profileCardStyles.cardFooter}>
             <p className="text-sm text-muted-foreground">
               Name should be as it appears on official documents.
             </p>
@@ -94,9 +101,9 @@ export default function Page() {
             e.preventDefault();
             alert("Email change submitted");
           }}
-          className="border bg-primary-foreground dark:bg-background rounded-lg"
+          className={profileCardStyles.card}
         >
-          <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+          <div className={profileCardStyles.cardContent}>
             <h3 className="font-medium text-lg">Email</h3>
             <p className="text-sm">
               This is the email address you will use to sign in to Recommendme.
@@ -117,7 +124,7 @@ export default function Page() {
               </Badge>
             </label>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+          <div className={profileCardStyles.cardFooter}>
             <p className="text-sm text-muted-foreground">
               Email must be verified to be able to receive notifications.
             </p>
@@ -142,9 +149,9 @@ export default function Page() {
               }
             );
           }}
-          className="border bg-primary-foreground dark:bg-background rounded-lg"
+          className={profileCardStyles.card}
         >
-          <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+          <div className={profileCardStyles.cardContent}>
             <h3 className="font-medium text-lg">Phone Number</h3>
             <p className="text-sm">Your Whatsapp number is preferred.</p>
               <label htmlFor="phone" className="relative w-full sm:max-w-sm">
@@ -163,7 +170,7 @@ export default function Page() {
                 </Badge>
               </label>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+          <div className={profileCardStyles.cardFooter}>
             <p className="text-sm text-muted-foreground">
               {user.phoneVerificationTime ??
                 "Phone number must be verified to allow recommenders to contact you."}
@@ -194,9 +201,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Program of study</h3>
               {/* <p className="text-sm">Very much needed.</p> */}
               <label htmlFor="phone" className="relative w-full sm:max-w-sm">
@@ -214,7 +221,7 @@ export default function Page() {
                 </Badge> */}
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 Program should be as is on your certificate.
               </p>
@@ -222,8 +229,7 @@ export default function Page() {
             </div>
           </form>
 
-
-        {/* Year of completion */}
+          {/* Year of completion */}
           <form
             id="yearOfCompletion"
             onSubmit={async (e) => {
@@ -243,9 +249,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Year of completion</h3>
               {/* <p className="text-sm">Very much needed.</p> */}
               <label htmlFor="phone" className="relative w-full sm:max-w-sm">
@@ -255,15 +261,9 @@ export default function Page() {
                   placeholder="2025"
                   className="w-full shadow-none"
                 />
-                {/* <Badge
-                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
-                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
-                >
-                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
-                </Badge> */}
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 TODO: Make this into a datepicker component
               </p>
@@ -271,7 +271,7 @@ export default function Page() {
             </div>
           </form>
 
-        {/* Index number */}
+          {/* Index number */}
           <form
             id="indexNumber"
             onSubmit={async (e) => {
@@ -291,9 +291,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Index Number</h3>
               {/* <p className="text-sm">Very much needed.</p> */}
               <label htmlFor="phone" className="relative w-full sm:max-w-sm">
@@ -311,7 +311,7 @@ export default function Page() {
                 </Badge> */}
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 What you used for exams
               </p>
@@ -319,7 +319,7 @@ export default function Page() {
             </div>
           </form>
 
-        {/* Student number */}
+          {/* Student number -- */}
           <form
             id="studentNumber"
             onSubmit={async (e) => {
@@ -339,9 +339,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Student Number</h3>
               {/* <p className="text-sm">Very much needed.</p> */}
               <label htmlFor="phone" className="relative w-full sm:max-w-sm">
@@ -359,7 +359,7 @@ export default function Page() {
                 </Badge> */}
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 8-digit number given when you applied to KNUST
               </p>
@@ -536,48 +536,6 @@ export default function Page() {
             </div>
           </form>
 
-          {/* Phone Number (Recommender specific)
-          <form
-            id="phoneNumber"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              toast.promise(
-                updateProfile({
-                  role: role,
-                  userId: profile.userId,
-                  phoneNumber: formData.get('phoneNumber')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Phone number updated!',
-                  error: 'Problem updating phone number',
-                }
-              );
-            }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
-          >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
-              <h3 className="font-medium text-lg">Office Phone Number</h3>
-              <p className="text-sm">Your office extension or direct line number.</p>
-              <label className="relative w-full sm:max-w-sm">
-                <Input
-                  type="tel"
-                  name="phoneNumber"
-                  defaultValue={("phoneNumber" in profile ? profile.phoneNumber : '')}
-                  placeholder="+233 32 206 0001"
-                  className="w-full shadow-none"
-                />
-              </label>
-            </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
-              <p className="text-sm text-muted-foreground">
-                Official office phone number for professional contact.
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form> */}
-
           {/* Current Rank */}
           <form
             id="currentRank"
@@ -627,16 +585,16 @@ export default function Page() {
             e.preventDefault();
             console.log("Delete account triggered");
           }}
-          className="border bg-primary-foreground dark:bg-background rounded-lg"
+          className={`${profileCardStyles.card} border bg-destructive text-destructive-foreground`}
         >
-          <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+          <div className={profileCardStyles.cardContent}>
             <h3 className="font-medium text-lg">Delete Account</h3>
             <p className="text-sm">
               Permanently remove your account and all its contents from the Recommendme
               platform. This action is not reversible, so please continue with caution.
             </p>
           </div>
-          <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+          <div className={profileCardStyles.cardFooter}>
             <p className="text-sm text-muted-foreground">
               Disabled while I work on other things
             </p>
