@@ -49,7 +49,7 @@ export default function UserButton() {
     <Drawer>
       <DrawerTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-none place-items-center grid ">
-          <span className="w-full rounded-full text-lg font-medium">=</span>
+          <span className="w-full rounded-full text-xl font-medium">=</span>
           <span className="sr-only">Open user menu</span>
         </Button>
       </DrawerTrigger>
