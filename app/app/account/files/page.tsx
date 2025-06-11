@@ -10,7 +10,7 @@ import { SpinnerIcon } from '@/components/icons';
 import { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from "convex/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { profileCardStyles } from '../page';
+import { profileCardStyles } from '../components/styles';
 
 
 export default function Page() {
