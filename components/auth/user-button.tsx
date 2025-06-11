@@ -48,18 +48,8 @@ export default function UserButton() {
     isMobile ?
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline" size={"icon"} className="rounded-full shadow-2xs">
-          {imageUrl ?
-            <Avatar>
-              <AvatarImage alt="avatar" src={imageUrl} />
-              <AvatarFallback><User2Icon /></AvatarFallback>
-            </Avatar>
-            :
-            <Avatar
-            >
-              <AvatarFallback><User2Icon /></AvatarFallback>
-            </Avatar>
-          }
+        <Button variant="outline" size={"icon"} className="rounded-full shadow-none place-items-center grid ">
+          <span className="w-full rounded-full text-lg font-medium">=</span>
           <span className="sr-only">Open user menu</span>
         </Button>
       </DrawerTrigger>
