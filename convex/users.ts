@@ -3,34 +3,16 @@ import { api } from "./_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { query, mutation } from "./_generated/server";
 
-// export const getUserProfile = query({
-//   handler: async (ctx) => {
-//     const userId = await getAuthUserId(ctx);
-//     if (!userId) return null;
-
-//     const user = await ctx.db.get(userId);
-//     if (!user?.role) return null;
-
-//     if (user.role === "requester") {
-//       const requester = await ctx.db
-//         .query("requesters")
-//         .withIndex("userId", (q) => q.eq("userId", userId))
-//         .unique();
-
-//       return requester
-//     } else if (user.role === "recommender") {
-//       const recommender = await ctx.db
-//         .query("recommenders")
-//         .withIndex("userId", (q) => q.eq("userId", userId))
-//         .unique();
-
-//       return recommender
-//     }
-
-//     return null;
-
-//   },
-// });
+export const getCurrentUser = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) {
+      return null;
+    }
+    return await ctx.db.get(userId);
+  },
+});
 
 export const getRequesterProfile = query({
   handler: async (ctx) => {
@@ -42,7 +24,7 @@ export const getRequesterProfile = query({
 
     const requester = await ctx.db
       .query("requesters")
-      .withIndex("userId", (q) => q.eq("userId", userId))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .unique();
 
     return requester;
@@ -54,7 +36,9 @@ export const getAllRecommenders = query({
     const userId = await getAuthUserId(ctx);
     if (!userId) return null;
 
-    const recommenders = await ctx.db.query("recommenders").collect()
+    const recommenders = await ctx.db.query("users")
+      .withIndex("by_role", (q) =>  q.eq("role", "recommender"))
+      .collect()
 
     return recommenders;
   },
@@ -70,7 +54,7 @@ export const getRecommenderProfile = query({
 
     const recommender = await ctx.db
       .query("recommenders")
-      .withIndex("userId", (q) => q.eq("userId", userId))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .unique();
 
     return recommender;
@@ -88,11 +72,16 @@ export const updateUserProfile = mutation({
     studentNumber: v.optional(v.string()),
     programOfStudy: v.optional(v.string()),
     yearOfCompletion: v.optional(v.string()),
+    staffNumber: v.optional(v.string()),
+    secondaryEmail: v.optional(v.string()),
+    department: v.optional(v.string()),
+    yearOfEmployment: v.optional(v.string()),
+    currentRank: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const profile = await ctx.db
       .query(args.role === "requester" ? "requesters" : "recommenders")
-      .withIndex("userId", (q) => q.eq("userId", args.userId))
+      .withIndex("by_userId", (q) => q.eq("userId", args.userId))
       .unique();
 
     if (!profile) throw new Error("Profile not found");

@@ -12,7 +12,7 @@ const RoleContext = createContext<{ role: 'requester' | 'recommender' | null; lo
 export const useRole = () => useContext(RoleContext);
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
-  const user = useQuery(api.auth.getCurrentUser);
+  const user = useQuery(api.users.getCurrentUser);
   const role = user?.role ?? null;
   const loading = user === undefined;
 

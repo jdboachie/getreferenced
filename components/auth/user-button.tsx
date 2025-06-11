@@ -38,7 +38,7 @@ export default function UserButton() {
   const router = useRouter();
   const { signOut } = useAuthActions();
 
-  const user = useQuery(api.auth.getCurrentUser);
+  const user = useQuery(api.users.getCurrentUser);
   const imageUrl = useQuery(api.storage.getFileUrl, { storageId: user?.image})
 
 
@@ -64,14 +64,24 @@ export default function UserButton() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader>
+        <DrawerHeader className="sr-only">
           <DrawerTitle>Are you absolutely sure?</DrawerTitle>
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
+        <div className="p-2 grid gap-2">
+          <p className="px-2">{user.firstName}{" "}{user.lastName}</p>
+          <p className="px-2 mb-2 text-muted-foreground">{user.email}</p>
+          <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Account</Button>
+          <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Billing</Button>
+          <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Settings</Button>
+           <div className="flex items-center justify-between px-2 py-1 text-base">
+            Theme<ThemeToggle />
+          </div>
+        </div>
         <DrawerFooter>
-          <Button>Submit</Button>
+          <Button>Upgrade to Pro</Button>
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">Close</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
@@ -106,14 +116,6 @@ export default function UserButton() {
           <DropdownMenuItem>
             Billing
             {/* <DropdownMenuShortcut>⌘B</DropdownMenuShortcut> */}
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Settings
-            {/* <DropdownMenuShortcut>⌘S</DropdownMenuShortcut> */}
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Keyboard shortcuts
-            {/* <DropdownMenuShortcut>⌘K</DropdownMenuShortcut> */}
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

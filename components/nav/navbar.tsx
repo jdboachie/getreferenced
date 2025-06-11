@@ -15,10 +15,10 @@ const navLinks = [
     title: "Requests",
     url: "/app/requests",
   },
-  {
-    title: "Meetings",
-    url: "/app/meetings",
-  },
+  // {
+  //   title: "Meetings",
+  //   url: "/app/meetings",
+  // },
   {
     title: "Billing",
     url: "/app/billing",

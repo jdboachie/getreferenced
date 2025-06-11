@@ -23,7 +23,7 @@ const Breadcrumbs = () => {
   const segments = pathname.split('/').filter(Boolean);
 
   return (
-    <Breadcrumb className="mb-14 mt-4">
+    <Breadcrumb className="pb-10 pt-8">
       {segments.length === 1 ?
         <BreadcrumbList>
           <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">Overview</BreadcrumbPage>

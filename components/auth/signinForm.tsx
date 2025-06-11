@@ -145,7 +145,7 @@ export default function SignInForm() {
         </Button>
       </form>
       {error && (
-        <div className="mt-4 text-sm text-destructive animate-fade-in">{error.message}</div>
+        <div className="mt-4 text-sm text-destructive">{error.message}</div>
       )}
     </Form>
   );

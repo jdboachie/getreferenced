@@ -1,28 +1,26 @@
 'use client';
 
-import { toast } from "sonner";
-import Image from "next/image";
 import * as React from 'react';
+import { toast } from "sonner";
 import Loading from "./loading";
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "convex/react";
-import { User2Icon } from "lucide-react";
-import { Id } from "@/convex/_generated/dataModel";
-import { SpinnerIcon } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { useRole } from '@/hooks/use-role';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import UserAvatarCard from "./components/user-avatar-card";
 
 
 export default function Page() {
-  const user = useQuery(api.auth.getCurrentUser)
   const { role } = useRole();
-  const endPoint = role === "recommender" ? api.users.getRecommenderProfile : api.users.getRequesterProfile
-  const profile = useQuery(endPoint) ;
+
+  const user = useQuery(api.users.getCurrentUser)
   const updateUser = useMutation(api.users.updateUser)
   const updateProfile = useMutation(api.users.updateUserProfile)
+
+  const endPoint = role === "recommender" ? api.users.getRecommenderProfile : api.users.getRequesterProfile
+  const profile = useQuery(endPoint) ;
 
   if (profile && user) {
     return (
@@ -373,7 +371,253 @@ export default function Page() {
 
         {role === 'recommender' &&
           <>
-          Recommender-specific settings
+          {/* Staff Number */}
+          <form
+            id="staffNumber"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  staffNumber: formData.get('staffNumber')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Staff number updated!',
+                  error: 'Problem updating staff number',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Staff Number</h3>
+              <p className="text-sm">Your official university staff identification number.</p>
+              <label className="relative w-full sm:max-w-sm">
+                <Input
+                  name="staffNumber"
+                  defaultValue={("staffNumber" in profile ? profile.staffNumber : '')}
+                  placeholder="ST12345"
+                  className="w-full shadow-none"
+                />
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                Staff number as provided by HR department.
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+
+          {/* Secondary Email */}
+          <form
+            id="secondaryEmail"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  secondaryEmail: formData.get('secondaryEmail')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Secondary email updated!',
+                  error: 'Problem updating secondary email',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Secondary Email</h3>
+              <p className="text-sm">Alternative email address for backup communication.</p>
+              <label className="relative w-full sm:max-w-sm">
+                <Input
+                  type="email"
+                  name="secondaryEmail"
+                  defaultValue={("secondaryEmail" in profile ? profile.secondaryEmail : '')}
+                  placeholder="john.doe@gmail.com"
+                  className="w-full shadow-none"
+                />
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                Optional alternative email for notifications.
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+
+          {/* Department */}
+          <form
+            id="department"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  department: formData.get('department')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Department updated!',
+                  error: 'Problem updating department',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Department</h3>
+              <p className="text-sm">The department or faculty you belong to.</p>
+              <label className="relative w-full sm:max-w-sm">
+                <Input
+                  name="department"
+                  defaultValue={("department" in profile ? profile.department : '')}
+                  placeholder="Computer Science Department"
+                  className="w-full shadow-none"
+                />
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                Your academic department or administrative unit.
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+
+          {/* Year of Employment */}
+          <form
+            id="yearOfEmployment"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  yearOfEmployment: formData.get('yearOfEmployment')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Year of employment updated!',
+                  error: 'Problem updating year of employment',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Year of Employment</h3>
+              <p className="text-sm">The year you started working at the institution.</p>
+              <label className="relative w-full sm:max-w-sm">
+                <Input
+                  name="yearOfEmployment"
+                  defaultValue={("yearOfEmployment" in profile ? profile.yearOfEmployment : '')}
+                  placeholder="2018"
+                  className="w-full shadow-none"
+                />
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                Year you began your employment at the university.
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
+
+          {/* Phone Number (Recommender specific)
+          <form
+            id="phoneNumber"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  phoneNumber: formData.get('phoneNumber')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Phone number updated!',
+                  error: 'Problem updating phone number',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Office Phone Number</h3>
+              <p className="text-sm">Your office extension or direct line number.</p>
+              <label className="relative w-full sm:max-w-sm">
+                <Input
+                  type="tel"
+                  name="phoneNumber"
+                  defaultValue={("phoneNumber" in profile ? profile.phoneNumber : '')}
+                  placeholder="+233 32 206 0001"
+                  className="w-full shadow-none"
+                />
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                Official office phone number for professional contact.
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form> */}
+
+          {/* Current Rank */}
+          <form
+            id="currentRank"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              toast.promise(
+                updateProfile({
+                  role: role,
+                  userId: profile.userId,
+                  currentRank: formData.get('currentRank')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Current rank updated!',
+                  error: 'Problem updating current rank',
+                }
+              );
+            }}
+            className="border bg-primary-foreground dark:bg-background rounded-lg"
+          >
+            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+              <h3 className="font-medium text-lg">Current Rank</h3>
+              <p className="text-sm">Your current academic or professional rank.</p>
+              <label className="relative w-full sm:max-w-sm">
+                <Input
+                  name="currentRank"
+                  defaultValue={("currentRank" in profile ? profile.currentRank : '')}
+                  placeholder="Senior Lecturer"
+                  className="w-full shadow-none"
+                />
+              </label>
+            </div>
+            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+              <p className="text-sm text-muted-foreground">
+                Your current position (e.g., Lecturer, Senior Lecturer, Professor).
+              </p>
+              <Button size={'sm'} type="submit">Save</Button>
+            </div>
+          </form>
           </>
         }
 
@@ -408,103 +652,3 @@ export default function Page() {
   }
 }
 
-
-function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, userId: Id<"users">}) {
-
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
-
-  const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
-  const uploadImage = useMutation(api.storage.uploadUserImage);
-
-  const imageInput = React.useRef<HTMLInputElement>(null);
-  const cancelButton = React.useRef<HTMLButtonElement>(null);
-  const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
-
-  const imageUrl = useQuery(api.storage.getFileUrl, { storageId: userImageUrl})
-
-  async function handleUpdateUserImage(event: React.FormEvent) {
-    setLoading(true);
-    event.preventDefault();
-
-    // Step 1: Get a short-lived upload URL
-    const postUrl = await generateUploadUrl();
-    // Step 2: POST the file to the URL
-    const result = await fetch(postUrl, {
-      method: "POST",
-      headers: { "Content-Type": selectedImage!.type },
-      body: selectedImage,
-    });
-    const { storageId } = await result.json();
-    // Step 3: Save the newly allocated storage id to the database
-    await uploadImage({ storageId: storageId, userId: userId, prevStorageId: userImageUrl });
-
-    setPreviewUrl(null);
-    URL.revokeObjectURL(previewUrl!);
-    setSelectedImage(null);
-    imageInput.current!.value = "";
-    setLoading(false)
-  }
-
-  return (
-    <form
-      onSubmit={(e) => {handleUpdateUserImage(e)}}
-      className="border bg-primary-foreground dark:bg-background rounded-lg"
-    >
-      <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
-        <h3 className="font-medium text-lg">Display Picture</h3>
-        <p className="text-sm">Click on the avatar to upload a new one. Be sure to use a professional photo with a clear view of your face.</p>
-        <input
-          type="file"
-          accept="image/*"
-          ref={imageInput}
-          onChange={(event) => {
-            const file = event.target.files?.[0] || null;
-            setSelectedImage(file);
-            setPreviewUrl(file ? URL.createObjectURL(file) : null);
-          }}
-          // disabled={selectedImage !== null}
-          className="hidden"
-        />
-        <button ref={cancelButton} type="reset" className="hidden"></button>
-        {previewUrl ?
-          <Image
-            src={previewUrl}
-            alt="Preview"
-            width={100}
-            height={100}
-            onClick={() => imageInput.current?.click()}
-            className="size-24 border rounded-full"
-          />
-          :
-          <>
-            {imageUrl  ?
-              <Avatar
-                onClick={() => imageInput.current?.click()}
-                className="size-24 border hover:bg-muted/50"
-              >
-                <AvatarImage alt="avatar" src={previewUrl || imageUrl || undefined} />
-                <AvatarFallback><User2Icon /></AvatarFallback>
-              </Avatar>
-              :
-              <Avatar
-                onClick={() => imageInput.current?.click()}
-                className="size-24 border hover:bg-muted/50"
-              >
-                <AvatarFallback><User2Icon /></AvatarFallback>
-              </Avatar>
-            }
-          </>
-        }
-      </div>
-      <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
-        <p className="text-sm text-muted-foreground">
-          A display picture is optional but strongly recommended.
-        </p>
-        <Button type="submit" value="Send Image" size="sm" disabled={selectedImage === null}>
-          {loading ? <div className="flex gap-2"><SpinnerIcon />Uploading</div> : 'Save'}
-        </Button>
-      </div>
-    </form>
-  )
-}

@@ -13,7 +13,7 @@ export default function ThemeToggle() {
   }, [])
 
   if (!mounted) return (
-    <div className="flex gap-0 border rounded-full">
+    <div className="flex gap-0 border bg-ground rounded-full">
       <Button
         variant={"ghost"}
         size="icon"
@@ -50,7 +50,7 @@ export default function ThemeToggle() {
   )
 
   return (
-    <div className="flex gap-0 outline outline-border bg-background rounded-full">
+    <div className="flex gap-0 outline outline-border bg-ground rounded-full">
       <Button
         variant={theme === "system" ? "outline" : "ghost"}
         size="icon"

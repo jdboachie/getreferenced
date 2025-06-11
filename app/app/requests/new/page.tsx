@@ -2,11 +2,12 @@
 
 import { z } from "zod";
 import { toast } from "sonner";
-import { format } from "date-fns";
+import Image from 'next/image';
 import { cn } from "@/lib/utils";
-import { useQuery } from "convex/react";
+import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { api } from "@/convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
 
 import {
   Form,
@@ -35,6 +36,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Id } from "@/convex/_generated/dataModel";
+import { useRouter } from "next/navigation";
 
 
 const FormSchema = z.object({
@@ -48,6 +51,11 @@ const FormSchema = z.object({
 })
 
 export default function RequestForm() {
+
+  const router = useRouter()
+
+  const createRequest = useMutation(api.requests.createRequest)
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -55,20 +63,32 @@ export default function RequestForm() {
       institutionAddress: "",
       institutionName: "",
       recommenderId: "",
+      sampleLetter: ""
     },
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast("Submitted values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const newRequestId = await createRequest({
+      recommenderId: data.recommenderId as Id<"users">,
+      institutionName: data.institutionName,
+      institutionAddress: data.institutionAddress,
+      deadline: data.deadline,
+      purpose: data.purpose,
+      additionalInfo: data.additionalInfo,
+      // sampleLetter: data.sampleLetter,
+    });
+
+    toast.success("Request submitted");
+    router.push(`/app/requests?id=${newRequestId}`)
   }
 
+
   const availableRecommenders = useQuery(api.users.getAllRecommenders)
+
+  const recommenderId = form.watch("recommenderId");
+  const recommender = availableRecommenders?.find(r => r._id === recommenderId);
+  const recommenderName = recommender ? `${recommender.firstName ?? ""} ${recommender.lastName ?? ""}`.trim() || "—" : "—";
+
 
   return (
     <Form {...form}>
@@ -112,7 +132,7 @@ export default function RequestForm() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full pl-3 text-left font-normal",
+                          "w-full h-10 pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -196,11 +216,14 @@ export default function RequestForm() {
                   <SelectContent>
                     {(availableRecommenders?.length ?? 0) > 0 ?
                     <>
-                      {availableRecommenders?.map((rec) => (
+                      {availableRecommenders?.map((rec) => {
+
+                        return (
                         <SelectItem key={rec._id} value={rec._id}>
-                          {rec.staffNumber ?? rec.primaryEmail ?? "Unnamed"}
+                          <RecommenderImage id={rec.image} />
+                          {rec.firstName ? rec.firstName + ' ' + rec.lastName : "Unnamed"}
                         </SelectItem>
-                      ))}
+                      )})}
                     </>
                     :
                     <p className="text-muted-foreground p-4 text-sm">No recommenders available</p>
@@ -226,19 +249,37 @@ export default function RequestForm() {
           />
         </div>
         <div className="w-full lg:w-[450px] h-fit flex flex-col gap-4 lg:sticky lg:top-38 bg-background p-4 rounded-lg border shadow-xs">
-          <h3 className="font-medium text-lg">Summary</h3>
-          <ul className="space-y-3">
-            <li className="grid text-sm"><span className="text-muted-foreground">Institution:</span> {form.watch("institutionName") || "—"}</li>
-            <li className="grid text-sm"><span className="text-muted-foreground">Address:</span> {form.watch("institutionAddress") || "—"}</li>
-            <li className="grid text-sm"><span className="text-muted-foreground">Deadline:</span> {form.watch("deadline") ? format(form.watch("deadline"), "PPP") : "—"}</li>
-            <li className="grid text-sm"><span className="text-muted-foreground">Purpose:</span> {form.watch("purpose") || "—"}</li>
-            <li className="grid text-sm"><span className="text-muted-foreground">Recommender ID:</span> {form.watch("recommenderId") || "—"}</li>
-            <li className="grid text-sm"><span className="text-muted-foreground">Additional Info:</span> {form.watch("additionalInfo") || "—"}</li>
-            <li className="grid text-sm"><span className="text-muted-foreground">Sample Letter File:</span> {form.watch("sampleLetter") || "—"}</li>
-          </ul>
+          <h3 className="font-medium text-base">Summary</h3>
+          <p className="">
+            You are applying to <strong>{form.watch("institutionName") || "—"}</strong>, located at <strong>{form.watch("institutionAddress") || "—"}</strong>.
+            The recommendation letter is due by <strong>{form.watch("deadline") ? format(form.watch("deadline"), "PPP") : "—"}</strong>.
+            The purpose of this application is <strong>{form.watch("purpose") || "—"}</strong>.
+            Your recommender is <strong>{recommenderName}</strong>.
+            Additional details: <strong>{form.watch("additionalInfo") || "—"}</strong>.
+            You’ve {form.watch("sampleLetter") ? "attached a sample letter" : "not attached any sample letter"}.
+          </p>
           <Button type="submit" className="mt-4">Submit request</Button>
         </div>
       </form>
     </Form>
+  )
+}
+
+const RecommenderImage = ({id} : {id: Id<"_storage"> | undefined}) => {
+  const imageUrl = useQuery(api.storage.getFileUrl, { storageId: id})
+  return (
+    <>
+      {imageUrl ?
+        <Image
+          alt="recommender image"
+          src={imageUrl}
+          className="size-5 rounded-full border"
+          width={500}
+          height={500}
+        />
+        :
+        <div className="size-5 bg-secondary border"></div>
+      }
+    </>
   )
 }

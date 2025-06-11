@@ -15,14 +15,12 @@ function Header() {
       <div className='flex justify-between items-center p-4'>
         <LeafyGreenIcon className="size-5 stroke-[1.5]" />
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-1 mr-2">
-            <Button variant={"ghost"} className="text-muted-foreground">
-              Feedback
-            </Button>
-            <Button variant={"ghost"} className="text-muted-foreground">
-              Help
-            </Button>
-          </div>
+          <Button variant={"outline"} className="text-muted-foreground">
+            Feedback
+          </Button>
+          <Button variant={"ghost"} className="text-muted-foreground">
+            Help
+          </Button>
           <Popover>
             <PopoverTrigger asChild>
               <Button variant={"outline"} size={"icon"} className="shadow-none rounded-full">

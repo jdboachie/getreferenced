@@ -14,8 +14,9 @@ const schema = defineSchema({
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
     role: v.union(v.literal("requester"), v.literal("recommender")),
-    profileCreatedTime: v.optional(v.number()),
-  }).index("email", ["email"]),
+  })
+    .index("by_email", ["email"])
+    .index("by_role", ["role"]),
 
   requesters: defineTable({
     userId: v.id("users"),
@@ -26,7 +27,7 @@ const schema = defineSchema({
     yearOfCompletion: v.optional(v.string()),
     programOfStudy: v.optional(v.string()),
     certificateFile: v.optional(v.id("_storage")),
-  }).index("userId", ["userId"]),
+  }).index("by_userId", ["userId"]),
 
   recommenders: defineTable({
     userId: v.id("users"),
@@ -37,7 +38,7 @@ const schema = defineSchema({
     yearOfEmployment: v.optional(v.string()),
     phoneNumber: v.optional(v.string()),
     currentRank: v.optional(v.string()),
-  }).index("userId", ["userId"]),
+  }).index("by_userId", ["userId"]),
 
   requests: defineTable({
     additionalInfo: v.optional(v.string()),
@@ -60,10 +61,12 @@ const schema = defineSchema({
         v.literal("drafted"),
       )
     ),
-    recommenderId: v.id("recommender"),
+    recommenderId: v.id("users"),
     sampleLetter: v.optional(v.id("_storage")),
     userId: v.id("users"),
-  }),
+  })
+    .index("by_recommenderId", ["recommenderId"])
+    .index("by_userId", ["userId"]),
 });
 
 export default schema;
