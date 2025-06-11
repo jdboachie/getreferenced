@@ -70,7 +70,7 @@ export default function UserButton() {
         </DrawerHeader>
         <div className="p-2 grid gap-2">
           <p className="px-2">{user.firstName}{" "}{user.lastName}</p>
-          <p className="px-2 mb-2 text-muted-foreground">{user.email}</p>
+          <p className="px-2 mb-2 text-muted-foreground text-sm">{user.email}</p>
           <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Account</Button>
           <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Billing</Button>
           <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Settings</Button>
@@ -79,9 +79,9 @@ export default function UserButton() {
           </div>
         </div>
         <DrawerFooter>
-          <Button>Upgrade to Pro</Button>
+          <Button size={'lg'}>Upgrade to Pro</Button>
           <DrawerClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button size={'lg'} variant="outline">Close</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
