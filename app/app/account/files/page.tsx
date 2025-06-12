@@ -142,7 +142,7 @@ function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, cert
         </Tabs>
       </div>
       <div className={profileCardStyles.cardFooter}>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           Last updated {fileMetadata?._creationTime ? <>{new Date(fileMetadata?._creationTime).toDateString()}</>:'never'}
         </p>
         <form>
@@ -259,7 +259,7 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
         </Tabs>
       </div>
       <div className={profileCardStyles.cardFooter}>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           Last updated {fileMetadata?._creationTime ? <>{new Date(fileMetadata?._creationTime).toDateString()}</>:'never'}
         </p>
         <form>
@@ -375,7 +375,7 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
         </Tabs>
       </div>
       <div className={profileCardStyles.cardFooter}>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           Last updated {fileMetadata?._creationTime ? <>{new Date(fileMetadata?._creationTime).toDateString()}</>:'never'}
         </p>
         <form>
