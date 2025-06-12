@@ -23,13 +23,12 @@ const Breadcrumbs = () => {
   const segments = pathname.split('/').filter(Boolean);
 
   return (
-    <Breadcrumb className="pb-10 pt-8">
+    <Breadcrumb className="py-10">
       {segments.length === 1 ?
         <BreadcrumbList>
           <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">Overview</BreadcrumbPage>
         </BreadcrumbList>
         :
-        // TODO: FIX THE SEMANTICS HERE
         <BreadcrumbList>
           {segments.slice(1).map((segment, index) => {
             const href = '/' + segments.slice(0, index + 2).join('/');
@@ -40,7 +39,7 @@ const Breadcrumbs = () => {
               <div key={href} className="flex items-center gap-2">
                 {!isFirst &&
                   <BreadcrumbSeparator className="[&>svg]:size-6">
-                    <SlashIcon className="stroke-[1.5]" />
+                    <SlashIcon />
                   </BreadcrumbSeparator>
                 }
                 <BreadcrumbItem>

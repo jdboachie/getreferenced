@@ -6,7 +6,9 @@ import {
 import Navbar from './navbar';
 import UserButton from "../auth/user-button";
 import { Button } from "@/components/ui/button";
-import { BellIcon, LeafyGreenIcon } from "lucide-react";
+import { LeafyGreenIcon } from "lucide-react";
+import { BellIcon } from "@heroicons/react/24/outline"
+import { BellIcon as BellIconSolid } from "@heroicons/react/24/solid"
 
 
 function Header() {
@@ -24,7 +26,8 @@ function Header() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant={"outline"} size={"icon"} className="shadow-none rounded-full">
-                <BellIcon />
+                <BellIcon className="dark:hidden" />
+                <BellIconSolid className="hidden dark:flex" />
                 <span className="sr-only">Notifications</span>
               </Button>
             </PopoverTrigger>

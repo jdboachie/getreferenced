@@ -29,6 +29,7 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User2Icon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Bars2Icon } from "@heroicons/react/24/outline"
 
 
 export default function UserButton() {
@@ -49,7 +50,7 @@ export default function UserButton() {
     <Drawer>
       <DrawerTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-none place-items-center grid ">
-          <span className="w-full rounded-full text-xl font-medium">=</span>
+          <Bars2Icon className="size-5" />
           <span className="sr-only">Open user menu</span>
         </Button>
       </DrawerTrigger>
@@ -58,9 +59,24 @@ export default function UserButton() {
           <DrawerTitle>Are you absolutely sure?</DrawerTitle>
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
-        <div className="p-2 grid gap-2">
-          <p className="px-2">{user.firstName}{" "}{user.lastName}</p>
-          <p className="px-2 mb-2 text-muted-foreground text-sm">{user.email}</p>
+        <div className="p-2 grid gap-2 mt-4">
+          <div className="flex gap-2 items-center mb-4">
+            {imageUrl ?
+              <Avatar className="size-12 border">
+                <AvatarImage alt="avatar" src={imageUrl} />
+                <AvatarFallback><User2Icon /></AvatarFallback>
+              </Avatar>
+              :
+              <Avatar
+              >
+                <AvatarFallback><User2Icon /></AvatarFallback>
+              </Avatar>
+            }
+            <div>
+              <p className="px-2">{user.firstName}{" "}{user.lastName}</p>
+              <p className="px-2 mb-2 text-muted-foreground text-sm">{user.email}</p>
+            </div>
+          </div>
           <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Account</Button>
           <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Billing</Button>
           <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Settings</Button>
@@ -69,7 +85,6 @@ export default function UserButton() {
           </div>
         </div>
         <DrawerFooter>
-          <Button size={'lg'}>Upgrade to Pro</Button>
           <DrawerClose asChild>
             <Button size={'lg'} variant="outline">Close</Button>
           </DrawerClose>
@@ -79,7 +94,7 @@ export default function UserButton() {
     :
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size={"icon"} className="rounded-full shadow-2xs">
+        <Button variant="outline" size={"icon"} className="rounded-full shadow-none">
           {imageUrl ?
             <Avatar>
               <AvatarImage alt="avatar" src={imageUrl} />

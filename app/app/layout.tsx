@@ -12,7 +12,7 @@ export default function Layout({
     <RoleProvider>
       <div>
         <Header />
-        <div className="p-4 sm:p-6 pb-8 max-w-6xl mx-auto min-h-[calc(100dvh-230px)]">
+        <div className="max-xl:p-6 pb-10 max-w-6xl mx-auto min-h-[calc(100dvh-230px)]">
           <Breadcrumbs />
           {children}
         </div>

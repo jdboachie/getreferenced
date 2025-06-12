@@ -4,6 +4,7 @@ import LocalFont from "next/font/local";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
@@ -52,6 +53,7 @@ export default function RootLayout({
         <body
           className={`${sans.variable} ${geistMono.variable} antialiased`}
         >
+          <SpeedInsights />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
