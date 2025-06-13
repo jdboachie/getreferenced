@@ -64,7 +64,7 @@ function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, cert
   const uploadCertificate = useMutation(api.users.updateUserProfile);
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
 
-  const cvFileUrl = useQuery(api.storage.getFileUrl, { storageId: certificateFileId})
+  const cvFileUrl = useQuery(api.storage.getFileUrl, { src: certificateFileId})
   const fileMetadata = useQuery(api.storage.getMetadata, { storageId: certificateFileId })
 
   const fileInput = React.useRef<HTMLInputElement>(null);
@@ -181,7 +181,7 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
   const uploadCV = useMutation(api.users.updateUserProfile);
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
 
-  const cvFileUrl = useQuery(api.storage.getFileUrl, { storageId: cvFileId})
+  const cvFileUrl = useQuery(api.storage.getFileUrl, { src: cvFileId })
   const fileMetadata = useQuery(api.storage.getMetadata, { storageId: cvFileId })
 
   const fileInput = React.useRef<HTMLInputElement>(null);
@@ -300,7 +300,7 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
   const uploadTranscript = useMutation(api.users.updateUserProfile);
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
   const fileMetadata = useQuery(api.storage.getMetadata, { storageId: transcriptFileId });
-  const transcriptFileUrl = useQuery(api.storage.getFileUrl, { storageId: transcriptFileId });
+  const transcriptFileUrl = useQuery(api.storage.getFileUrl, { src: transcriptFileId });
 
 
   async function handleUploadTranscript(file: File) {
