@@ -8,7 +8,11 @@ export const generateUploadUrl = mutation({
 });
 
 export const uploadUserImage = mutation({
-  args: { storageId: v.id("_storage"), userId: v.id("users"), prevStorageId: v.optional(v.id("_storage")) },
+  args: {
+    storageId: v.optional(v.union(v.id("_storage"), v.string())),
+    userId: v.id("users"),
+    prevStorageId: v.optional(v.union(v.id("_storage"), v.string())),
+  },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.userId, {
       image: args.storageId,
@@ -20,12 +24,13 @@ export const uploadUserImage = mutation({
 });
 
 export const getFileUrl = query({
-  args: { storageId: v.optional(v.id("_storage")) },
+  args: { src: v.optional(v.union(v.id("_storage"), v.string())), },
   handler: async (ctx, args) => {
-    if (!args.storageId) {
+    if (!args.src) {
       return null;
     }
-    return await ctx.storage.getUrl(args.storageId);
+    if (typeof args.src === 'string') return args.src;
+    return await ctx.storage.getUrl(args.src);
   },
 })
 

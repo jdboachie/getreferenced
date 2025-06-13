@@ -6,14 +6,15 @@ const schema = defineSchema({
   ...authTables,
 
   users: defineTable({
-    image: v.optional(v.id("_storage")),
+    image: v.optional(v.union(v.id("_storage"), v.string())),
     email: v.optional(v.string()),
     emailVerificationTime: v.optional(v.number()),
     phone: v.optional(v.string()),
     phoneVerificationTime: v.optional(v.number()),
+    name: v.optional(v.string()),
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
-    role: v.union(v.literal("requester"), v.literal("recommender")),
+    role: v.optional(v.union(v.literal("requester"), v.literal("recommender"))),
   })
     .index("email", ["email"])
     .index("by_role", ["role"]),

@@ -40,7 +40,7 @@ export default function UserButton() {
   const { signOut } = useAuthActions();
 
   const user = useQuery(api.users.getCurrentUser);
-  const imageUrl = useQuery(api.storage.getFileUrl, { storageId: user?.image})
+  const imageUrl = useQuery(api.storage.getFileUrl, { src: user?.image })
 
 
   if (!user) return <div className="size-9 rounded-full animate-pulse bg-accent border" />;

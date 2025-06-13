@@ -4,7 +4,6 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { query, mutation } from "./_generated/server";
 
 export const getCurrentUser = query({
-  args: {},
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
     if (userId === null) {
@@ -147,6 +146,7 @@ export const updateUser = mutation({
     lastName: v.optional(v.string()),
     phone: v.optional(v.string()),
     image: v.optional(v.string()),
+    role: v.optional(v.union(v.literal("requester"), v.literal("recommender"))),
     profileCreatedTime: v.optional(v.number()),
   },
   handler: async (ctx, args) => {

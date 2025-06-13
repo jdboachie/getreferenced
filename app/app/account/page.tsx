@@ -601,7 +601,20 @@ export default function Page() {
         </form>
       </div>
     );
-  } else {
+  } else if (profile === null) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold mb-4">Profile Not Found</h1>
+        <p className="text-lg text-muted-foreground mb-6">
+          It seems you don&apos;t have a profile yet. Please contact support if you believe this is an error.
+        </p>
+        {/* <Button onClick={() => window.location.href = '/app/account/create-profile'}>
+          Create Profile
+        </Button> */}
+      </div>
+    );
+  }
+  else {
     return <Loading />;
   }
 }

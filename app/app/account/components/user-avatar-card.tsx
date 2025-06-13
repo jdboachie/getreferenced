@@ -11,19 +11,19 @@ import { SpinnerIcon } from "@/components/icons";
 import { profileCardStyles } from "./styles";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, userId: Id<"users">}) {
+export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage"> | string, userId: Id<"users">}) {
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
 
-  const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
   const uploadImage = useMutation(api.storage.uploadUserImage);
+  const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
 
   const imageInput = React.useRef<HTMLInputElement>(null);
   const cancelButton = React.useRef<HTMLButtonElement>(null);
   const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
 
-  const imageUrl = useQuery(api.storage.getFileUrl, { storageId: userImageUrl})
+  const imageUrl = useQuery(api.storage.getFileUrl, { src: userImageUrl })
 
   async function handleUpdateUserImage(event: React.FormEvent) {
     setLoading(true);

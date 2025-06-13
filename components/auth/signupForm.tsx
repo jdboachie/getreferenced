@@ -205,6 +205,15 @@ export default function SignUpForm() {
             {!status && 'Submit'}
           </AnimatedState>
         </Button>
+        <Button
+          type="button"
+          variant={'outline'}
+          size={'lg'}
+          className="w-full"
+          onClick={() => void signIn("google", {redirectTo: `/auth/chooserole`})}
+        >
+          Sign up with Google
+        </Button>
       </form>
       {error && (
         <div className="mt-4 text-sm text-destructive animate-fade-in">{error}</div>

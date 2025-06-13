@@ -220,7 +220,7 @@ export default function RequestForm() {
 
                         return (
                         <SelectItem key={rec._id} value={rec._id}>
-                          <RecommenderImage id={rec.image} />
+                          <RecommenderImage src={rec.image} />
                           {rec.firstName ? rec.firstName + ' ' + rec.lastName : "Unnamed"}
                         </SelectItem>
                       )})}
@@ -265,8 +265,8 @@ export default function RequestForm() {
   )
 }
 
-const RecommenderImage = ({id} : {id: Id<"_storage"> | undefined}) => {
-  const imageUrl = useQuery(api.storage.getFileUrl, { storageId: id})
+const RecommenderImage = ({src} : {src: Id<"_storage"> | string | undefined}) => {
+  const imageUrl = useQuery(api.storage.getFileUrl, { src: src})
   return (
     <>
       {imageUrl ?
