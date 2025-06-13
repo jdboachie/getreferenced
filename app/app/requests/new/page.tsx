@@ -226,7 +226,7 @@ export default function RequestForm() {
                       )})}
                     </>
                     :
-                    <p className="text-muted-foreground p-4 text-sm">No recommenders available</p>
+                    <p className="text-muted-foreground p-4 text-xs">No recommenders available</p>
                     }
                   </SelectContent>
                 </Select>

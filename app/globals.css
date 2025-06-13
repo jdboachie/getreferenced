@@ -45,7 +45,7 @@
 }
 
 :root {
-  --radius: 0.65rem;
+  --radius: 0.75rem;
   --ground: oklch(0.985 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -120,7 +120,7 @@
     @apply border-border outline-ring/50 font-sans;
   }
   *::selection {
-    @apply bg-foreground text-background;
+    @apply bg-neutral-500/40;
   }
   body {
     font-synthesis: none;
@@ -132,9 +132,5 @@
   }
   .hidden-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
-  }
-
-  .header:stuck {
-    @apply shadow-2xl;
   }
 }

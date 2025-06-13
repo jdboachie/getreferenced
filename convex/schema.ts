@@ -15,7 +15,7 @@ const schema = defineSchema({
     lastName: v.optional(v.string()),
     role: v.union(v.literal("requester"), v.literal("recommender")),
   })
-    .index("by_email", ["email"])
+    .index("email", ["email"])
     .index("by_role", ["role"]),
 
   requesters: defineTable({

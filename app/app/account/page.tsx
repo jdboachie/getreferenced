@@ -20,7 +20,8 @@ export default function Page() {
   const updateUser = useMutation(api.users.updateUser)
   const updateProfile = useMutation(api.users.updateUserProfile)
 
-  const endPoint = role === "recommender" ? api.users.getRecommenderProfile : api.users.getRequesterProfile
+  const endPoint = role === "recommender" ?
+    api.users.getRecommenderProfile : api.users.getRequesterProfile
   const profile = useQuery(endPoint) ;
 
   if (profile && user) {
@@ -100,7 +101,7 @@ export default function Page() {
           <div className={profileCardStyles.cardContent}>
             <h3 className="font-medium text-lg">Email</h3>
             <p className="text-sm">
-              This is the email address you will use to sign in to Recommendme.
+              This is the email address you will use to sign in to GetReferenced.
             </p>
             <label htmlFor="email" className="relative w-full sm:max-w-sm">
               <Input
@@ -120,7 +121,7 @@ export default function Page() {
           </div>
           <div className={profileCardStyles.cardFooter}>
             <p className="text-sm text-muted-foreground">
-              Email must be verified to be able to receive notifications.
+              Email must be verified to receive notifications.
             </p>
             <Button size={'sm'} type="submit" disabled>Save</Button>
           </div>
@@ -150,6 +151,7 @@ export default function Page() {
             <p className="text-sm">Your Whatsapp number is preferred.</p>
               <label htmlFor="phone" className="relative w-full sm:max-w-sm">
                 <Input
+                  readOnly
                   type="tel"
                   name="phone"
                   defaultValue={user.phone}
@@ -384,9 +386,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Staff Number</h3>
               <p className="text-sm">Your official university staff identification number.</p>
               <label className="relative w-full sm:max-w-sm">
@@ -398,7 +400,7 @@ export default function Page() {
                 />
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 Staff number as provided by HR department.
               </p>
@@ -425,9 +427,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Secondary Email</h3>
               <p className="text-sm">Alternative email address for backup communication.</p>
               <label className="relative w-full sm:max-w-sm">
@@ -440,7 +442,7 @@ export default function Page() {
                 />
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 Optional alternative email for notifications.
               </p>
@@ -467,9 +469,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Department</h3>
               <p className="text-sm">The department or faculty you belong to.</p>
               <label className="relative w-full sm:max-w-sm">
@@ -481,7 +483,7 @@ export default function Page() {
                 />
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 Your academic department or administrative unit.
               </p>
@@ -508,9 +510,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Year of Employment</h3>
               <p className="text-sm">The year you started working at the institution.</p>
               <label className="relative w-full sm:max-w-sm">
@@ -522,7 +524,7 @@ export default function Page() {
                 />
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 Year you began your employment at the university.
               </p>
@@ -584,7 +586,7 @@ export default function Page() {
           <div className={profileCardStyles.cardContent}>
             <h3 className="font-medium text-lg">Delete Account</h3>
             <p className="text-sm">
-              Permanently remove your account and all its contents from the Recommendme
+              Permanently remove your account and all its contents from the GetReferenced
               platform. This action is not reversible, so please continue with caution.
             </p>
           </div>

@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "convex/react";
 import { User2Icon } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
 import { SpinnerIcon } from "@/components/icons";
+import { profileCardStyles } from "./styles";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage">, userId: Id<"users">}) {
@@ -50,11 +51,11 @@ export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id
   return (
     <form
       onSubmit={(e) => {handleUpdateUserImage(e)}}
-      className="border bg-primary-foreground dark:bg-background rounded-lg p-1"
+      className={profileCardStyles.card}
     >
-      <div className="bg-background dark:bg-primary-foreground rounded-md shadow-xs border p-4 gap-4 flex flex-col">
+      <div className={profileCardStyles.cardContent}>
         <h3 className="font-medium text-lg">Display Picture</h3>
-        <p className="text-sm">Click on the avatar to upload a new one. Be sure to use a professional photo with a clear view of your face.</p>
+        <p className="text-sm">Click on the avatar to upload a new one. Use a professional photo with a clear view of your face.</p>
         <input
           type="file"
           accept="image/*"
@@ -64,7 +65,6 @@ export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id
             setSelectedImage(file);
             setPreviewUrl(file ? URL.createObjectURL(file) : null);
           }}
-          // disabled={selectedImage !== null}
           className="hidden"
         />
         <button ref={cancelButton} type="reset" className="hidden"></button>
@@ -98,7 +98,7 @@ export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id
           </>
         }
       </div>
-      <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg p-3">
+      <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">
           A display picture is optional but strongly recommended.
         </p>

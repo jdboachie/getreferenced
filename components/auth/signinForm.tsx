@@ -1,16 +1,6 @@
 "use client";
 
 import { z } from "zod";
-import * as React from "react";
-import { useForm } from "react-hook-form";
-
-import { useRouter } from "next/navigation";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { ConvexError } from "convex/values";
-import { useAuthActions } from "@convex-dev/auth/react";
-
 import {
   Form,
   FormControl,
@@ -20,9 +10,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SpinnerIcon } from "@/components/icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { AnimatedState } from "@/components/motion/animated-state";
 
 
@@ -42,8 +37,7 @@ export default function SignInForm() {
   const { signIn } = useAuthActions();
 
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [error, setError] = React.useState<ConvexError<any> | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -78,6 +72,9 @@ export default function SignInForm() {
 
   return (
     <Form {...form}>
+      {error && (
+        <div className="mb-6 p-3 rounded-lg border-destructive bg-destructive/5 text-sm text-destructive">Invalid email or password</div>
+      )}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
         <FormField
           control={form.control}
@@ -144,9 +141,6 @@ export default function SignInForm() {
           </AnimatedState>
         </Button>
       </form>
-      {error && (
-        <div className="mt-4 text-sm text-destructive">{error.message}</div>
-      )}
     </Form>
   );
 }

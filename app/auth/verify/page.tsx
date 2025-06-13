@@ -93,7 +93,7 @@ export default function Page() {
                         <InputOTPSlot index={7} />
                       </InputOTPGroup>
                     </InputOTP>
-                    <Button type="submit">
+                    <Button type="submit" size={'lg'}>
                       {/* <ForwardIcon className="stroke-[2.5]" /> */}
                       Verify email
                     </Button>

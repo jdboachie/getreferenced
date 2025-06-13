@@ -83,6 +83,18 @@ export default function UserButton() {
            <div className="flex items-center justify-between px-2 py-1 text-base">
             Theme<ThemeToggle />
           </div>
+          <Button
+            variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2"
+            onClick={async () =>
+              await Promise.all([
+                router.push("/"),
+                signOut(),
+              ])
+            }
+          >
+            <span className="text-destructive">Log out</span>
+            <DropdownMenuShortcut><LogOut className="text-destructive" /></DropdownMenuShortcut>
+          </Button>
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
@@ -124,7 +136,7 @@ export default function UserButton() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <div className="flex items-center justify-between pl-2 py-1 text-sm">
+        <div className="flex items-center justify-between p-2 text-sm">
           Theme<ThemeToggle />
         </div>
         <DropdownMenuSeparator />

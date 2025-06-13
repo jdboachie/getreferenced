@@ -8,8 +8,6 @@ import UserButton from "../auth/user-button";
 import { Button } from "@/components/ui/button";
 import { LeafyGreenIcon } from "lucide-react";
 import { BellIcon } from "@heroicons/react/24/outline"
-import { BellIcon as BellIconSolid } from "@heroicons/react/24/solid"
-
 
 function Header() {
   return (
@@ -17,17 +15,17 @@ function Header() {
       <div className='flex justify-between items-center p-4'>
         <LeafyGreenIcon className="size-5 stroke-[1.5]" />
         <div className="flex items-center gap-2">
-          <Button variant={"outline"} className="text-muted-foreground">
+          <Button variant={"ghost"} className="text-muted-foreground">
             Feedback
           </Button>
-          <Button variant={"ghost"} className="text-muted-foreground">
+          {/* <Button variant={"ghost"} className="text-muted-foreground">
             Help
-          </Button>
+          </Button> */}
           <Popover>
             <PopoverTrigger asChild>
               <Button variant={"outline"} size={"icon"} className="shadow-none rounded-full">
-                <BellIcon className="dark:hidden" />
-                <BellIconSolid className="hidden dark:flex" />
+                <BellIcon className="size-5" />
+                {/* <BellIconSolid className="hidden dark:flex size-5" /> */}
                 <span className="sr-only">Notifications</span>
               </Button>
             </PopoverTrigger>

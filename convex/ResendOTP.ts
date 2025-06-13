@@ -12,14 +12,14 @@ export const ResendOTP = Resend({
     const resend = new ResendAPI(provider.apiKey);
     const formattedToken = `${token.slice(0, 4)}-${token.slice(-4)}`;
     const { error } = await resend.emails.send({
-      from: "Recommenso <onboarding@resend.dev>",
+      from: "GetReferenced <onboarding@getreferenced.com>",
       to: [email],
-      subject: `Sign in to Recommenso`,
+      subject: `Sign in to GetReferenced`,
       text: "Your code is " + formattedToken,
     });
 
     if (error) {
-      throw new Error("Could not send");
+      throw new Error(`Could not send: ${error.message}`);
     }
   },
 });
