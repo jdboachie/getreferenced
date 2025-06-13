@@ -551,9 +551,9 @@ export default function Page() {
                 }
               );
             }}
-            className="border bg-primary-foreground dark:bg-background rounded-lg"
+            className={profileCardStyles.card}
           >
-            <div className="bg-background rounded-t-lg p-4 gap-4 flex flex-col">
+            <div className={profileCardStyles.cardContent}>
               <h3 className="font-medium text-lg">Current Rank</h3>
               <p className="text-sm">Your current academic or professional rank.</p>
               <label className="relative w-full sm:max-w-sm">
@@ -565,7 +565,7 @@ export default function Page() {
                 />
               </label>
             </div>
-            <div className="md:gap-2 gap-4 flex max-sm:flex-col sm:justify-between items-center rounded-b-lg border-t p-4">
+            <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
                 Your current position (e.g., Lecturer, Senior Lecturer, Professor).
               </p>
