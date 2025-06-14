@@ -91,7 +91,7 @@ function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, cert
   }
 
   return (
-    <div id='cv' className={profileCardStyles.card}>
+    <div id='certificate' className={profileCardStyles.card}>
       <div className={profileCardStyles.cardContent}>
         <h3 className="font-medium text-lg">Certificate</h3>
         <p className="text-sm">Your most recent graduation certificate.</p>

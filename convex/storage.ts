@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+// import { Id } from './_generated/dataModel';
 import { mutation, query } from "./_generated/server";
 
 export const generateUploadUrl = mutation({
@@ -23,16 +24,42 @@ export const uploadUserImage = mutation({
   },
 });
 
+// export const getFileUrl = query({
+//   args: { src: v.optional(v.union(v.id("_storage"), v.string())), },
+//   handler: async (ctx, args) => {
+//     if (!args.src) {
+//       return null;
+//     }
+//     // If src is a string, return it directly; otherwise, get the URL
+//     if (typeof args.src !== 'string') {
+//       return await ctx.storage.getUrl(args.src)
+//     };
+//     console.log(typeof args.src)
+//     return args.src;
+//   },
+// })
+
 export const getFileUrl = query({
-  args: { src: v.optional(v.union(v.id("_storage"), v.string())), },
-  handler: async (ctx, args) => {
-    if (!args.src) {
-      return null;
-    }
-    if (typeof args.src === 'string') return args.src;
-    return await ctx.storage.getUrl(args.src);
+  args: {
+    src: v.optional(v.union(v.id("_storage"), v.string())),
   },
-})
+  handler: async (ctx, args) => {
+    if (!args.src) return null;
+
+    if (typeof args.src !== "string") {
+      return await ctx.storage.getUrl(args.src);
+    }
+
+    // Try resolving it as a storage ID
+    try {
+      return await ctx.storage.getUrl(args.src);
+    } catch {
+      // If not a valid storage ID, assume it's a normal URL
+      return args.src;
+    }
+  },
+});
+
 
 export const getMetadata = query({
   args: {

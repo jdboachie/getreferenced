@@ -140,7 +140,13 @@ export default function SignInForm() {
             }
           </AnimatedState>
         </Button>
-        <Button type="button" variant={'outline'} size={'lg'} className="w-full" onClick={() => void signIn("google")}>
+        <Button
+          type="button"
+          variant={'outline'}
+          size={'lg'}
+          className="w-full"
+          onClick={() => void signIn("google", {redirectTo: `/app`})}
+        >
           Sign in with Google
         </Button>
       </form>

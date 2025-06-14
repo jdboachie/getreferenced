@@ -109,7 +109,7 @@ export default function UserButton() {
         <Button variant="outline" size={"icon"} className="rounded-full shadow-none">
           {imageUrl ?
             <Avatar>
-              <AvatarImage alt="avatar" src={imageUrl} />
+              <AvatarImage alt="avatar" src={imageUrl} onError={() => console.log("error")} />
               <AvatarFallback><User2Icon /></AvatarFallback>
             </Avatar>
             :
