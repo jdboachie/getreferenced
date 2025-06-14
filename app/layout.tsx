@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-// import LocalFont from "next/font/local";
-import { Geist_Mono, Manrope } from "next/font/google";
+import LocalFont from "next/font/local";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -11,11 +11,9 @@ import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { RoleProvider } from "@/hooks/use-role";
 
-const manrope  = Manrope({
+const sans  = LocalFont({
   variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
+  src: 'fonts/PPRadioGrotesk-Variable.woff2'
 })
 
 // const sans = LocalFont({
@@ -58,7 +56,7 @@ export default function RootLayout({
     <ConvexAuthNextjsServerProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${manrope.variable} ${geistMono.variable} antialiased`}
+          className={`${sans.variable} ${geistMono.variable} antialiased`}
         >
           <SpeedInsights />
           <ThemeProvider

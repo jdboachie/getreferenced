@@ -27,7 +27,7 @@ export default function ProfileCardForm({
         const formData = new FormData(e.currentTarget)
         await onSubmit(formData)
       }}
-      className={'border bg-primary-foreground dark:bg-background rounded-xl p-0.5'}
+      className={'border bg-primary-foreground dark:bg-background rounded-xl p-1'}
     >
       <div className={'bg-background dark:bg-primary-foreground rounded-lg shadow-xs border p-4 gap-4 flex flex-col'}>
         <h3 className="font-medium text-lg">{title}</h3>

@@ -59,7 +59,7 @@ export default function UserButton() {
           <DrawerTitle>Are you absolutely sure?</DrawerTitle>
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
-        <div className="p-2 grid gap-2 mt-4">
+        <div className="p-2 grid gap-4 mt-4">
           <div className="flex gap-2 items-center mb-4">
             {imageUrl ?
               <Avatar className="size-12 border">
@@ -98,7 +98,7 @@ export default function UserButton() {
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button size={'lg'} variant="outline">Close</Button>
+            <Button size={'lg'} variant="outline" className="rounded-b-3xl">Close</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
