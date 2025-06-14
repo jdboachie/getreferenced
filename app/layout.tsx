@@ -11,28 +11,23 @@ import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { RoleProvider } from "@/hooks/use-role";
 
-const sans  = LocalFont({
+const sans = LocalFont({
   variable: "--font-sans",
-  src: 'fonts/PPRadioGrotesk-Variable.woff2'
+  src: [
+    {
+      path: 'fonts/bold.woff2',
+      weight: '700',
+    },
+    {
+      path: 'fonts/medium.woff2',
+      weight: '500',
+    },
+    {
+      path: 'fonts/regular.woff2',
+      weight: '400',
+    },
+  ]
 })
-
-// const sans = LocalFont({
-//   variable: "--font-sans",
-//   src: [
-//     {
-//       path: 'fonts/bold.woff2',
-//       weight: '700',
-//     },
-//     {
-//       path: 'fonts/medium.woff2',
-//       weight: '500',
-//     },
-//     {
-//       path: 'fonts/regular.woff2',
-//       weight: '400',
-//     },
-//   ]
-// })
 
 const geistMono = Geist_Mono({
   variable: "--font-mono",
