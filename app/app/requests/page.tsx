@@ -54,7 +54,7 @@ function AllRequestsView() {
           <SearchIcon className='absolute inset-3 size-4 text-muted-foreground' />
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button size="icon" variant="outline" className="size-10">
               <FilterIcon className="h-4 w-4" />
             </Button>

@@ -19,10 +19,10 @@ const navLinks = [
   //   title: "Meetings",
   //   url: "/app/meetings",
   // },
-  {
-    title: "Billing",
-    url: "/app/billing",
-  },
+  // {
+  //   title: "Billing",
+  //   url: "/app/billing",
+  // },
   {
     title: "Account",
     url: "/app/account",

@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRole } from '@/hooks/use-role';
 import UserAvatarCard from "./components/user-avatar-card";
 import { profileCardStyles } from "./components/styles";
+import ProfileCardForm from './components/profile-card-form';
 
 
 export default function Page() {
@@ -31,149 +32,103 @@ export default function Page() {
         <UserAvatarCard userImageUrl={user.image} userId={profile.userId} />
 
         {/* Full Name */}
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            const firstName = formData.get('firstName');
-            const lastName = formData.get('lastName');
-            toast.promise(
-              updateUser({
-              userId: profile.userId,
-              firstName: firstName?.toString(),
-              lastName: lastName?.toString()}
-              ),
-              {
-                loading: 'Saving...',
-                success: 'Name updated!',
-                error: 'Problem updating name',
-              }
-            );
-          }}
-          className={profileCardStyles.card}
-        >
-          <div className={profileCardStyles.cardContent}>
-            <h3 className="font-medium text-lg">Full Name</h3>
-            <p className="text-sm">This will be the name on your requests</p>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <label className="grid gap-1">
-                <span className="text-sm font-medium text-muted-foreground">First name</span>
-                <Input
-                  name="firstName"
-                  defaultValue={user.firstName}
-                  placeholder="Firstname"
-                  className="max-md:w-full shadow-none"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') e.preventDefault();
-                  }}
-                />
-              </label>
-              <label className="grid gap-1">
-                <span className="text-sm font-medium text-muted-foreground">Last name</span>
-                <Input
-                  name="lastName"
-                  defaultValue={user.lastName}
-                  placeholder="Lastname"
-                  className="max-md:w-full shadow-none"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') e.preventDefault();
-                  }}
-                />
-              </label>
-            </div>
-          </div>
-          <div className={profileCardStyles.cardFooter}>
-            <p className="text-sm text-muted-foreground">
-              Name should be as it appears on official documents.
-            </p>
-            <Button size={'sm'} type="submit">Save</Button>
-          </div>
-        </form>
-
-        {/* Email */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            alert("Email change submitted");
-          }}
-          className={profileCardStyles.card}
-        >
-          <div className={profileCardStyles.cardContent}>
-            <h3 className="font-medium text-lg">Email</h3>
-            <p className="text-sm">
-              This is the email address you will use to sign in to GetReferenced.
-            </p>
-            <label htmlFor="email" className="relative w-full sm:max-w-sm">
-              <Input
-                readOnly
-                name="email"
-                defaultValue={user.email}
-                placeholder="Email"
-                className="w-full shadow-none"
-              />
-              <Badge
-                variant={user.emailVerificationTime ? 'secondary' : 'destructive'}
-                className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.emailVerificationTime && 'bg-green-400 dark:bg-green-500/80'}`}
-              >
-                {user.emailVerificationTime ? 'verified' : 'not verified'}
-              </Badge>
-            </label>
-          </div>
-          <div className={profileCardStyles.cardFooter}>
-            <p className="text-sm text-muted-foreground">
-              Email must be verified to receive notifications.
-            </p>
-            <Button size={'sm'} type="submit" disabled>Save</Button>
-          </div>
-        </form>
-
-        {/* Phone Number */}
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
+        <ProfileCardForm
+          title="Full Name"
+          description="This will be the name on your request form"
+          footerNote="Name should be as it appears on official documents."
+          onSubmit={async (formData) => {
             toast.promise(
               updateUser({
                 userId: profile.userId,
-                phone: formData.get('phone')?.toString(),
+                firstName: formData.get("firstName")?.toString(),
+                lastName: formData.get("lastName")?.toString(),
               }),
               {
-                loading: 'Saving...',
-                success: 'Phone number updated!',
-                error: 'Problem updating phone number',
+                loading: "Saving...",
+                success: "Name updated!",
+                error: "Problem updating name",
               }
-            );
+            )
           }}
-          className={profileCardStyles.card}
         >
-          <div className={profileCardStyles.cardContent}>
-            <h3 className="font-medium text-lg">Phone Number</h3>
-            <p className="text-sm">Your Whatsapp number is preferred.</p>
-              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
-                <Input
-                  readOnly
-                  type="tel"
-                  name="phone"
-                  defaultValue={user.phone}
-                  placeholder="+233123456789"
-                  className="w-full shadow-none"
-                />
-                <Badge
-                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
-                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
-                >
-                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
-                </Badge>
-              </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="grid gap-1">
+              <span className="text-sm font-medium text-muted-foreground">First name</span>
+              <Input
+                name="firstName"
+                defaultValue={user.firstName}
+                placeholder="Firstname"
+                className="max-md:w-full shadow-none"
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+              />
+            </label>
+            <label className="grid gap-1">
+              <span className="text-sm font-medium text-muted-foreground">Last name</span>
+              <Input
+                name="lastName"
+                defaultValue={user.lastName}
+                placeholder="Lastname"
+                className="max-md:w-full shadow-none"
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+              />
+            </label>
           </div>
-          <div className={profileCardStyles.cardFooter}>
-            <p className="text-sm text-muted-foreground">
-              {user.phoneVerificationTime ??
-                "Phone number must be verified to allow recommenders to contact you."}
-            </p>
-            <Button size={'sm'} type="submit" disabled>Save</Button>
-          </div>
-        </form>
+        </ProfileCardForm>
+
+        {/* Email */}
+        <ProfileCardForm
+          title="Email"
+          description="This is the email address you will use to sign in to GetReferenced."
+          footerNote="Email must be verified to receive notifications."
+          onSubmit={() => Promise.resolve()}
+          buttonDisabled
+        >
+          <label className="relative w-full sm:max-w-sm">
+            <Input
+              readOnly
+              name="email"
+              defaultValue={user.email}
+              placeholder="Email"
+              className="w-full shadow-none"
+            />
+            <Badge
+              variant={user.emailVerificationTime ? "secondary" : "destructive"}
+              className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.emailVerificationTime && "bg-green-400 dark:bg-green-500/80"}`}
+            >
+              {user.emailVerificationTime ? "verified" : "not verified"}
+            </Badge>
+          </label>
+        </ProfileCardForm>
+
+        {/* Phone Number */}
+        <ProfileCardForm
+          title="Phone Number"
+          description="Your Whatsapp number is preferred."
+          footerNote={
+            // user.phoneVerificationTime ??
+            "Phone number must be verified to allow recommenders to contact you."
+          }
+          onSubmit={() => Promise.resolve()}
+          buttonDisabled
+        >
+          <label className="relative w-full sm:max-w-sm">
+            <Input
+              readOnly
+              type="tel"
+              name="phone"
+              defaultValue={user.phone}
+              placeholder="+233123456789"
+              className="w-full shadow-none"
+            />
+            <Badge
+              variant={user.phoneVerificationTime ? "secondary" : "destructive"}
+              className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && "bg-green-500"}`}
+            >
+              {user.phoneVerificationTime ? "verified" : "not verified"}
+            </Badge>
+          </label>
+        </ProfileCardForm>
+
 
         {role === 'requester' &&
           <>
@@ -261,7 +216,7 @@ export default function Page() {
             </div>
             <div className={profileCardStyles.cardFooter}>
               <p className="text-sm text-muted-foreground">
-                TODO: Make this into a datepicker component
+                {/* TODO: Make this into a datepicker component */}
               </p>
               <Button size={'sm'} type="submit">Save</Button>
             </div>
@@ -581,7 +536,7 @@ export default function Page() {
             e.preventDefault();
             console.log("Delete account triggered");
           }}
-          className={`${profileCardStyles.card} border bg-destructive text-destructive-foreground`}
+          className={`${profileCardStyles.card} border bg-red-500/10 dark:bg-red-500/5 text-destructive-foreground`}
         >
           <div className={profileCardStyles.cardContent}>
             <h3 className="font-medium text-lg">Delete Account</h3>
@@ -604,13 +559,13 @@ export default function Page() {
   } else if (profile === null) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-bold mb-4">Profile Not Found</h1>
+        <h1 className="text-2xl font-semibold mb-4">Profile Not Found</h1>
         <p className="text-lg text-muted-foreground mb-6">
           It seems you don&apos;t have a profile yet. Please contact support if you believe this is an error.
         </p>
-        {/* <Button onClick={() => window.location.href = '/app/account/create-profile'}>
+        <Button onClick={() => window.location.href = '/auth/chooserole'}>
           Create Profile
-        </Button> */}
+        </Button>
       </div>
     );
   }

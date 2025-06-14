@@ -49,6 +49,7 @@ export default function Page() {
             }
           </>
         }
+        {role === "recommender" && 'We are working on this for you. Please check back later.'}
       </div>
     )
   } else {

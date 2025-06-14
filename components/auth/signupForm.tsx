@@ -89,6 +89,16 @@ export default function SignUpForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <Button
+          type="button"
+          variant={'outline'}
+          size={'lg'}
+          className="w-full"
+          onClick={() => void signIn("google", {redirectTo: `/auth/chooserole`})}
+        >
+          Sign up with Google
+        </Button>
+        <p className="w-full text-center">OR</p>
         <FormField
           control={form.control}
           name="email"
@@ -204,15 +214,6 @@ export default function SignUpForm() {
             {status === 'creating' && <div className="flex gap-1.5 items-center"><SpinnerIcon /> Creating profile...</div>}
             {!status && 'Submit'}
           </AnimatedState>
-        </Button>
-        <Button
-          type="button"
-          variant={'outline'}
-          size={'lg'}
-          className="w-full"
-          onClick={() => void signIn("google", {redirectTo: `/auth/chooserole`})}
-        >
-          Sign up with Google
         </Button>
       </form>
       {error && (
