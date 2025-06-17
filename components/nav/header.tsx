@@ -41,7 +41,7 @@ function Header() {
             <PopoverContent align="end" className="text-muted-foreground">No notifications yet</PopoverContent>
           </Popover>
           <Drawer>
-            <DrawerTrigger>
+            <DrawerTrigger asChild className="sm:hidden">
               <Button variant={"outline"} size={"icon"} className="shadow-none rounded-full">
                 <BellIcon className="size-5" />
                 {/* <BellIconSolid className="hidden dark:flex size-5" /> */}
