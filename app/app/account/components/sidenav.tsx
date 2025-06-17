@@ -11,7 +11,7 @@ export const Sidenav = () => {
   const links = [
     { href: "/app/account", label: "Profile" },
     { href: "/app/account/files", label: "Files" },
-    // { href: "/app/account/billing", label: "Billing" },
+    { href: "/app/account/billing", label: "Billing" },
   ];
 
   return (

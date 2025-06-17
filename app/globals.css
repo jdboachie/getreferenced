@@ -133,4 +133,7 @@
   .hidden-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
   }
+  textarea {
+    field-sizing: content;
+  }
 }

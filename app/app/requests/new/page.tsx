@@ -114,7 +114,7 @@ export default function RequestForm() {
               <FormItem>
                 <FormLabel>Institution Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="123 Street, City" {...field} />
+                  <Textarea className="resize-none" placeholder="123 Street, City" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -132,7 +132,7 @@ export default function RequestForm() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full h-10 pl-3 text-left font-normal",
+                          "w-full h-10 pl-3 text-left font-normal bg-transparent",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -190,19 +190,6 @@ export default function RequestForm() {
           />
           <FormField
             control={form.control}
-            name="additionalInfo"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Additional Information</FormLabel>
-                <FormControl>
-                  <Textarea className="resize-none" placeholder="Any other notes..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="recommenderId"
             render={({ field }) => (
               <FormItem>
@@ -239,9 +226,30 @@ export default function RequestForm() {
             name="sampleLetter"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Sample Letter File ID</FormLabel>
+                <FormLabel>Sample Letter</FormLabel>
                 <FormControl>
-                  <Input placeholder="file_abc123" {...field} />
+                  <Input
+                    type="file"
+                    accept="application/pdf"
+                    {...field}
+                    className="p-4 border border-dashed grid place-items-center h-[100px]"
+                  />
+                </FormControl>
+                <FormDescription>
+                  This has not been implemented yet.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="additionalInfo"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Additional Information</FormLabel>
+                <FormControl>
+                  <Textarea className="resize-none" placeholder="Any other notes..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -256,7 +264,7 @@ export default function RequestForm() {
             The purpose of this application is <strong>{form.watch("purpose") || "—"}</strong>.
             Your recommender is <strong>{recommenderName}</strong>.
             Additional details: <strong>{form.watch("additionalInfo") || "—"}</strong>.
-            You’ve {form.watch("sampleLetter") ? "attached a sample letter" : "not attached any sample letter"}.
+            You’ve selected {form.watch("sampleLetter")}
           </p>
           <Button type="submit" className="mt-4">Submit request</Button>
         </div>

@@ -7,9 +7,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// import { useMutation, useQuery } from "convex/react";
-// import { api } from "@/convex/_generated/api";
 import { useAuthActions } from "@convex-dev/auth/react";
+import GoogleAuthButton from "./GoogleSigninButton";
 
 import {
   Form,
@@ -89,15 +88,7 @@ export default function SignUpForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-        <Button
-          type="button"
-          variant={'outline'}
-          size={'lg'}
-          className="w-full"
-          onClick={() => void signIn("google", {redirectTo: `/auth/chooserole`})}
-        >
-          Sign up with Google
-        </Button>
+        <GoogleAuthButton redirectTo="/auth/chooserole" signUp />
         <p className="w-full text-center">OR</p>
         <FormField
           control={form.control}

@@ -5,8 +5,9 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useRole } from "@/hooks/use-role";
 
-const navLinks = [
+const commonNavLinks = [
   {
     title: "Overview",
     url: "/app",
@@ -23,14 +24,31 @@ const navLinks = [
   //   title: "Billing",
   //   url: "/app/billing",
   // },
+
   {
     title: "Account",
     url: "/app/account",
+  },
+]
+
+const requesterNavLinks = [
+  ...commonNavLinks
+];
+
+const recommenderNavLinks = [
+  ...commonNavLinks,
+  {
+    title: "Drafts",
+    url: "/app/drafts",
   },
 ];
 
 
 export default function Navbar() {
+
+  const { role } = useRole();
+
+  const navLinks = role ? (role === "requester" ? requesterNavLinks : recommenderNavLinks) : commonNavLinks
 
   const containerRef = useRef<HTMLDivElement>(null)
 

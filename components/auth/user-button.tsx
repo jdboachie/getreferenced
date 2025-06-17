@@ -1,7 +1,9 @@
 'use client';
 
+import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Separator } from "@/components/ui/separator"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,14 +31,12 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User2Icon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Bars2Icon } from "@heroicons/react/24/outline"
 
 
 export default function UserButton() {
 
-  const isMobile = useIsMobile();
-
   const router = useRouter();
+  const isMobile = useIsMobile();
   const { signOut } = useAuthActions();
 
   const user = useQuery(api.users.getCurrentUser);
@@ -50,16 +50,26 @@ export default function UserButton() {
     <Drawer>
       <DrawerTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-none place-items-center grid ">
-          <Bars2Icon className="size-5" />
+          {imageUrl ?
+            <Avatar>
+              <AvatarImage alt="avatar" src={imageUrl} onError={() => console.log("error")} />
+              <AvatarFallback><User2Icon /></AvatarFallback>
+            </Avatar>
+            :
+            <Avatar
+            >
+              <AvatarFallback><User2Icon /></AvatarFallback>
+            </Avatar>
+          }
           <span className="sr-only">Open user menu</span>
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="sr-only">
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-          <DrawerDescription>This action cannot be undone.</DrawerDescription>
+          <DrawerTitle>User menu</DrawerTitle>
+          <DrawerDescription>Navigate the app or logout here.</DrawerDescription>
         </DrawerHeader>
-        <div className="p-2 grid gap-4 mt-4">
+        <div className="p-4 grid gap-4 mt-4">
           <div className="flex gap-2 items-center mb-4">
             {imageUrl ?
               <Avatar className="size-12 border">
@@ -77,24 +87,42 @@ export default function UserButton() {
               <p className="px-2 mb-2 text-muted-foreground text-sm">{user.email}</p>
             </div>
           </div>
-          <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Account</Button>
-          <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Billing</Button>
-          <Button variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2">Settings</Button>
+          <DrawerClose asChild>
+            <Link href="/app" className={`justify-start rounded-md text-base font-normal h-10 inline-flex items-center px-2`}>
+              Overview
+            </Link>
+          </DrawerClose>
+          <Separator />
+          <DrawerClose asChild>
+            <Link href="/app/requests" className={`justify-start rounded-md text-base font-normal h-10 inline-flex items-center px-2`}>
+              Requests
+            </Link>
+          </DrawerClose>
+          <Separator />
+          <DrawerClose asChild>
+            <Link href="/app/account" className={`justify-start rounded-md text-base font-normal h-10 inline-flex items-center px-2`}>
+              Account
+            </Link>
+          </DrawerClose>
+          <Separator />
            <div className="flex items-center justify-between px-2 py-1 text-base">
-            Theme<ThemeToggle />
+            Theme<ThemeToggle lg />
           </div>
-          <Button
-            variant={'ghost'} size={'lg'} className="justify-start text-base font-normal px-2"
-            onClick={async () =>
-              await Promise.all([
-                router.push("/"),
-                signOut(),
-              ])
-            }
-          >
-            <span className="text-destructive">Log out</span>
-            <DropdownMenuShortcut><LogOut className="text-destructive" /></DropdownMenuShortcut>
-          </Button>
+          <Separator />
+          <DrawerClose asChild>
+            <button
+             className="justify-start cursor-pointer rounded-md text-base font-normal h-10 inline-flex items-center px-2"
+              onClick={async () =>
+                await Promise.all([
+                  router.push("/auth"),
+                  signOut(),
+                ])
+              }
+            >
+              <span className="text-destructive">Log out</span>
+              <DropdownMenuShortcut><LogOut className="text-destructive size-4" /></DropdownMenuShortcut>
+            </button>
+          </DrawerClose>
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
@@ -127,7 +155,9 @@ export default function UserButton() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            Account
+            <Link href="/app/account">
+              Account
+            </Link>
             {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
           </DropdownMenuItem>
           <DropdownMenuItem>
@@ -144,7 +174,7 @@ export default function UserButton() {
           variant="destructive"
           onClick={async () =>
             await Promise.all([
-              router.push("/"),
+              router.push("/auth"),
               signOut(),
             ])
           }

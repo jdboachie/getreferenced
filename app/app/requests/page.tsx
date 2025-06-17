@@ -112,9 +112,9 @@ function AllRequestsView() {
                 <p className="text-sm text-muted-foreground">{req.institutionAddress}</p>
               </div>
               <StatusBadge status={req.status} />
-              {req.additionalInfo &&
+              {/* {req.additionalInfo &&
               <p className="text-sm p-2 rounded-md bg-muted">Additional info: {req.additionalInfo}</p>
-              }
+              } */}
               <p className="text-sm">Purpose: {req.purpose ?? "none"}</p>
               <p className="text-sm flex gap-1.5 items-center">
                 <AlarmClockIcon className="size-4" /> Due: {new Date(req.deadline).toLocaleDateString()}

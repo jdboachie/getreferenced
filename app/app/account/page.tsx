@@ -3,15 +3,21 @@
 import * as React from 'react';
 import { toast } from "sonner";
 import Loading from "./loading";
+import { useRole } from '@/hooks/use-role';
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "convex/react";
-import { Badge } from "@/components/ui/badge";
-import { useRole } from '@/hooks/use-role';
 import UserAvatarCard from "./components/user-avatar-card";
-import { profileCardStyles } from "./components/styles";
 import ProfileCardForm from './components/profile-card-form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 
 
 export default function Page() {
@@ -27,9 +33,12 @@ export default function Page() {
 
   if (profile && user) {
     return (
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-16">
 
-        <UserAvatarCard userImageUrl={user.image} userId={profile.userId} />
+        <UserAvatarCard
+          userImageUrl={user.image}
+          userId={profile.userId}
+        />
 
         {/* Full Name */}
         <ProfileCardForm
@@ -51,28 +60,32 @@ export default function Page() {
             )
           }}
         >
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="grid gap-1">
-              <span className="text-sm font-medium text-muted-foreground">First name</span>
-              <Input
-                name="firstName"
-                defaultValue={user.firstName}
-                placeholder="Firstname"
-                className="max-md:w-full shadow-none"
-                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-              />
-            </label>
-            <label className="grid gap-1">
-              <span className="text-sm font-medium text-muted-foreground">Last name</span>
-              <Input
-                name="lastName"
-                defaultValue={user.lastName}
-                placeholder="Lastname"
-                className="max-md:w-full shadow-none"
-                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-              />
-            </label>
-          </div>
+          {(isEditing) => (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="grid gap-1">
+                <span className="text-sm font-medium text-muted-foreground">First name</span>
+                <Input
+                  name="firstName"
+                  defaultValue={user.firstName}
+                  placeholder="Firstname"
+                  className="max-md:w-full shadow-none"
+                  disabled={!isEditing}
+                  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+                />
+              </label>
+              <label className="grid gap-1">
+                <span className="text-sm font-medium text-muted-foreground">Last name</span>
+                <Input
+                  name="lastName"
+                  defaultValue={user.lastName}
+                  placeholder="Lastname"
+                  className="max-md:w-full shadow-none"
+                  disabled={!isEditing}
+                  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+                />
+              </label>
+            </div>
+          )}
         </ProfileCardForm>
 
         {/* Email */}
@@ -83,455 +96,321 @@ export default function Page() {
           onSubmit={() => Promise.resolve()}
           buttonDisabled
         >
-          <label className="relative w-full sm:max-w-sm">
-            <Input
-              readOnly
-              name="email"
-              defaultValue={user.email}
-              placeholder="Email"
-              className="w-full shadow-none"
-            />
-            <Badge
-              variant={user.emailVerificationTime ? "secondary" : "destructive"}
-              className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.emailVerificationTime && "bg-green-400 dark:bg-green-500/80"}`}
-            >
-              {user.emailVerificationTime ? "verified" : "not verified"}
-            </Badge>
-          </label>
+          {(isEditing) => (
+            <label className="relative w-full sm:max-w-sm">
+              <div className="sr-only">{isEditing}</div>
+              <Input
+                disabled
+                name="email"
+                defaultValue={user.email}
+                placeholder="Email"
+                className="w-full shadow-none"
+              />
+              <Badge
+                variant="secondary"
+                className="pointer-events-none rounded-full absolute top-2 right-2.5"
+              >
+                {user.emailVerificationTime ? "verified" : "not verified"}
+              </Badge>
+            </label>
+          )}
         </ProfileCardForm>
 
         {/* Phone Number */}
         <ProfileCardForm
           title="Phone Number"
           description="Your Whatsapp number is preferred."
-          footerNote={
-            // user.phoneVerificationTime ??
-            "Phone number must be verified to allow recommenders to contact you."
-          }
+          footerNote="Phone number must be verified to allow recommenders to contact you."
           onSubmit={() => Promise.resolve()}
           buttonDisabled
         >
-          <label className="relative w-full sm:max-w-sm">
-            <Input
-              readOnly
-              type="tel"
-              name="phone"
-              defaultValue={user.phone}
-              placeholder="+233123456789"
-              className="w-full shadow-none"
-            />
-            <Badge
-              variant={user.phoneVerificationTime ? "secondary" : "destructive"}
-              className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && "bg-green-500"}`}
-            >
-              {user.phoneVerificationTime ? "verified" : "not verified"}
-            </Badge>
-          </label>
+          {(isEditing) => (
+            <label className="relative w-full sm:max-w-sm">
+              <div className="sr-only">{isEditing}</div>
+              <Input
+                disabled
+                type="tel"
+                name="phone"
+                defaultValue={user.phone}
+                placeholder="+233123456789"
+                className="w-full shadow-none"
+              />
+              <Badge
+                variant="secondary"
+                className="pointer-events-none rounded-full absolute top-2 right-2.5"
+              >
+                {user.phoneVerificationTime ? "verified" : "not verified"}
+              </Badge>
+            </label>
+          )}
         </ProfileCardForm>
 
-
-        {role === 'requester' &&
+        {role === 'requester' && (
           <>
-          {/* Program of study */}
-          <form
-            id="programOfStudy"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              console.log(formData.get('programOfStudy') ? Number(formData.get('programOfStudy')) : undefined)
-              toast.promise(
-                updateProfile({
-                  role: role,
-                  userId: profile.userId,
-                  programOfStudy: formData.get('programOfStudy')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Program of study updated!',
-                  error: 'Problem updating program of study',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Program of study</h3>
-              {/* <p className="text-sm">Very much needed.</p> */}
-              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+            {/* Program of study */}
+            <ProfileCardForm
+              title="Program of study"
+              // description=""
+              footerNote="Program should be as is on your certificate."
+              onSubmit={async (formData) => {
+                await toast.promise(
+                  updateProfile({
+                    role,
+                    userId: profile.userId,
+                    programOfStudy: formData.get('programOfStudy')?.toString(),
+                  }),
+                  {
+                    loading: 'Saving...',
+                    success: 'Program of study updated!',
+                    error: 'Problem updating program of study',
+                  }
+                );
+              }}
+            >
+              {(isEditing) => (
                 <Input
                   name="programOfStudy"
                   defaultValue={("programOfStudy" in profile ? profile.programOfStudy : '')}
-                  placeholder="Bsc Dondology"
+                  placeholder="BSc Dondology"
                   className="w-full shadow-none"
+                  disabled={!isEditing}
                 />
-                {/* <Badge
-                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
-                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
-                >
-                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
-                </Badge> */}
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                Program should be as is on your certificate.
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
 
-          {/* Year of completion */}
-          <form
-            id="yearOfCompletion"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              console.log(formData.get('yearOfCompletion') ? Number(formData.get('yearOfCompletion')) : undefined)
-              toast.promise(
-                updateProfile({
-                  role: role,
-                  userId: profile.userId,
-                  yearOfCompletion: formData.get('yearOfCompletion')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Program of study updated!',
-                  error: 'Problem updating program of study',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Year of completion</h3>
-              {/* <p className="text-sm">Very much needed.</p> */}
-              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
-                <Input
+            {/* Year of completion */}
+            <ProfileCardForm
+              title="Year of completion"
+              description=""
+              footerNote=""
+              onSubmit={async (formData) => {
+                await toast.promise(
+                  updateProfile({
+                    role,
+                    userId: profile.userId,
+                    yearOfCompletion: formData.get('yearOfCompletion')?.toString(),
+                  }),
+                  {
+                    loading: 'Saving...',
+                    success: 'Year of completion updated!',
+                    error: 'Problem updating year of completion',
+                  }
+                );
+              }}
+            >
+              {(isEditing) => (
+                <Select
                   name="yearOfCompletion"
-                  defaultValue={("yearOfCompletion" in profile ? profile.yearOfCompletion : '')}
-                  placeholder="2025"
-                  className="w-full shadow-none"
-                />
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                {/* TODO: Make this into a datepicker component */}
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+                  defaultValue={"yearOfCompletion" in profile ? profile.yearOfCompletion : ''}
+                  disabled={!isEditing}
+                >
+                  <SelectTrigger className="w-full shadow-none">
+                    <SelectValue placeholder="Select year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 30 }, (_, i) => {
+                      const year = String(new Date().getFullYear() - i);
+                      return (
+                        <SelectItem key={year} value={year}>
+                          {year}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              )}
+            </ProfileCardForm>
 
-          {/* Index number */}
-          <form
-            id="indexNumber"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              console.log(formData.get('indexNumber') ? Number(formData.get('indexNumber')) : undefined)
-              toast.promise(
-                updateProfile({
-                  role: role,
-                  userId: profile.userId,
-                  indexNumber: formData.get('indexNumber')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Index number updated!',
-                  error: 'Problem updating index number',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Index Number</h3>
-              {/* <p className="text-sm">Very much needed.</p> */}
-              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+            {/* Index number */}
+            <ProfileCardForm
+              title="Index Number"
+              // description=""
+              footerNote="What you used for exams"
+              onSubmit={async (formData) => {
+                await toast.promise(
+                  updateProfile({
+                    role,
+                    userId: profile.userId,
+                    indexNumber: formData.get('indexNumber')?.toString(),
+                  }),
+                  {
+                    loading: 'Saving...',
+                    success: 'Index number updated!',
+                    error: 'Problem updating index number',
+                  }
+                );
+              }}
+            >
+              {(isEditing) => (
                 <Input
                   name="indexNumber"
                   defaultValue={("indexNumber" in profile ? profile.indexNumber : '')}
                   placeholder="1234567"
                   className="w-full shadow-none"
+                  disabled={!isEditing}
                 />
-                {/* <Badge
-                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
-                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
-                >
-                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
-                </Badge> */}
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                What you used for exams
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
 
-          {/* Student number -- */}
-          <form
-            id="studentNumber"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              console.log(formData.get('studentNumber') ? Number(formData.get('indexNumber')) : undefined)
-              toast.promise(
-                updateProfile({
-                  role: role,
-                  userId: profile.userId,
-                  studentNumber: formData.get('studentNumber')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Student number updated!',
-                  error: 'Problem updating student number',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Student Number</h3>
-              {/* <p className="text-sm">Very much needed.</p> */}
-              <label htmlFor="phone" className="relative w-full sm:max-w-sm">
+            {/* Student number */}
+            <ProfileCardForm
+              title="Student Number"
+              // description=""
+              footerNote="8-digit number given when you applied to KNUST"
+              onSubmit={async (formData) => {
+                await toast.promise(
+                  updateProfile({
+                    role,
+                    userId: profile.userId,
+                    studentNumber: formData.get('studentNumber')?.toString(),
+                  }),
+                  {
+                    loading: 'Saving...',
+                    success: 'Student number updated!',
+                    error: 'Problem updating student number',
+                  }
+                );
+              }}
+            >
+              {(isEditing) => (
                 <Input
                   name="studentNumber"
                   defaultValue={("studentNumber" in profile ? profile.studentNumber : '')}
                   placeholder="12345678"
                   className="w-full shadow-none"
+                  disabled={!isEditing}
                 />
-                {/* <Badge
-                  variant={user.phoneVerificationTime ? 'secondary' : 'destructive'}
-                  className={`pointer-events-none rounded-full absolute top-2 right-2.5 ${user.phoneVerificationTime && 'bg-green-500'}`}
-                >
-                  {user.phoneVerificationTime ? 'verified' : 'not verified'}
-                </Badge> */}
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                8-digit number given when you applied to KNUST
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
           </>
-        }
+        )}
 
-        {role === 'recommender' &&
+        {role === 'recommender' && (
           <>
-          {/* Staff Number */}
-          <form
-            id="staffNumber"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              toast.promise(
-                updateProfile({
-                  role: role,
+            <ProfileCardForm
+              title="Staff Number"
+              description="Your official university staff identification number."
+              footerNote="Staff number as provided by HR department."
+              onSubmit={async (formData) => {
+                await updateProfile({
+                  role,
                   userId: profile.userId,
-                  staffNumber: formData.get('staffNumber')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Staff number updated!',
-                  error: 'Problem updating staff number',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Staff Number</h3>
-              <p className="text-sm">Your official university staff identification number.</p>
-              <label className="relative w-full sm:max-w-sm">
+                  staffNumber: formData.get("staffNumber")?.toString(),
+                });
+              }}
+            >
+              {(isEditing) => (
                 <Input
+                  type="text"
                   name="staffNumber"
-                  defaultValue={("staffNumber" in profile ? profile.staffNumber : '')}
+                  defaultValue={"staffNumber" in profile ? profile.staffNumber : ''}
                   placeholder="ST12345"
-                  className="w-full shadow-none"
+                  disabled={!isEditing}
+                  className="input"
                 />
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                Staff number as provided by HR department.
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
 
-          {/* Secondary Email */}
-          <form
-            id="secondaryEmail"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              toast.promise(
-                updateProfile({
-                  role: role,
+            <ProfileCardForm
+              title="Secondary Email"
+              description="Alternative email address for backup communication."
+              footerNote="Optional alternative email for notifications."
+              onSubmit={async (formData) => {
+                await updateProfile({
+                  role,
                   userId: profile.userId,
-                  secondaryEmail: formData.get('secondaryEmail')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Secondary email updated!',
-                  error: 'Problem updating secondary email',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Secondary Email</h3>
-              <p className="text-sm">Alternative email address for backup communication.</p>
-              <label className="relative w-full sm:max-w-sm">
+                  secondaryEmail: formData.get("secondaryEmail")?.toString(),
+                });
+              }}
+            >
+              {(isEditing) => (
                 <Input
                   type="email"
                   name="secondaryEmail"
-                  defaultValue={("secondaryEmail" in profile ? profile.secondaryEmail : '')}
+                  defaultValue={"secondaryEmail" in profile ? profile.secondaryEmail : ''}
                   placeholder="john.doe@gmail.com"
-                  className="w-full shadow-none"
+                  disabled={!isEditing}
+                  className="input"
                 />
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                Optional alternative email for notifications.
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
 
-          {/* Department */}
-          <form
-            id="department"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              toast.promise(
-                updateProfile({
-                  role: role,
+            <ProfileCardForm
+              title="Department"
+              description="The department or faculty you belong to."
+              footerNote="Your academic department or administrative unit."
+              onSubmit={async (formData) => {
+                await updateProfile({
+                  role,
                   userId: profile.userId,
-                  department: formData.get('department')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Department updated!',
-                  error: 'Problem updating department',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Department</h3>
-              <p className="text-sm">The department or faculty you belong to.</p>
-              <label className="relative w-full sm:max-w-sm">
+                  department: formData.get("department")?.toString(),
+                });
+              }}
+            >
+              {(isEditing) => (
                 <Input
+                  type="text"
                   name="department"
-                  defaultValue={("department" in profile ? profile.department : '')}
+                  defaultValue={"department" in profile ? profile.department : ''}
                   placeholder="Computer Science Department"
-                  className="w-full shadow-none"
+                  disabled={!isEditing}
+                  className="input"
                 />
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                Your academic department or administrative unit.
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
 
-          {/* Year of Employment */}
-          <form
-            id="yearOfEmployment"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              toast.promise(
-                updateProfile({
-                  role: role,
+            <ProfileCardForm
+              title="Year of Employment"
+              description="The year you started working at the institution."
+              footerNote="Year you began your employment at the university."
+              onSubmit={async (formData) => {
+                await updateProfile({
+                  role,
                   userId: profile.userId,
-                  yearOfEmployment: formData.get('yearOfEmployment')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Year of employment updated!',
-                  error: 'Problem updating year of employment',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Year of Employment</h3>
-              <p className="text-sm">The year you started working at the institution.</p>
-              <label className="relative w-full sm:max-w-sm">
+                  yearOfEmployment: formData.get("yearOfEmployment")?.toString(),
+                });
+              }}
+            >
+              {(isEditing) => (
                 <Input
+                  type="text"
                   name="yearOfEmployment"
-                  defaultValue={("yearOfEmployment" in profile ? profile.yearOfEmployment : '')}
+                  defaultValue={"yearOfEmployment" in profile ? profile.yearOfEmployment : ''}
                   placeholder="2018"
-                  className="w-full shadow-none"
+                  disabled={!isEditing}
+                  className="input"
                 />
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                Year you began your employment at the university.
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
 
-          {/* Current Rank */}
-          <form
-            id="currentRank"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              toast.promise(
-                updateProfile({
-                  role: role,
+            <ProfileCardForm
+              title="Current Rank"
+              description="Your current academic or professional rank."
+              footerNote="Your current position (e.g., Lecturer, Senior Lecturer, Professor)."
+              onSubmit={async (formData) => {
+                await updateProfile({
+                  role,
                   userId: profile.userId,
-                  currentRank: formData.get('currentRank')?.toString(),
-                }),
-                {
-                  loading: 'Saving...',
-                  success: 'Current rank updated!',
-                  error: 'Problem updating current rank',
-                }
-              );
-            }}
-            className={profileCardStyles.card}
-          >
-            <div className={profileCardStyles.cardContent}>
-              <h3 className="font-medium text-lg">Current Rank</h3>
-              <p className="text-sm">Your current academic or professional rank.</p>
-              <label className="relative w-full sm:max-w-sm">
+                  currentRank: formData.get("currentRank")?.toString(),
+                });
+              }}
+            >
+              {(isEditing) => (
                 <Input
+                  type="text"
                   name="currentRank"
-                  defaultValue={("currentRank" in profile ? profile.currentRank : '')}
+                  defaultValue={"currentRank" in profile ? profile.currentRank : ''}
                   placeholder="Senior Lecturer"
-                  className="w-full shadow-none"
+                  disabled={!isEditing}
+                  className="input"
                 />
-              </label>
-            </div>
-            <div className={profileCardStyles.cardFooter}>
-              <p className="text-sm text-muted-foreground">
-                Your current position (e.g., Lecturer, Senior Lecturer, Professor).
-              </p>
-              <Button size={'sm'} type="submit">Save</Button>
-            </div>
-          </form>
+              )}
+            </ProfileCardForm>
           </>
-        }
+        )}
 
         {/* Delete Account */}
-        <form
+        {/* <form
           onSubmit={(e) => {
             e.preventDefault();
             console.log("Delete account triggered");
@@ -553,7 +432,7 @@ export default function Page() {
               Delete Account
             </Button>
           </div>
-        </form>
+        </form> */}
       </div>
     );
   } else if (profile === null) {

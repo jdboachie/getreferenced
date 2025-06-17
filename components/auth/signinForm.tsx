@@ -19,6 +19,7 @@ import { SpinnerIcon } from "@/components/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { AnimatedState } from "@/components/motion/animated-state";
+import GoogleAuthButton from "./GoogleSigninButton";
 
 
 const formSchema = z.object({
@@ -76,6 +77,8 @@ export default function SignInForm() {
         <div className="mb-6 p-3 rounded-lg border-destructive bg-destructive/5 text-sm text-destructive">Invalid email or password</div>
       )}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <GoogleAuthButton redirectTo="/app" />
+        <p className="w-full text-center">OR</p>
         <FormField
           control={form.control}
           name="email"
@@ -139,15 +142,6 @@ export default function SignInForm() {
                 <>Sign In</>
             }
           </AnimatedState>
-        </Button>
-        <Button
-          type="button"
-          variant={'outline'}
-          size={'lg'}
-          className="w-full"
-          onClick={() => void signIn("google", {redirectTo: `/app`})}
-        >
-          Sign in with Google
         </Button>
       </form>
     </Form>
