@@ -100,7 +100,7 @@ function AllRequestsView() {
         <p className="text-muted-foreground text-sm">No requests found.</p>
       )}
 
-      <ul className="space-y-4 grid lg:grid-cols-2">
+      <ul className="space-y-4 grid gap-4 lg:grid-cols-2">
         {requests?.map((req) => (
           <li
             key={req._id}
