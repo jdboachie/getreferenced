@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Separator } from "@/components/ui/separator"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -92,23 +91,19 @@ export default function UserButton() {
               Overview
             </Link>
           </DrawerClose>
-          <Separator />
           <DrawerClose asChild>
             <Link href="/app/requests" className={`justify-start rounded-md text-base font-normal h-10 inline-flex items-center px-2`}>
               Requests
             </Link>
           </DrawerClose>
-          <Separator />
           <DrawerClose asChild>
             <Link href="/app/account" className={`justify-start rounded-md text-base font-normal h-10 inline-flex items-center px-2`}>
               Account
             </Link>
           </DrawerClose>
-          <Separator />
            <div className="flex items-center justify-between px-2 py-1 text-base">
             Theme<ThemeToggle lg />
           </div>
-          <Separator />
           <DrawerClose asChild>
             <button
              className="justify-start cursor-pointer rounded-md text-base font-normal h-10 inline-flex items-center px-2"
