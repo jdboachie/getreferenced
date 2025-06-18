@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-import { SlashIcon } from "lucide-react";
+import { HashIcon, SlashIcon } from "lucide-react";
 
 const capitalize = (s: string) =>
   s
@@ -20,7 +20,7 @@ const capitalize = (s: string) =>
 const Breadcrumbs = () => {
 
   const pathname = usePathname();
-  const segments = pathname.split('/').filter(Boolean);
+  const segments = pathname.split('/').filter(Boolean)
 
   return (
     <Breadcrumb className="py-14">
@@ -30,10 +30,12 @@ const Breadcrumbs = () => {
         </BreadcrumbList>
         :
         <BreadcrumbList>
-          {segments.slice(1).map((segment, index) => {
-            const href = '/' + segments.slice(0, index + 2).join('/');
-            const isFirst = index === 0;
-            const isLast = index === segments.length - 2;
+          {segments
+            .slice(1)
+            .map((segment, index) => {
+              const href = '/' + segments.slice(0, index + 2).join('/');
+              const isFirst = index === 0;
+              const isLast = index === segments.length - 2;
 
             return (
               <div key={href} className="flex items-center gap-2">
@@ -44,10 +46,14 @@ const Breadcrumbs = () => {
                 }
                 <BreadcrumbItem>
                   {isLast ? (
-                    <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">{capitalize(segment)}</BreadcrumbPage>
+                    <BreadcrumbPage className="text-2xl sm:text-3xl font-medium">
+                      {segment.length === 32 ? <HashIcon /> : capitalize(segment)}
+                    </BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
-                      <Link prefetch className="text-2xl sm:text-3xl font-medium" href={href}>{capitalize(segment)}</Link>
+                      <Link prefetch className="text-2xl sm:text-3xl font-medium" href={href}>
+                        {segment.length === 32 ? <HashIcon /> : capitalize(segment)}
+                      </Link>
                     </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>

@@ -13,6 +13,16 @@ export const getCurrentUser = query({
   },
 });
 
+export const getUserById = query({
+  args: { id: v.id("users")},
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return null;
+
+    return await ctx.db.get(args.id);
+  }
+});
+
 export const getRequesterProfile = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);

@@ -1,14 +1,14 @@
 'use client';
 
-import Image from "next/image";
 import * as React from 'react';
+import Image from "next/image";
 import { api } from "@/convex/_generated/api";
-import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "convex/react";
-import { User2Icon } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
-import { SpinnerIcon } from "@/components/icons";
+import { User2Icon } from "lucide-react";
 import { profileCardStyles } from "./styles";
+import { SpinnerIcon } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id<"_storage"> | string, userId: Id<"users">}) {

@@ -23,11 +23,11 @@ export const Sidenav = () => {
           href={link.href}
           className={cn(
             buttonVariants({
-              size: "default",
+              size: "lg",
               variant: pathname === link.href ? "secondary" : "ghost",
             }),
-            "lg:justify-start",
-            pathname !== link.href && "text-muted-foreground"
+            "lg:justify-start bg-background dark:bg-secondary",
+            pathname !== link.href && "text-muted-foreground bg-transparent dark:bg-transparent"
           )}
         >
           {link.label}

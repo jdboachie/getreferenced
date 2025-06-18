@@ -17,8 +17,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { PenSquare, XIcon } from "lucide-react";
 import { ReactNode, useState, useEffect, useRef } from "react";
+import { profileCardStyles } from './styles'
 
-// Define a type for the children prop when it's a function
+// Type for the children prop when it's a function
 type ChildrenRenderProp = (isEditing: boolean) => ReactNode;
 
 type ProfileCardFormProps = {
@@ -88,12 +89,10 @@ export default function ProfileCardForm({
       id={title.toLocaleLowerCase()}
       ref={formRef}
       onSubmit={handleSubmit}
-      className={"border bg-primary-foreground dark:bg-background rounded-xl p-0"}
+      className={profileCardStyles.card}
     >
       <div
-        className={
-          "bg-background dark:bg-primary-foreground rounded-xl shadow-2xs border-b p-4 gap-6 flex flex-col"
-        }
+        className={profileCardStyles.cardContent}
       >
         <div className="relative flex justify-between items-start">
           <div className="flex flex-col gap-1">
@@ -135,7 +134,7 @@ export default function ProfileCardForm({
         {/* Pass isEditing down to children if they need to render conditionally */}
         {typeof children === 'function' ? children(isEditing) : children}
       </div>
-      <div className={"md:gap-2 gap-4 flex justify-between items-center rounded-b-xl p-3"}>
+      <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">{footerNote}</p>
         <AlertDialog>
           <AlertDialogTrigger asChild>
