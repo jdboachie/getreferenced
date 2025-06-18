@@ -25,15 +25,15 @@ export default function Sidenav() {
 
   const recommenderLinks = [
     ...commonLinks,
-    { label: 'Drafts', href: `/app/requests/${id}/drafts` },
+    { label: 'Draft', href: `/app/requests/${id}/draft` },
   ]
 
   const links = role === 'requester' ? requesterLinks : recommenderLinks
   if (loading) {
     return (
       <div className="w-72 h-fit flex lg:flex-col gap-2 lg-sticky lg:top-38">
-        <div className="h-10 w-full bg-secondary animate-pulse rounded-md" />
-        <div className="h-10 w-full bg-secondary animate-pulse rounded-md" />
+        <div className="h-9 sm:h-10 w-full bg-secondary animate-pulse rounded-md" />
+        <div className="h-9 sm:h-10 w-full bg-secondary animate-pulse rounded-md" />
       </div>
     )
   }
@@ -49,7 +49,7 @@ export default function Sidenav() {
               size: "lg",
               variant: pathname === link.href ? "secondary" : "ghost",
             }),
-            "lg:justify-start bg-background dark:bg-secondary",
+            "lg:justify-start bg-background dark:bg-secondary h-9 sm:h-10 border",
             pathname !== link.href && "text-muted-foreground bg-transparent dark:bg-transparent"
           )}
         >

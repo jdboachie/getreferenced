@@ -69,7 +69,7 @@ export default function UserButton() {
           <DrawerTitle>User menu</DrawerTitle>
           <DrawerDescription>Navigate the app or logout here.</DrawerDescription>
         </DrawerHeader>
-        <div className="p-4 grid gap-4 mt-4">
+        <div className="p-4 grid gap-2 mt-4">
           <div className="flex gap-2 items-center mb-4">
             {imageUrl ?
               <Avatar className="size-12 border">
