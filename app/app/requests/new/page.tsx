@@ -93,7 +93,7 @@ export default function RequestForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-lg:flex-col w-full gap-8">
-        <div className="space-y-8 grid grow">
+        <div className="space-y-8 grid grow bg-background rounded-lg p-4 sm:p-6 border">
           <FormField
             control={form.control}
             name="institutionName"
@@ -101,7 +101,7 @@ export default function RequestForm() {
               <FormItem>
                 <FormLabel>Institution Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="University of..." {...field} />
+                  <Input placeholder="University of..." {...field} required />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,7 +114,7 @@ export default function RequestForm() {
               <FormItem>
                 <FormLabel>Institution Address</FormLabel>
                 <FormControl>
-                  <Textarea className="resize-none" placeholder="123 Street, City" {...field} />
+                  <Textarea className="resize-none" placeholder="123 Street, City" {...field} required />
                 </FormControl>
                 <FormMessage />
               </FormItem>

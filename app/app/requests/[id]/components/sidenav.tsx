@@ -49,8 +49,8 @@ export default function Sidenav() {
               size: "lg",
               variant: pathname === link.href ? "secondary" : "ghost",
             }),
-            "lg:justify-start bg-background dark:bg-secondary h-9 sm:h-10 border",
-            pathname !== link.href && "text-muted-foreground bg-transparent dark:bg-transparent"
+            "lg:justify-start h-9 sm:h-10",
+            pathname !== link.href && "text-muted-foreground"
           )}
         >
           {link.label}

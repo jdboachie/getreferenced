@@ -16,13 +16,15 @@ import Navbar from './navbar';
 import UserButton from "../auth/user-button";
 import { Button } from "@/components/ui/button";
 import { LeafyGreenIcon } from "lucide-react";
-import { BellIcon } from "@heroicons/react/24/outline"
+import { BellIcon } from "lucide-react"
+import LoadingIndicator from "./loading-indicator";
 
 function Header() {
   return (
     <header className='sticky top-0 z-50 border-b bg-background'>
       <div className='flex justify-between items-center p-4'>
         <LeafyGreenIcon className="size-5 stroke-[1.5]" />
+        <LoadingIndicator />
         <div className="flex items-center gap-2">
           <Button variant={"ghost"} className="text-muted-foreground">
             Feedback

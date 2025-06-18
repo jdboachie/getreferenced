@@ -33,7 +33,7 @@ export default function Page() {
 
   if (profile && user) {
     return (
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-8">
 
         <UserAvatarCard
           userImageUrl={user.image}

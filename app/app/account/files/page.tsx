@@ -211,7 +211,7 @@ function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storag
     <div id='cv' className={profileCardStyles.card}>
       <div className={profileCardStyles.cardContent}>
         <h3 className="font-medium text-lg">Curriculum Vitae</h3>
-        <p className="text-sm">Your CV gives recommenders a sense of your academic and professional background, and helps them write a more personalized letter.</p>
+        <p className="text-sm">Your CV gives recommenders a sense of your academic and professional background.</p>
         <Tabs defaultValue="details">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
