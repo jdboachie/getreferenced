@@ -31,14 +31,14 @@ export default function Sidenav() {
   const links = role === 'requester' ? requesterLinks : recommenderLinks
   if (loading) {
     return (
-      <div className="w-72 h-fit flex lg:flex-col gap-2 lg-sticky lg:top-38">
+      <div className="md:w-72 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
         <div className="h-9 sm:h-10 w-full bg-secondary animate-pulse rounded-md" />
         <div className="h-9 sm:h-10 w-full bg-secondary animate-pulse rounded-md" />
       </div>
     )
   }
   return (
-    <nav className="w-72 h-fit flex lg:flex-col gap-2 lg:sticky lg:top-38">
+    <nav className="md:w-full md:max-w-64 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
       {links.map((link) => (
         <Link
           prefetch
@@ -49,7 +49,7 @@ export default function Sidenav() {
               size: "lg",
               variant: pathname === link.href ? "secondary" : "ghost",
             }),
-            "lg:justify-start h-9 sm:h-10",
+            "justify-start",
             pathname !== link.href && "text-muted-foreground"
           )}
         >

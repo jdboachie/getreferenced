@@ -28,7 +28,7 @@ export const Sidenav = () => {
   ];
 
   return (
-    <nav className="w-72 h-fit flex lg:flex-col gap-2 lg:sticky lg:top-38">
+    <nav className="md:w-full md:max-w-64 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
       {links.map((link) => (
         <Link
           prefetch
@@ -36,10 +36,10 @@ export const Sidenav = () => {
           href={link.href}
           className={cn(
             buttonVariants({
-              size: "sm",
+              size: "lg",
               variant: pathname === link.href ? "secondary" : "ghost",
             }),
-            "lg:justify-start lg:h-10",
+            "justify-start",
             pathname !== link.href && "text-muted-foreground"
           )}
         >

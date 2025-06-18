@@ -35,9 +35,9 @@ export default function Page() {
   const isLoading = requests === undefined;
 
   return (
-    <section className="flex flex-col gap-8">
+    <section className="flex max-lg:flex-col gap-8">
       {/* top bar */}
-      <div className="w-full h-fit flex justify-between gap-2">
+      <div className="w-full lg:max-w-64 h-fit flex lg:flex-col justify-between gap-2">
         <div className='w-full lg:max-w-md relative bg-background rounded-md'>
           <Input className='w-full px-10' placeholder='Search requests...' />
           <SearchIcon className='absolute inset-3 size-4 text-muted-foreground' />
@@ -86,43 +86,43 @@ export default function Page() {
         </div>
       </div>
 
+
       {isLoading &&
-      <div className="grid gap-4 lg:grid-cols-2 w-full">
-        <Skeleton className="h-34" />
-        <Skeleton className="h-34" />
-        <Skeleton className="h-34" />
-        <Skeleton className="h-34" />
-        <Skeleton className="h-34" />
-      </div>
+        <div className="grid gap-4 xl:grid-cols-2 w-full">
+          <Skeleton className="h-34 w-full" />
+          <Skeleton className="h-34 w-full" />
+          <Skeleton className="h-34 w-full" />
+          <Skeleton className="h-34 w-full" />
+          <Skeleton className="h-34 w-full" />
+        </div>
       }
+
 
       {!isLoading && requests?.length === 0 && (
         <p className="text-muted-foreground text-sm">No requests found.</p>
       )}
 
-      <ul className="grid gap-4 lg:grid-cols-2 w-full">
-        {requests?.map((req) => (
-          <li
-            key={req._id}
-            className="grid border bg-background rounded-lg h-fit hover:bg-background/80 transition"
-          >
-            <Link href={`/app/requests/${req._id}`} className="space-y-2 size-full p-4">
-              <div className='grid gap-0.5 w-full'>
-                <p className="">{req.institutionName}</p>
-                <p className="text-sm text-muted-foreground">{req.institutionAddress}</p>
-              </div>
-              <StatusBadge status={req.status} />
-              {/* {req.additionalInfo &&
-              <p className="text-sm p-2 rounded-md bg-muted">Additional info: {req.additionalInfo}</p>
-              } */}
-              {/* <p className="text-sm">Purpose: {req.purpose ?? "none"}</p> */}
-              <p className="text-sm flex gap-1.5 items-center">
-                <AlarmClockIcon className="size-4" /> Due: {new Date(req.deadline).toLocaleDateString()}
-              </p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {!isLoading &&
+        <ul className="grid gap-4 xl:grid-cols-2 w-full">
+          {requests?.map((req) => (
+            <li
+              key={req._id}
+              className="grid border bg-background rounded-lg h-fit hover:bg-background/80 transition"
+            >
+              <Link href={`/app/requests/${req._id}`} className="space-y-2 size-full p-4">
+                <div className='grid gap-0.5 w-full'>
+                  <p className="">{req.institutionName}</p>
+                  <p className="text-sm text-muted-foreground">{req.institutionAddress}</p>
+                </div>
+                <StatusBadge status={req.status} />
+                <p className="text-sm flex gap-1.5 items-center">
+                  <AlarmClockIcon className="size-4" /> Due: {new Date(req.deadline).toLocaleDateString()}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      }
     </section>
   )
 }

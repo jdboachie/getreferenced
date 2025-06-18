@@ -1,8 +1,9 @@
+import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
 function Loading() {
   return (
-    <div className='size-full bg-secondary animate-pulse'>Loading</div>
+    <Skeleton className='min-h-[calc(100dvh-400px)]' />
   )
 }
 
