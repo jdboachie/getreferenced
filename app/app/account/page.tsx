@@ -33,7 +33,7 @@ export default function Page() {
 
   if (profile && user) {
     return (
-      <div className="flex flex-col gap-8">
+      <>
 
         <UserAvatarCard
           userImageUrl={user.image}
@@ -433,7 +433,7 @@ export default function Page() {
             </Button>
           </div>
         </form> */}
-      </div>
+      </>
     );
   } else if (profile === null) {
     return (

@@ -1,6 +1,7 @@
 import { Password } from "@convex-dev/auth/providers/Password";
 import { DataModel } from "./_generated/dataModel";
 import { ResendOTP } from "./ResendOTP";
+import { ResendOTPPasswordReset } from "./ResendOTPPasswordReset";
 
 export default Password<DataModel>({
   profile(params) {
@@ -9,5 +10,6 @@ export default Password<DataModel>({
       role: params.role as "recommender" | "requester",
     };
   },
-  verify: ResendOTP
+  verify: ResendOTP,
+  reset: ResendOTPPasswordReset,
 });

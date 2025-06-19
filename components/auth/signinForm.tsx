@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { AnimatedState } from "@/components/motion/animated-state";
 import GoogleAuthButton from "./GoogleSigninButton";
+import Link from "next/link";
 
 
 const formSchema = z.object({
@@ -121,8 +122,13 @@ export default function SignInForm() {
                   {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
-              <FormDescription>
-
+              <FormDescription className="flex justify-end">
+                <Link
+                  href={'/auth/password-reset'}
+                  className="hover:underline"
+                >
+                  Forgot password?
+                </Link>
               </FormDescription>
               <FormMessage id="password-error" />
             </FormItem>

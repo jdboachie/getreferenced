@@ -1,5 +1,7 @@
 'use client';
 
+// TODO: build reusable file card components
+
 import * as React from 'react';
 import Loading from '../loading';
 import { useRole } from '@/hooks/use-role';
@@ -9,8 +11,9 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { SpinnerIcon } from '@/components/icons';
 import { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from "convex/react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { profileCardStyles } from '../components/styles';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+// import { DocumentUploadCard } from '../components/document-upload-card';
 
 
 export default function Page() {
@@ -58,85 +61,129 @@ export default function Page() {
 }
 
 
-function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, certificateFileId?: Id<"_storage">}) {
-
+function CertificateCard({
+  userId,
+  certificateFileId,
+}: {
+  userId: Id<"users">
+  certificateFileId?: Id<"_storage">
+}) {
   const isMobile = useIsMobile()
 
-  const uploadCertificate = useMutation(api.users.updateUserProfile);
-  const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
+  const uploadCertificate = useMutation(api.users.updateUserProfile)
+  const generateUploadUrl = useMutation(api.storage.generateUploadUrl)
 
-  const cvFileUrl = useQuery(api.storage.getFileUrl, { src: certificateFileId})
-  const fileMetadata = useQuery(api.storage.getMetadata, { storageId: certificateFileId })
+  const cvFileUrl = useQuery(api.storage.getFileUrl, { src: certificateFileId })
+  const fileMetadata = useQuery(api.storage.getMetadata, {
+    storageId: certificateFileId,
+  })
 
-  const fileInput = React.useRef<HTMLInputElement>(null);
+  const fileInput = React.useRef<HTMLInputElement>(null)
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
+  const [uploadProgress, setUploadProgress] = React.useState<number | null>(null)
 
   async function handleUploadCertificate(file: File) {
-    // Step 1: Get a short-lived upload URL
-    const postUrl = await generateUploadUrl();
-    // Step 2: POST the file to the URL
-    const result = await fetch(postUrl, {
-      method: "POST",
-      headers: { "Content-Type": file.type },
-      body: file,
-    });
-    const { storageId } = await result.json();
-    // Step 3: Save the newly allocated storage id to the database
-    await uploadCertificate({
-      role: 'requester',
-      userId: userId,
-      certificateFile: storageId
-    });
+    const postUrl = await generateUploadUrl()
 
-    fileInput.current!.value = "";
+    const xhr = new XMLHttpRequest()
+    xhr.open("POST", postUrl, true)
+    xhr.setRequestHeader("Content-Type", file.type)
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const percent = Math.round((event.loaded / event.total) * 100)
+        setUploadProgress(percent)
+      }
+    }
+
+    xhr.onload = async () => {
+      if (xhr.status === 200) {
+        const { storageId } = JSON.parse(xhr.responseText)
+        await uploadCertificate({
+          role: "requester",
+          userId,
+          certificateFile: storageId,
+        })
+        setSelectedFile(null)
+        setUploadProgress(null)
+        if (fileInput.current) fileInput.current.value = ""
+      } else {
+        alert("Upload failed")
+        setUploadProgress(null)
+      }
+    }
+
+    xhr.onerror = () => {
+      alert("Upload error")
+      setUploadProgress(null)
+    }
+
+    xhr.send(file)
   }
 
   return (
-    <div id='certificate' className={profileCardStyles.card}>
+    <div id="certificate" className={profileCardStyles.card}>
       <div className={profileCardStyles.cardContent}>
         <h3 className="font-medium text-lg">Certificate</h3>
         <p className="text-sm">Your most recent graduation certificate.</p>
         <Tabs defaultValue="details">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
-            <TabsTrigger disabled={isMobile} value="preview">Preview</TabsTrigger>
+            <TabsTrigger disabled={isMobile} value="preview">
+              Preview
+            </TabsTrigger>
           </TabsList>
           <div className="h-fit rounded-md bg-ground dark:bg-background">
             <TabsContent value="preview" className="grid">
-              <div className='grid h-[400px] relative'>
-                {cvFileUrl ?
-                  <iframe src={cvFileUrl} className='rounded-md w-full h-full border' />
-                  :
-                  <p className='p-4 grid place-items-center text-muted-foreground'>No preview available</p>
-                }
+              <div className="grid h-[400px] relative">
+                {cvFileUrl ? (
+                  <iframe
+                    src={cvFileUrl}
+                    className="rounded-md w-full h-full border"
+                  />
+                ) : (
+                  <p className="p-4 grid place-items-center text-muted-foreground">
+                    No preview available
+                  </p>
+                )}
               </div>
             </TabsContent>
-            <TabsContent value="details" className='p-4 grid gap-1 text-sm'>
-              <div className='flex gap-4'>
+            <TabsContent
+              value="details"
+              className="p-4 grid gap-1 text-sm"
+            >
+              <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Last updated</div>
-                {fileMetadata?._creationTime ?
+                {fileMetadata?._creationTime ? (
                   <p className="text-primary">
                     {new Date(fileMetadata._creationTime).toLocaleString(undefined, {
                       dateStyle: "medium",
                       timeStyle: "short",
                     })}
                   </p>
-                  :
+                ) : (
                   <>-</>
-                }
+                )}
               </div>
-              <div className='flex gap-4'>
+              <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">File type</div>
-                {fileMetadata?.contentType ? <p className='text-primary'>{fileMetadata.contentType.split('/')[1]}</p>: '-'}
+                {fileMetadata?.contentType ? (
+                  <p className="text-primary">
+                    {fileMetadata.contentType.split("/")[1]}
+                  </p>
+                ) : (
+                  "-"
+                )}
               </div>
-              <div className='flex gap-4'>
+              <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Size</div>
-                {fileMetadata?.size ?
+                {fileMetadata?.size ? (
                   <p className="text-primary">
                     {(fileMetadata.size / 1024).toFixed(1)} KB
                   </p>
-                  :
-                  '-'
-                }
+                ) : (
+                  "-"
+                )}
               </div>
             </TabsContent>
           </div>
@@ -144,35 +191,51 @@ function CertificateCard ({userId, certificateFileId}:{userId: Id<"users">, cert
       </div>
       <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">
-          Last updated {fileMetadata?._creationTime ? <>{new Date(fileMetadata?._creationTime).toDateString()}</>:'never'}
+          Last updated{" "}
+          {fileMetadata?._creationTime
+            ? new Date(fileMetadata._creationTime).toDateString()
+            : "never"}
         </p>
-        <form>
+        <form className="flex grow justify-end items-center gap-2">
           <input
             hidden
             type="file"
             accept="application/pdf"
             ref={fileInput}
             onChange={(event) => {
-              const file = event.target.files?.[0];
+              const file = event.target.files?.[0]
               if (file) {
-                handleUploadCertificate(file);
+                setSelectedFile(file)
               }
             }}
           />
-          <Button
-            type='button'
-            size={'sm'}
-            onClick={() => {
-              fileInput.current?.click()
-            }}
-            value="Send file"
-          >
-            Upload
-          </Button>
+          {uploadProgress !== null && (
+            <div className="w-full h-2 bg-muted rounded-md overflow-hidden">
+              <div
+                className="h-full bg-primary transition-all duration-200"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+          )}
+          <div className="flex items-center w-full justify-end gap-2">
+            {selectedFile && !uploadProgress ? (
+              <Button type="button" size="sm" variant="default" onClick={() => handleUploadCertificate(selectedFile)}>
+                Upload {selectedFile.name}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => fileInput.current?.click()}
+              >
+                Choose file
+              </Button>
+            )}
+          </div>
         </form>
       </div>
     </div>
-  );
+  )
 }
 
 function CVCard ({userId, cvFileId}:{userId: Id<"users">, cvFileId?: Id<"_storage">}) {

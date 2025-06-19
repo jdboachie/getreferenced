@@ -1,5 +1,4 @@
 import Header from "@/components/nav/header";
-import Breadcrumbs from "@/components/nav/breadcrumbs";
 import Footer from "@/components/nav/footer";
 import { RoleProvider } from "@/hooks/use-role";
 
@@ -10,14 +9,13 @@ export default function Layout({
 }>) {
   return (
     <RoleProvider>
-      <div>
+      <>
         <Header />
-        <div className="max-xl:px-5 pb-16 max-w-7xl mx-auto min-h-[calc(100dvh-218px)]">
-          <Breadcrumbs />
+        <div className="pb-10 min-h-[calc(100dvh-218px)]">
           {children}
         </div>
         <Footer />
-      </div>
+      </>
     </RoleProvider>
   );
 }

@@ -11,6 +11,7 @@ function Loading() {
         <Skeleton className="h-34" />
         <Skeleton className="h-34" />
         <Skeleton className="h-34" />
+        <Skeleton className="h-34" />
       </div>
     </div>
   )

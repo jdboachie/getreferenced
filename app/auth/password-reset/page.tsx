@@ -1,0 +1,71 @@
+'use client';
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
+
+export default function PasswordReset() {
+
+  const router = useRouter()
+  const { signIn } = useAuthActions();
+
+  const [step, setStep] = useState<"forgot" | { email: string }>("forgot");
+
+  return(
+    <div className="w-full p-4 grid gap-8">
+      <h1 className="text-xl font-medium">Reset Password</h1>
+      {step === "forgot" ? (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            void signIn("password", formData)
+              .then(() =>
+              setStep({ email: formData.get("email") as string })
+            );
+          }}
+          className="w-full grid gap-8"
+          >
+          <label className="grid gap-1">
+            <span className="text-sm font-medium">Email</span>
+            <Input name="email" placeholder="Email" type="text" />
+            <span className="text-sm text-muted-foreground">We will send a code to this email address.</span>
+          </label>
+          <input name="flow" type="hidden" value="reset" />
+          <Button type="submit">Send code</Button>
+        </form>
+      ) : (
+        <form
+          onSubmit={(event) => {
+          event.preventDefault();
+          const formData = new FormData(event.currentTarget);
+          toast.promise(
+            signIn("password", formData).then(() => router.push("/app")),
+            {
+              loading: "Signing in...",
+              success: "Signed in successfully!",
+              error: "Failed to sign in.",
+            }
+          );
+        }}
+
+          className="w-full grid gap-8"
+        >
+          <Input name="code" placeholder="Code" type="text" />
+          <Input name="newPassword" placeholder="New password" type="password" />
+          <input name="email" value={step.email} type="hidden" />
+          <input name="flow" value="reset-verification" type="hidden" />
+          <div className="flex gap-2 w-full">
+            <Button size={'lg'} variant={'outline'} type="button" onClick={() => setStep("forgot")}>
+              Cancel
+            </Button>
+            <Button size={'lg'} type="submit" className="grow">Continue</Button>
+          </div>
+        </form>
+      )}
+    </div>
+  )
+}

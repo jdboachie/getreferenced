@@ -23,7 +23,7 @@ function Header() {
   return (
     <header className='sticky top-0 z-50 border-b bg-background'>
       <div className='flex justify-between items-center p-4'>
-        <LeafyGreenIcon className="size-5 stroke-[1.5]" />
+        <LeafyGreenIcon className="size-4 stroke-[1.5]" />
         <LoadingIndicator />
         <div className="flex items-center gap-2">
           <Button variant={"ghost"} className="text-muted-foreground">
@@ -35,8 +35,8 @@ function Header() {
           <Popover>
             <PopoverTrigger asChild className="max-sm:hidden">
               <Button variant={"outline"} size={"icon"} className="shadow-none rounded-full">
-                <BellIcon className="size-5" />
-                {/* <BellIconSolid className="hidden dark:flex size-5" /> */}
+                <BellIcon className="size-4" />
+                {/* <BellIconSolid className="hidden dark:flex size-4" /> */}
                 <span className="sr-only">Notifications</span>
               </Button>
             </PopoverTrigger>
@@ -45,8 +45,8 @@ function Header() {
           <Drawer>
             <DrawerTrigger asChild className="sm:hidden">
               <Button variant={"outline"} size={"icon"} className="shadow-none rounded-full">
-                <BellIcon className="size-5" />
-                {/* <BellIconSolid className="hidden dark:flex size-5" /> */}
+                <BellIcon className="size-4" />
+                {/* <BellIconSolid className="hidden dark:flex size-4" /> */}
                 <span className="sr-only">Notifications</span>
               </Button>
             </DrawerTrigger>

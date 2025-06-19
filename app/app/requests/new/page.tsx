@@ -79,7 +79,7 @@ export default function RequestForm() {
     });
 
     toast.success("Request submitted");
-    router.push(`/app/requests?id=${newRequestId}`)
+    router.push(`/app/requests/${newRequestId}`)
   }
 
 
@@ -281,12 +281,12 @@ const RecommenderImage = ({src} : {src: Id<"_storage"> | string | undefined}) =>
         <Image
           alt="recommender image"
           src={imageUrl}
-          className="size-5 rounded-full border"
+          className="size-4 rounded-full border"
           width={500}
           height={500}
         />
         :
-        <div className="size-5 bg-secondary border"></div>
+        <div className="size-4 bg-secondary border"></div>
       }
     </>
   )

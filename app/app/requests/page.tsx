@@ -13,12 +13,12 @@ import {
   ToggleGroupItem,
 } from "@/components/ui/toggle-group";
 import { Input } from '@/components/ui/input';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useRole } from '@/hooks/use-role';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-import { ListIcon, LayoutGridIcon, SearchIcon, AlarmClockIcon, FilterIcon, PlusIcon } from 'lucide-react';
+import { ListIcon, LayoutGridIcon, SearchIcon, AlarmClockIcon, FilterIcon } from 'lucide-react';
 import StatusBadge from "@/components/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -35,9 +35,9 @@ export default function Page() {
   const isLoading = requests === undefined;
 
   return (
-    <section className="flex max-lg:flex-col gap-8">
+    <section className="flex flex-col gap-8">
       {/* top bar */}
-      <div className="w-full lg:max-w-64 h-fit flex lg:flex-col justify-between gap-2">
+      <div className="w-full flex justify-between gap-2">
         <div className='w-full lg:max-w-md relative bg-background rounded-md'>
           <Input className='w-full px-10' placeholder='Search requests...' />
           <SearchIcon className='absolute inset-3 size-4 text-muted-foreground' />
@@ -72,17 +72,6 @@ export default function Page() {
               <ListIcon className="h-4 w-4" />
             </ToggleGroupItem>
           </ToggleGroup>
-          {role === null && <Skeleton className="size-10" />}
-          {role === "requester" && (
-            <Link
-              className={`${buttonVariants({ size: "lg", variant: "default" })} max-md:size-10 max-md:px-0`}
-              prefetch
-              href="/app/requests/new"
-            >
-              <PlusIcon className="size-5 md:hidden" />
-              <span className="max-md:hidden">New request</span>
-            </Link>
-          )}
         </div>
       </div>
 

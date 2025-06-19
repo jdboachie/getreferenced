@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { useRole } from "@/hooks/use-role";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 export default function Sidenav() {
@@ -32,13 +33,13 @@ export default function Sidenav() {
   if (loading) {
     return (
       <div className="md:w-72 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
-        <div className="h-9 sm:h-10 w-full bg-secondary animate-pulse rounded-md" />
-        <div className="h-9 sm:h-10 w-full bg-secondary animate-pulse rounded-md" />
+        <Skeleton className="h-10 rounded-md" />
+        <Skeleton className="h-10 rounded-md" />
       </div>
     )
   }
   return (
-    <nav className="md:w-full md:max-w-64 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
+    <nav className="md:w-full md:max-w-56 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
       {links.map((link) => (
         <Link
           prefetch
