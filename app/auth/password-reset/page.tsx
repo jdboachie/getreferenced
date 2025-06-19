@@ -13,10 +13,16 @@ export default function PasswordReset() {
   const { signIn } = useAuthActions();
 
   const [step, setStep] = useState<"forgot" | { email: string }>("forgot");
+  const [error, setError] = useState<string | null>(null)
 
   return(
     <div className="w-full p-4 grid gap-8">
       <h1 className="text-xl font-medium">Reset Password</h1>
+      {error && (
+        <div className="mb-6 p-3 rounded-lg border-destructive bg-destructive/5 text-sm text-destructive">
+          {error}
+        </div>
+      )}
       {step === "forgot" ? (
         <form
           onSubmit={(event) => {
@@ -24,8 +30,9 @@ export default function PasswordReset() {
             const formData = new FormData(event.currentTarget);
             void signIn("password", formData)
               .then(() =>
-              setStep({ email: formData.get("email") as string })
-            );
+                setStep({ email: formData.get("email") as string })
+              )
+              .catch(() => {setError(`${formData.get("email")} is not registered on GetReferenced`)})
           }}
           className="w-full grid gap-8"
           >

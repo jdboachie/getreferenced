@@ -15,6 +15,7 @@ const TitleActions = () => {
 
   const match = pathname.match(/^\/app\/requests\/([^\/]+)(\/.*)?$/);
 
+  if (pathname === "/app/requests/new") return null
   if (role === null) return (
     <div className='flex gap-2 items-center'>
       <Skeleton className="w-44 h-10" />
@@ -22,7 +23,12 @@ const TitleActions = () => {
     </div>
   )
   return (
-    <div className='flex items-center gap-2'>
+    <div className='flex items-center gap-2 size-fit'>
+      {match &&
+        <Button size={'lg'} variant={'outline'}>
+          Re-assign
+        </Button>
+      }
       {pathname !== '/app/requests/new' && role === "requester" && (
         <Link
           className={`${buttonVariants({ size: "lg", variant: "default" })}`}
@@ -33,12 +39,6 @@ const TitleActions = () => {
           <span className="">New request</span>
         </Link>
       )}
-      {pathname !== '/app/requests/new' && match &&
-        <Button size={'lg'} variant={'outline'}>
-          Re-assign
-        </Button>
-      }
-
     </div>
   )
 }

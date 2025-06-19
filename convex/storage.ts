@@ -24,21 +24,6 @@ export const uploadUserImage = mutation({
   },
 });
 
-// export const getFileUrl = query({
-//   args: { src: v.optional(v.union(v.id("_storage"), v.string())), },
-//   handler: async (ctx, args) => {
-//     if (!args.src) {
-//       return null;
-//     }
-//     // If src is a string, return it directly; otherwise, get the URL
-//     if (typeof args.src !== 'string') {
-//       return await ctx.storage.getUrl(args.src)
-//     };
-//     console.log(typeof args.src)
-//     return args.src;
-//   },
-// })
-
 export const getFileUrl = query({
   args: {
     src: v.optional(v.union(v.id("_storage"), v.string())),
@@ -60,7 +45,6 @@ export const getFileUrl = query({
   },
 });
 
-
 export const getMetadata = query({
   args: {
     storageId: v.optional(v.id("_storage")),
@@ -77,3 +61,10 @@ export const listAllFiles = query({
     return await ctx.db.system.query("_storage").collect();
   },
 });
+
+export const deleteFile = mutation({
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    await ctx.storage.delete(args.storageId)
+  },
+})

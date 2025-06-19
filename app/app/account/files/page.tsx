@@ -69,7 +69,7 @@ function CertificateCard({
   certificateFileId?: Id<"_storage">
 }) {
   const isMobile = useIsMobile()
-
+  const deleteFile = useMutation(api.storage.deleteFile);
   const uploadCertificate = useMutation(api.users.updateUserProfile)
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl)
 
@@ -83,6 +83,9 @@ function CertificateCard({
   const [uploadProgress, setUploadProgress] = React.useState<number | null>(null)
 
   async function handleUploadCertificate(file: File) {
+    if (certificateFileId) {
+      await deleteFile({ storageId: certificateFileId });
+    }
     const postUrl = await generateUploadUrl()
 
     const xhr = new XMLHttpRequest()
@@ -190,12 +193,6 @@ function CertificateCard({
         </Tabs>
       </div>
       <div className={profileCardStyles.cardFooter}>
-        <p className="text-sm text-muted-foreground">
-          Last updated{" "}
-          {fileMetadata?._creationTime
-            ? new Date(fileMetadata._creationTime).toDateString()
-            : "never"}
-        </p>
         <form className="flex grow justify-end items-center gap-2">
           <input
             hidden
@@ -209,29 +206,37 @@ function CertificateCard({
               }
             }}
           />
-          {uploadProgress !== null && (
-            <div className="w-full h-2 bg-muted rounded-md overflow-hidden">
-              <div
-                className="h-full bg-primary transition-all duration-200"
-                style={{ width: `${uploadProgress}%` }}
-              />
-            </div>
+          {uploadProgress && (
+              <div className="w-full h-2 bg-muted rounded-md overflow-hidden">
+                <div
+                  className="h-full bg-primary transition-all duration-200"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
           )}
-          <div className="flex items-center w-full justify-end gap-2">
-            {selectedFile && !uploadProgress ? (
-              <Button type="button" size="sm" variant="default" onClick={() => handleUploadCertificate(selectedFile)}>
-                Upload {selectedFile.name}
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                size="sm"
-                onClick={() => fileInput.current?.click()}
-              >
-                Choose file
-              </Button>
-            )}
-          </div>
+          {!uploadProgress &&
+            <div className="flex flex-wrap items-center w-full truncate justify-end gap-2">
+              {selectedFile && <p className='text-wrap text-sm'><span className='text-muted-foreground mr-2'>Selected file:</span>{selectedFile.name}</p>}
+              {selectedFile ? (
+                <div className='flex gap-2'>
+                  <Button type="button" size="sm" variant="default" onClick={() => handleUploadCertificate(selectedFile)}>
+                    Upload
+                  </Button>
+                  <Button type="reset" size="sm" variant={'outline'} onClick={() => setSelectedFile(null)}>
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => fileInput.current?.click()}
+                >
+                  Choose file
+                </Button>
+              )}
+            </div>
+          }
         </form>
       </div>
     </div>
