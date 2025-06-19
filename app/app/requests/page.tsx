@@ -47,6 +47,7 @@ export default function Page() {
             <DropdownMenuTrigger asChild>
               <Button size="icon" variant="outline" className="size-10">
                 <FilterIcon className="h-4 w-4" />
+                <span className="sr-only">Filter</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">

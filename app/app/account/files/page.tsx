@@ -12,6 +12,7 @@ import { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from "convex/react";
 import { profileCardStyles } from '../components/styles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { UploadIcon } from 'lucide-react';
 
 
 export default function Page() {
@@ -68,7 +69,7 @@ function CertificateCard({
 }) {
   const isMobile = useIsMobile()
   const deleteFile = useMutation(api.storage.deleteFile);
-  const uploadCertificate = useMutation(api.users.updateUserProfile)
+  const updateProfile = useMutation(api.users.updateUserProfile)
   const generateUploadUrl = useMutation(api.storage.generateUploadUrl)
 
   const cvFileUrl = useQuery(api.storage.getFileUrl, { src: certificateFileId })
@@ -100,7 +101,7 @@ function CertificateCard({
     xhr.onload = async () => {
       if (xhr.status === 200) {
         const { storageId } = JSON.parse(xhr.responseText)
-        await uploadCertificate({
+        await updateProfile({
           role: "requester",
           userId,
           certificateFile: storageId,
@@ -225,13 +226,38 @@ function CertificateCard({
                   </Button>
                 </div>
               ) : (
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={() => fileInput.current?.click()}
-                >
-                  Choose file
-                </Button>
+                <div className='flex gap-2'>
+                  {/* {certificateFileId !== undefined &&
+                    <Button
+                      type='button'
+                      variant={'outline'}
+                      size={'sm'}
+                      onClick={async () => {
+                        if (certificateFileId) {
+                          // await deleteFile({ storageId: certificateFileId });
+                          await updateProfile({
+                            userId,
+                            role: "requester",
+                            certificateFile: undefined
+                            })
+                        }
+                      }}
+                      className='text-destructive hover:text-destructive'
+                    >
+                      {certificateFileId}
+                      <Trash2Icon />
+                      Delete
+                    </Button>
+                  } */}
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => fileInput.current?.click()}
+                  >
+                    <UploadIcon />
+                    {certificateFileId ? 'Upload new' : 'Choose file'}
+                  </Button>
+                </div>
               )}
             </div>
           }

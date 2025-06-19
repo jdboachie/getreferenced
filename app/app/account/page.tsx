@@ -34,7 +34,6 @@ export default function Page() {
   if (profile && user) {
     return (
       <>
-
         <UserAvatarCard
           userImageUrl={user.image}
           userId={profile.userId}
@@ -95,6 +94,7 @@ export default function Page() {
           footerNote="Email must be verified to receive notifications."
           onSubmit={() => Promise.resolve()}
           buttonDisabled
+          showEditButton={false}
         >
           {(isEditing) => (
             <label className="relative w-full sm:max-w-sm">
@@ -123,6 +123,7 @@ export default function Page() {
           footerNote="Phone number must be verified to allow recommenders to contact you."
           onSubmit={() => Promise.resolve()}
           buttonDisabled
+          showEditButton={false}
         >
           {(isEditing) => (
             <label className="relative w-full sm:max-w-sm">
@@ -287,6 +288,7 @@ export default function Page() {
 
         {role === 'recommender' && (
           <>
+            {/* Staff Number */}
             <ProfileCardForm
               title="Staff Number"
               description="Your official university staff identification number."
@@ -311,6 +313,7 @@ export default function Page() {
               )}
             </ProfileCardForm>
 
+            {/* Secondary Email */}
             <ProfileCardForm
               title="Secondary Email"
               description="Alternative email address for backup communication."
@@ -335,6 +338,7 @@ export default function Page() {
               )}
             </ProfileCardForm>
 
+            {/* Department */}
             <ProfileCardForm
               title="Department"
               description="The department or faculty you belong to."
@@ -359,6 +363,7 @@ export default function Page() {
               )}
             </ProfileCardForm>
 
+            {/* Year of employment */}
             <ProfileCardForm
               title="Year of Employment"
               description="The year you started working at the institution."
@@ -372,17 +377,29 @@ export default function Page() {
               }}
             >
               {(isEditing) => (
-                <Input
-                  type="text"
+                <Select
                   name="yearOfEmployment"
                   defaultValue={"yearOfEmployment" in profile ? profile.yearOfEmployment : ''}
-                  placeholder="2018"
                   disabled={!isEditing}
-                  className="input"
-                />
+                >
+                  <SelectTrigger className="w-full shadow-none">
+                    <SelectValue placeholder="Select year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 50 }, (_, i) => {
+                      const year = String(new Date().getFullYear() - i);
+                      return (
+                        <SelectItem key={year} value={year}>
+                          {year}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
               )}
             </ProfileCardForm>
 
+            {/* Current rank */}
             <ProfileCardForm
               title="Current Rank"
               description="Your current academic or professional rank."

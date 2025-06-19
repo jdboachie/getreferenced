@@ -26,10 +26,10 @@ export default function Layout({
                 href: "/app/account/files",
                 label: "Files",
               },
-              {
-                href: "/app/account/billing",
-                label: "Billing",
-              },
+              // {
+              //   href: "/app/account/billing",
+              //   label: "Billing",
+              // },
             ]}
           />
           <div className="flex flex-col gap-12 w-full">

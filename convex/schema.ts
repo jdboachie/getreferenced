@@ -28,7 +28,8 @@ const schema = defineSchema({
     yearOfCompletion: v.optional(v.string()),
     programOfStudy: v.optional(v.string()),
     certificateFile: v.optional(v.id("_storage")),
-  }).index("by_userId", ["userId"]),
+  })
+    .index("by_userId", ["userId"]),
 
   recommenders: defineTable({
     userId: v.id("users"),
@@ -39,7 +40,8 @@ const schema = defineSchema({
     yearOfEmployment: v.optional(v.string()),
     phoneNumber: v.optional(v.string()),
     currentRank: v.optional(v.string()),
-  }).index("by_userId", ["userId"]),
+  })
+    .index("by_userId", ["userId"]),
 
   requests: defineTable({
     additionalInfo: v.optional(v.string()),

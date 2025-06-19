@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { PenSquare, XIcon } from "lucide-react";
 import { ReactNode, useState, useEffect, useRef } from "react";
 import { profileCardStyles } from './styles'
+import { SpinnerIcon } from "@/components/icons";
 
 // Type for the children prop when it's a function
 type ChildrenRenderProp = (isEditing: boolean) => ReactNode;
@@ -48,6 +49,7 @@ export default function ProfileCardForm({
   onEditToggle,
 }: ProfileCardFormProps) {
 
+  const [pending, setPending] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState(defaultEditable);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -65,6 +67,7 @@ export default function ProfileCardForm({
   };
 
   const handleSubmit = async () => {
+    setPending(true)
     if (!formRef.current) return; // Ensure formRef is defined
     const form = formRef.current;
 
@@ -82,6 +85,7 @@ export default function ProfileCardForm({
     if (onEditToggle && !defaultEditable) {
       onEditToggle(false);
     }
+    setPending(false)
   };
 
   return (
@@ -139,6 +143,7 @@ export default function ProfileCardForm({
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button size="sm" type="button" disabled={(buttonDisabled || !isEditing)}>
+              {pending && <SpinnerIcon />}
               {buttonText}
             </Button>
           </AlertDialogTrigger>
