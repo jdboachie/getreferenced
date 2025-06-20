@@ -38,6 +38,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Id } from "@/convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 const FormSchema = z.object({
@@ -282,12 +283,12 @@ const RecommenderImage = ({src} : {src: Id<"_storage"> | string | undefined}) =>
         <Image
           alt="recommender image"
           src={imageUrl}
-          className="size-4 rounded-full border"
+          className="size-5 rounded-full border"
           width={500}
           height={500}
         />
         :
-        <div className="size-4 bg-secondary border"></div>
+        <Skeleton className="size-5 rounded-full" />
       }
     </>
   )
