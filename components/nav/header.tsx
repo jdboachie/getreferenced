@@ -55,12 +55,12 @@ function Header() {
                 <DrawerTitle>Notifications</DrawerTitle>
                 {/* <DrawerDescription>This action cannot be undone.</DrawerDescription> */}
               </DrawerHeader>
-              <div className="p-4 grid place-items-center text-sm text-muted-foreground">
+              <div className="p-4 min-h-[60dvh] grid place-items-center text-sm text-muted-foreground">
                 No notifications yet.
               </div>
               <DrawerFooter className="w-full">
-                <DrawerClose>
-                  <Button variant="outline" className="w-full rounded-b-3xl">Close</Button>
+                <DrawerClose asChild>
+                  <Button variant="outline" size={'lg'} className="w-full rounded-b-3xl">Close</Button>
                 </DrawerClose>
               </DrawerFooter>
             </DrawerContent>

@@ -197,7 +197,8 @@ export default function RequestForm() {
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a recommender" />
+                      <span className="sr-only">Select recommender</span>
+                      <SelectValue placeholder="Select recommender" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -257,7 +258,7 @@ export default function RequestForm() {
           />
         </div>
         <div className="w-full lg:w-[450px] h-fit flex flex-col gap-4 lg:sticky lg:top-38 bg-background p-4 rounded-lg border shadow-xs">
-          <h3 className="font-medium text-base">Summary</h3>
+          <h2 className="font-medium text-base">Summary</h2>
           <p className="">
             You are applying to <strong>{form.watch("institutionName") || "—"}</strong>, located at <strong>{form.watch("institutionAddress") || "—"}</strong>.
             The recommendation letter is due by <strong>{form.watch("deadline") ? format(form.watch("deadline"), "PPP") : "—"}</strong>.

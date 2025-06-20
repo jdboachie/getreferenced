@@ -207,6 +207,7 @@ export default function Page() {
                 >
                   <SelectTrigger className="w-full shadow-none">
                     <SelectValue placeholder="Select year" />
+                    <span className="sr-only">Select year</span>
                   </SelectTrigger>
                   <SelectContent>
                     {Array.from({ length: 30 }, (_, i) => {

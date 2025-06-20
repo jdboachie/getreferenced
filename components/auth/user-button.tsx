@@ -30,6 +30,7 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User2Icon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Skeleton } from "../ui/skeleton";
 
 
 export default function UserButton() {
@@ -49,14 +50,15 @@ export default function UserButton() {
     <Drawer>
       <DrawerTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-none place-items-center grid ">
-          {imageUrl ?
+          {imageUrl === undefined && <Skeleton className="size-9" />}
+          {imageUrl === null &&
             <Avatar>
-              <AvatarImage alt="avatar" src={imageUrl} />
               <AvatarFallback><User2Icon /></AvatarFallback>
             </Avatar>
-            :
-            <Avatar
-            >
+          }
+          {imageUrl &&
+            <Avatar>
+              <AvatarImage alt="avatar" src={imageUrl} />
               <AvatarFallback><User2Icon /></AvatarFallback>
             </Avatar>
           }
@@ -131,14 +133,15 @@ export default function UserButton() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size={"icon"} className="rounded-full shadow-none">
-          {imageUrl ?
+          {imageUrl === undefined && <Skeleton className="size-9 rounded-full" />}
+          {imageUrl === null &&
             <Avatar>
-              <AvatarImage alt="avatar" src={imageUrl} onError={() => console.log("error")} />
               <AvatarFallback><User2Icon /></AvatarFallback>
             </Avatar>
-            :
-            <Avatar
-            >
+          }
+          {imageUrl &&
+            <Avatar>
+              <AvatarImage alt="avatar" src={imageUrl} />
               <AvatarFallback><User2Icon /></AvatarFallback>
             </Avatar>
           }

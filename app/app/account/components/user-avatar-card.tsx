@@ -54,8 +54,10 @@ export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id
       className={profileCardStyles.card}
     >
       <div className={profileCardStyles.cardContent}>
-        <h3 className="font-medium text-lg">Display Picture</h3>
-        <p className="text-sm">Click on the avatar to upload a new one. Use a professional photo with a clear view of your face.</p>
+        <div className="flex flex-col gap-4">
+          <h2 className="font-medium text-xl">Display Picture</h2>
+          <p className="text-base">Click on the avatar to upload a new one. Use a professional photo with a clear view of your face.</p>
+        </div>
         <input
           type="file"
           accept="image/*"

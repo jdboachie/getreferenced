@@ -47,29 +47,30 @@ export default function PasswordReset() {
       ) : (
         <form
           onSubmit={(event) => {
-          event.preventDefault();
-          const formData = new FormData(event.currentTarget);
-          toast.promise(
-            signIn("password", formData).then(() => router.push("/app")),
-            {
-              loading: "Signing in...",
-              success: "Signed in successfully!",
-              error: "Failed to sign in.",
-            }
-          );
-        }}
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            toast.promise(
+              signIn("password", formData).then(() => router.push("/app")),
+              {
+                loading: "Signing in...",
+                success: "Signed in successfully!",
+                error: "Failed to sign in.",
+              }
+            );
+          }}
 
           className="w-full grid gap-8"
         >
+          <div className="">We have sent a code to — {step.email}.</div>
           <Input name="code" placeholder="Code" type="text" />
           <Input name="newPassword" placeholder="New password" type="password" />
           <input name="email" value={step.email} type="hidden" />
           <input name="flow" value="reset-verification" type="hidden" />
-          <div className="flex gap-2 w-full">
+          <div className="grid gap-2 w-full">
+            <Button size={'lg'} type="submit" className="grow">Continue</Button>
             <Button size={'lg'} variant={'outline'} type="button" onClick={() => setStep("forgot")}>
               Cancel
             </Button>
-            <Button size={'lg'} type="submit" className="grow">Continue</Button>
           </div>
         </form>
       )}

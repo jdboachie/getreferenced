@@ -99,9 +99,9 @@ export default function ProfileCardForm({
         className={profileCardStyles.cardContent}
       >
         <div className="relative flex justify-between items-start">
-          <div className="flex flex-col gap-1">
-            <h3 className="font-medium text-lg">{title}</h3>
-            {description && <p className="text-sm">{description}</p>}
+          <div className="flex flex-col gap-4">
+            <h2 className="font-medium text-xl">{title}</h2>
+            {description && <p className="text-base">{description}</p>}
           </div>
           {showEditButton && !isEditing && (
             <Tooltip delayDuration={300}>

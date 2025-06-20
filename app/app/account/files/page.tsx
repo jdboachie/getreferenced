@@ -126,8 +126,10 @@ function CertificateCard({
   return (
     <div id="certificate" className={profileCardStyles.card}>
       <div className={profileCardStyles.cardContent}>
-        <h3 className="font-medium text-lg">Certificate</h3>
-        <p className="text-sm">Your most recent graduation certificate.</p>
+        <div className="flex flex-col gap-4">
+          <h2 className="font-medium text-xl">Certificate</h2>
+          <p className="text-base">Your most recent graduation certificate.</p>
+        </div>
         <Tabs defaultValue="details">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
@@ -206,12 +208,15 @@ function CertificateCard({
             }}
           />
           {uploadProgress && (
-              <div className="w-full h-2 bg-muted rounded-md overflow-hidden">
+            <div className='flex items-center w-full h-8 py-3 gap-8'>
+              <div className="w-full h-2 bg-muted rounded-md overflow-hidden border">
                 <div
                   className="h-full bg-primary transition-all duration-200"
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>
+              <p className="font-mono text-xs whitespace-nowrap">{uploadProgress}{" "}%</p>
+            </div>
           )}
           {!uploadProgress &&
             <div className="flex flex-wrap items-center w-full truncate justify-end gap-2">
@@ -320,8 +325,10 @@ function CVCard({ userId, cvFileId }: { userId: Id<"users">, cvFileId?: Id<"_sto
   return (
     <div id="cv" className={profileCardStyles.card}>
       <div className={profileCardStyles.cardContent}>
-        <h3 className="font-medium text-lg">Curriculum Vitae</h3>
-        <p className="text-sm">Your CV gives recommenders a sense of your academic and professional background.</p>
+        <div className="flex flex-col gap-4">
+          <h2 className="font-medium text-xl">Curriculum Vitae</h2>
+          <p className="text-base">Your CV gives recommenders a sense of your academic and professional background.</p>
+        </div>
         <Tabs defaultValue="details">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
@@ -373,12 +380,15 @@ function CVCard({ userId, cvFileId }: { userId: Id<"users">, cvFileId?: Id<"_sto
               if (file) setSelectedFile(file)
             }}
           />
-          {uploadProgress !== null && (
-            <div className="w-full h-2 bg-muted rounded-md overflow-hidden">
-              <div
-                className="h-full bg-primary transition-all duration-200"
-                style={{ width: `${uploadProgress}%` }}
-              />
+          {uploadProgress && (
+            <div className='flex items-center w-full h-8 py-3 gap-8'>
+              <div className="w-full h-2 bg-muted rounded-md overflow-hidden border">
+                <div
+                  className="h-full bg-primary transition-all duration-200"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+              <p className="font-mono text-xs whitespace-nowrap">{uploadProgress}{" "}%</p>
             </div>
           )}
           {uploadProgress === null && (
@@ -400,7 +410,8 @@ function CVCard({ userId, cvFileId }: { userId: Id<"users">, cvFileId?: Id<"_sto
                 </div>
               ) : (
                 <Button type="button" size="sm" onClick={() => fileInput.current?.click()}>
-                  Choose file
+                  <UploadIcon />
+                  {cvFileId ? 'Upload new' : 'Choose file'}
                 </Button>
               )}
             </div>
@@ -471,10 +482,12 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
   return (
     <div id="transcript" className={profileCardStyles.card}>
       <div className={profileCardStyles.cardContent}>
-        <h3 className="font-medium text-lg">Transcript</h3>
-        <p className="text-sm">
-          Your academic transcript gives recommenders insight into your academic history and achievements.
-        </p>
+        <div className="flex flex-col gap-4">
+          <h2 className="font-medium text-xl">Transcript</h2>
+          <p className="text-base">
+            Your academic transcript gives recommenders insight into your academic history and achievements.
+          </p>
+        </div>
         <Tabs defaultValue="details">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
@@ -530,12 +543,15 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
               if (file) setSelectedFile(file)
             }}
           />
-          {uploadProgress !== null && (
-            <div className="w-full h-2 bg-muted rounded-md overflow-hidden">
-              <div
-                className="h-full bg-primary transition-all duration-200"
-                style={{ width: `${uploadProgress}%` }}
-              />
+          {uploadProgress && (
+            <div className='flex items-center w-full h-8 py-3 gap-8'>
+              <div className="w-full h-2 bg-muted rounded-md overflow-hidden border">
+                <div
+                  className="h-full bg-primary transition-all duration-200"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+              <p className="font-mono text-xs whitespace-nowrap">{uploadProgress}{" "}%</p>
             </div>
           )}
           {uploadProgress === null && (
@@ -557,7 +573,8 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
                 </div>
               ) : (
                 <Button type="button" size="sm" onClick={() => fileInput.current?.click()}>
-                  Choose file
+                  <UploadIcon />
+                  {transcriptFileId ? 'Upload new' : 'Choose file'}
                 </Button>
               )}
             </div>
