@@ -18,8 +18,8 @@ const TitleActions = () => {
   if (pathname === "/app/requests/new") return null
   if (role === null) return (
     <div className='flex gap-2 items-center'>
-      <Skeleton className="w-44 h-10" />
-      <Skeleton className="w-44 h-10" />
+      <Skeleton className="w-36 sm:w-44 h-10" />
+      <Skeleton className="w-36 sm:w-44 h-10" />
     </div>
   )
   return (
