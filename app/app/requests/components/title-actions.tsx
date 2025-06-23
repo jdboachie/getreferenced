@@ -24,14 +24,14 @@ const TitleActions = () => {
   )
   if (role === 'requester') {
     return (
-      <>
+      <div className='flex items-center gap-2 size-fit'>
         {pathname !== '/app/requests/new' && (
           <Link
             className={`${buttonVariants({ size: "lg", variant: "default" })}`}
             prefetch
             href="/app/requests/new"
           >
-            <FilePlusIcon size={32} className="size-5" />
+            <FilePlusIcon size={32} weight='bold' className="size-5" />
             <span className="">New request</span>
           </Link>
         )}
@@ -41,7 +41,7 @@ const TitleActions = () => {
             Re-assign
           </Button>
         }
-      </>
+      </div>
 
     )
   }

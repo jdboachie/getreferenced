@@ -53,7 +53,7 @@ export default function ThemeToggle({lg} : { lg?: boolean }) {
         className={`${lg ? 'size-8': 'size-6'} text-muted-foreground rounded-full ${theme === "system" && "text-foreground dark:bg-secondary"}`}
       >
         <span className="sr-only">system</span>
-        <CircleHalfIcon size={32} />
+        <CircleHalfIcon weight="bold" size={32} />
       </Button>
 
       <Button
@@ -63,7 +63,7 @@ export default function ThemeToggle({lg} : { lg?: boolean }) {
         className={`${lg ? 'size-8': 'size-6'} text-muted-foreground rounded-full ${theme === "light" && "text-foreground dark:bg-secondary"}`}
       >
         <span className="sr-only">light</span>
-        <SunIcon size={32} />
+        <SunIcon weight="bold" size={32} />
       </Button>
 
       <Button
@@ -73,7 +73,7 @@ export default function ThemeToggle({lg} : { lg?: boolean }) {
         className={`${lg ? 'size-8': 'size-6'} text-muted-foreground rounded-full ${theme === "dark" && "text-foreground dark:bg-secondary"}`}
       >
         <span className="sr-only">dark</span>
-        <MoonIcon size={32} />
+        <MoonIcon weight="bold" size={32} />
       </Button>
     </div>
   )
