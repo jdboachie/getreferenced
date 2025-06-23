@@ -22,10 +22,9 @@ const TitleActions = () => {
       <Skeleton className="w-36 sm:w-44 h-10" />
     </div>
   )
-  return (
-    <div className='flex items-center gap-2 size-fit'>
-      {role === 'requester' ?
-        <>
+  if (role === 'requester') {
+    return (
+      <>
         {pathname !== '/app/requests/new' && (
           <Link
             className={`${buttonVariants({ size: "lg", variant: "default" })}`}
@@ -42,25 +41,25 @@ const TitleActions = () => {
             Re-assign
           </Button>
         }
-        </>
-        :
-        <>
-          {match &&
-          <>
-            <Button size={'lg'} variant={'outline'}>
-              <CheckIcon size={32} weight='bold' className="size-5 text-success" />
-              Accept
-            </Button>
-            <Button size={'lg'} variant={'outline'}>
-              <XIcon size={32} weight='bold' className="size-5 text-destructive" />
-              Reject
-            </Button>
-          </>
-          }
-        </>
-      }
-    </div>
-  )
+      </>
+
+    )
+  }
+  if (role === 'recommender' && match){
+    return (
+      <div className='flex items-center gap-2 size-fit'>
+        <Button size={'lg'} variant={'outline'}>
+          <CheckIcon size={32} weight='bold' className="size-5 text-success" />
+          Accept
+        </Button>
+        <Button size={'lg'} variant={'outline'}>
+          <XIcon size={32} weight='bold' className="size-5 text-destructive" />
+          Reject
+        </Button>
+      </div>
+    )
+  }
+  return null
 }
 
 export default TitleActions
