@@ -48,13 +48,11 @@ const schema = defineSchema({
     deadline: v.float64(),
     institutionAddress: v.string(),
     institutionName: v.string(),
-    purpose: v.optional(
-      v.union(
+    purpose: v.union(
         v.literal("admission"),
         v.literal("scholarship"),
         v.literal("employment"),
         v.literal("other")
-      )
     ),
     status: v.optional(
       v.union(

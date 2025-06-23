@@ -46,7 +46,7 @@ const FormSchema = z.object({
   deadline: z.coerce.number(),
   institutionAddress: z.string(),
   institutionName: z.string(),
-  purpose: z.enum(["admission", "scholarship", "employment", "other"]).optional(),
+  purpose: z.enum(["admission", "scholarship", "employment", "other"]),
   recommenderId: z.string(),
   sampleLetter: z.string().optional(),
 })

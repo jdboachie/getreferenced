@@ -21,6 +21,7 @@ export const getRequestsByRecommender = query({
     if (!userId) return [];
 
     const recommender = await ctx.db.get(userId);
+    // might want to confirm that the person has the right role ( recommender )
 
     if (!recommender) return [];
 
@@ -47,13 +48,11 @@ export const createRequest = mutation({
     institutionName: v.string(),
     institutionAddress: v.string(),
     deadline: v.float64(),
-    purpose: v.optional(
-      v.union(
+    purpose: v.union(
         v.literal("admission"),
         v.literal("scholarship"),
         v.literal("employment"),
         v.literal("other")
-      )
     ),
     additionalInfo: v.optional(v.string()),
     sampleLetter: v.optional(v.id("_storage")),

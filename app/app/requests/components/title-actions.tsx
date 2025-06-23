@@ -5,7 +5,7 @@ import { useRole } from '@/hooks/use-role';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from 'next/navigation';
-import { UserSwitchIcon, FilePlusIcon } from "@phosphor-icons/react";
+import { UserSwitchIcon, FilePlusIcon, CheckIcon, XIcon } from "@phosphor-icons/react";
 
 
 const TitleActions = () => {
@@ -24,22 +24,41 @@ const TitleActions = () => {
   )
   return (
     <div className='flex items-center gap-2 size-fit'>
-      {(role === 'requester' && match) &&
-        <Button size={'lg'} variant={'outline'}>
-          <UserSwitchIcon size={32} className="size-5" />
-          Re-assign
-        </Button>
+      {role === 'requester' ?
+        <>
+        {pathname !== '/app/requests/new' && (
+          <Link
+            className={`${buttonVariants({ size: "lg", variant: "default" })}`}
+            prefetch
+            href="/app/requests/new"
+          >
+            <FilePlusIcon size={32} className="size-5" />
+            <span className="">New request</span>
+          </Link>
+        )}
+        {match &&
+          <Button size={'lg'} variant={'outline'}>
+            <UserSwitchIcon size={32} className="size-5" />
+            Re-assign
+          </Button>
+        }
+        </>
+        :
+        <>
+          {match &&
+          <>
+            <Button size={'lg'} variant={'outline'}>
+              <CheckIcon size={32} weight='bold' className="size-5 text-success" />
+              Accept
+            </Button>
+            <Button size={'lg'} variant={'outline'}>
+              <XIcon size={32} weight='bold' className="size-5 text-destructive" />
+              Reject
+            </Button>
+          </>
+          }
+        </>
       }
-      {pathname !== '/app/requests/new' && role === "requester" && (
-        <Link
-          className={`${buttonVariants({ size: "lg", variant: "default" })}`}
-          prefetch
-          href="/app/requests/new"
-        >
-          <FilePlusIcon size={32} className="size-5" />
-          <span className="">New request</span>
-        </Link>
-      )}
     </div>
   )
 }

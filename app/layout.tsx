@@ -66,6 +66,7 @@ export default function RootLayout({
           <ConvexClientProvider>
           <RoleProvider>
             <Toaster
+              position="top-center"
               richColors
             />
             <main className="min-h-dvh">{children}</main>

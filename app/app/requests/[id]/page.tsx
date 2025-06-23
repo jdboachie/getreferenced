@@ -6,6 +6,8 @@ import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { Skeleton } from '@/components/ui/skeleton'
+import { capitalize } from '@/lib/utils'
+import { useRole } from '@/hooks/use-role'
 
 
 export default function Page({
@@ -13,6 +15,7 @@ export default function Page({
 }: {
   params: Promise<{ id: Id<"requests">}>
 }) {
+  const { role } = useRole();
   const { id } = React.use(asyncParams)
   const data = useQuery(api.requests.getRequestById, { id })
 
@@ -27,9 +30,11 @@ export default function Page({
           <ul className='flex flex-col sm:gap-1 gap-5'>
             <DataRow name={'Name'} value={data.institutionName} />
             <DataRow name={'Address'} value={data.institutionAddress} />
+            <DataRow name={'Purpose'} value={capitalize(data.purpose)} />
+            <DataRow name={'Deadline'} value={(new Date(data.deadline)).toUTCString()} />
           </ul>
         </div>
-        <RequesterInformationSection id={data.userId} />
+        {role !== 'requester' && <RequesterInformationSection id={data.userId} />}
       </div>
     </section>
   );

@@ -129,7 +129,7 @@ export default function ProfileCardForm({
               variant="secondary"
               onClick={handleEditToggle}
               aria-label="Cancel editing"
-              className="absolute -right-1.5 -top-1.5"
+              className="absolute shadow-none -right-1.5 -top-1.5"
             >
               Cancel<XIcon className="h-4 w-4 ml-1" />
             </Button>
