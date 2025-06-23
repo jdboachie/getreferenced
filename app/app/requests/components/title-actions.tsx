@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { PlusIcon } from 'lucide-react';
 import { useRole } from '@/hooks/use-role';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from 'next/navigation';
+import { UserSwitchIcon, PlusIcon } from "@phosphor-icons/react";
 
 
 const TitleActions = () => {
@@ -26,6 +26,7 @@ const TitleActions = () => {
     <div className='flex items-center gap-2 size-fit'>
       {(role === 'requester' && match) &&
         <Button size={'lg'} variant={'outline'}>
+          <UserSwitchIcon size={32} className="size-5" />
           Re-assign
         </Button>
       }

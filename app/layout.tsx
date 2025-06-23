@@ -68,7 +68,7 @@ export default function RootLayout({
             <Toaster
               richColors
             />
-            <main className="min-h-100dvh">{children}</main>
+            <main className="min-h-dvh">{children}</main>
             <Footer />
           </RoleProvider>
           </ConvexClientProvider>

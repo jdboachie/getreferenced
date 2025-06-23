@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { useRole } from "@/hooks/use-role";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ClockIcon, FileEditIcon, ListIcon } from "lucide-react";
+import { ClockCounterClockwiseIcon, ListBulletsIcon, FileDashedIcon } from "@phosphor-icons/react";
 
 
 export default function Sidenav() {
@@ -20,12 +20,12 @@ export default function Sidenav() {
     {
       label: 'Details',
       href: `/app/requests/${id}`,
-      icon: ListIcon,
+      icon: ListBulletsIcon,
     },
     {
       label: 'History',
       href: `/app/requests/${id}/history`,
-      icon: ClockIcon,
+      icon: ClockCounterClockwiseIcon,
     },
   ]
 
@@ -35,7 +35,7 @@ export default function Sidenav() {
 
   const recommenderLinks = [
     ...commonLinks,
-    { label: 'Draft', href: `/app/requests/${id}/draft`, icon: FileEditIcon },
+    { label: 'Draft', href: `/app/requests/${id}/draft`, icon: FileDashedIcon },
   ]
 
   const links = role === 'requester' ? requesterLinks : recommenderLinks
@@ -48,7 +48,7 @@ export default function Sidenav() {
     )
   }
   return (
-    <nav className="md:w-full md:max-w-56 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
+    <nav className="lg:w-full lg:max-w-56 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
       {links.map((link) => (
         <Link
           prefetch
@@ -63,7 +63,7 @@ export default function Sidenav() {
             pathname !== link.href ? "text-muted-foreground" : "bg-neutral-200/80 hover:bg-neutral-200/50 dark:hover:bg-secondary/80 dark:bg-secondary"
           )}
         >
-          <link.icon className="size-4 stroke-[2.5]" />
+          <link.icon size={32} weight="bold" className="size-4.5" />
           {link.label}
         </Link>
       ))}

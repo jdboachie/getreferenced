@@ -78,7 +78,7 @@ export default function Page() {
 
 
       {isLoading &&
-        <div className="grid gap-4 xl:grid-cols-2 w-full">
+        <div className="grid gap-4 lg:grid-cols-2 w-full">
           <Skeleton className="h-34 w-full" />
           <Skeleton className="h-34 w-full" />
           <Skeleton className="h-34 w-full" />
@@ -93,7 +93,7 @@ export default function Page() {
       )}
 
       {!isLoading &&
-        <ul className="grid gap-4 xl:grid-cols-2 w-full">
+        <ul className="grid gap-4 lg:grid-cols-2 w-full">
           {requests?.map((req) => (
             <li
               key={req._id}

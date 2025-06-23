@@ -13,7 +13,7 @@ export default function Layout({
       >
         <TitleActions />
       </TitleBlock>
-      <div className="max-lg:px-5 pb-16 max-w-6xl size-full mx-auto min-h-[calc(100dvh-218px)]">
+      <div className="max-xl:px-5 pb-16 max-w-6xl size-full mx-auto min-h-[calc(100dvh-218px)]">
         {children}
       </div>
     </>
