@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { RoleProvider } from "@/hooks/use-role";
+import Footer from "@/components/nav/footer";
 
 const sans = LocalFont({
   variable: "--font-sans",
@@ -64,8 +65,11 @@ export default function RootLayout({
           >
           <ConvexClientProvider>
           <RoleProvider>
-            <Toaster position="top-center" />
-            <main>{children}</main>
+            <Toaster
+              richColors
+            />
+            <main className="min-h-100dvh">{children}</main>
+            <Footer />
           </RoleProvider>
           </ConvexClientProvider>
           </ThemeProvider>

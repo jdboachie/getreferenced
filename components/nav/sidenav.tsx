@@ -32,8 +32,8 @@ export function Sidenav ({ links }: SidenavProps) {
               size: "lg",
               variant: pathname === link.href ? "secondary" : "ghost",
             }),
-            "justify-start",
-            pathname !== link.href && "text-muted-foreground"
+            "justify-start shadow-none",
+            pathname !== link.href ? "text-muted-foreground" : "bg-neutral-200/80 hover:bg-neutral-200/50 dark:hover:bg-secondary/80 dark:bg-secondary"
           )}
         >
           {link.icon && <link.icon className="size-4.5" />}

@@ -24,7 +24,7 @@ const TitleActions = () => {
   )
   return (
     <div className='flex items-center gap-2 size-fit'>
-      {match &&
+      {(role === 'requester' && match) &&
         <Button size={'lg'} variant={'outline'}>
           Re-assign
         </Button>

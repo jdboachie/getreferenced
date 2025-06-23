@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { useRole } from "@/hooks/use-role";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ClockIcon, FileEditIcon, ListIcon } from "lucide-react";
 
 
 export default function Sidenav() {
@@ -16,8 +17,16 @@ export default function Sidenav() {
   const { role, loading } = useRole();
 
   const commonLinks = [
-    { label: 'Details', href: `/app/requests/${id}` },
-    { label: 'History', href: `/app/requests/${id}/history` },
+    {
+      label: 'Details',
+      href: `/app/requests/${id}`,
+      icon: ListIcon,
+    },
+    {
+      label: 'History',
+      href: `/app/requests/${id}/history`,
+      icon: ClockIcon,
+    },
   ]
 
   const requesterLinks = [
@@ -26,7 +35,7 @@ export default function Sidenav() {
 
   const recommenderLinks = [
     ...commonLinks,
-    { label: 'Draft', href: `/app/requests/${id}/draft` },
+    { label: 'Draft', href: `/app/requests/${id}/draft`, icon: FileEditIcon },
   ]
 
   const links = role === 'requester' ? requesterLinks : recommenderLinks
@@ -50,10 +59,11 @@ export default function Sidenav() {
               size: "lg",
               variant: pathname === link.href ? "secondary" : "ghost",
             }),
-            "justify-start",
-            pathname !== link.href && "text-muted-foreground"
+            "justify-start shadow-none",
+            pathname !== link.href ? "text-muted-foreground" : "bg-neutral-200/80 hover:bg-neutral-200/50 dark:hover:bg-secondary/80 dark:bg-secondary"
           )}
         >
+          <link.icon className="size-4 stroke-[2.5]" />
           {link.label}
         </Link>
       ))}

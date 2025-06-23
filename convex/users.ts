@@ -23,6 +23,21 @@ export const getUserById = query({
   }
 });
 
+export const getRequesterProfileById = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, { userId }) => {
+    const user = await ctx.db.get(userId);
+    if (!user) return null;
+
+    const roleData = await ctx.db
+      .query("requesters")
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .unique();
+
+    return { ...user, ...roleData };
+  },
+});
+
 export const getRequesterProfile = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);

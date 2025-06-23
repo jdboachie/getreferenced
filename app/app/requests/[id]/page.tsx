@@ -17,40 +17,56 @@ export default function Page({
   const data = useQuery(api.requests.getRequestById, { id })
 
   if (data === undefined) return <Loading />;
-  if (data === null) return <p className="text-destructive">Request not found.</p>;
+  if (data === null) throw new Error('Request not found');
 
   return (
-    <section className='grid gap-8'>
-      <div className="w-full flex flex-col gap-8">
+    <section className='grid'>
+      <div className="w-full flex flex-col gap-16">
         <div className=''>
-          <p className="text-sm font-medium text-muted-foreground mb-2">Institution Information</p>
-          <h2 className="">{data.institutionName}</h2>
-          <p className="">{data.institutionAddress}</p>
+          <p className="text-sm font-medium text-muted-foreground mb-2">Institution</p>
+          <div className='flex flex-col sm:gap-1 gap-5'>
+            <DataRow name={'Name'} value={data.institutionName} />
+            <DataRow name={'Address'} value={data.institutionAddress} />
+          </div>
         </div>
-        <UserInformationSection id={data.userId} />
+        <RequesterInformationSection id={data.userId} />
       </div>
     </section>
   );
 }
 
-function UserInformationSection ({id} : {id: Id<"users">}) {
+function RequesterInformationSection ({id} : {id: Id<"users">}) {
 
-  const data = useQuery(api.users.getUserById, {id})
+  const profile = useQuery(api.users.getRequesterProfileById, { userId: id })
 
   return (
     <div className=''>
-      <p className="text-sm font-medium text-muted-foreground mb-2">Requester Information</p>
-      {data ?
-        <>
-          <h2 className="">{data.firstName + " " + data.lastName}</h2>
-          <p className="">{data.email}</p>
-        </>
+      <p className="text-sm font-medium text-muted-foreground mb-2">Requester</p>
+      {profile ?
+        <div className='flex flex-col sm:gap-1 gap-5'>
+          <DataRow name='Full name' value={profile.firstName + " " + profile.lastName} />
+          <DataRow name='Email' value={profile.email} />
+          <DataRow name='Year of completion' value={profile.yearOfCompletion} />
+          <DataRow name='Program of study' value={profile.programOfStudy} />
+          <DataRow name='Index number' value={profile.indexNumber} />
+          <DataRow name='Student Number' value={profile.studentNumber} />
+        </div>
         :
         <>
+          <Skeleton className='w-full max-w-72' />
           <Skeleton className='w-full max-w-72' />
           <Skeleton className='w-full max-w-72' />
         </>
         }
     </div>
+  )
+}
+
+function DataRow ({name, value}: {name: string, value?: string}) {
+  return (
+    <li className="flex max-sm:grid items-start sm:gap-1">
+      <span className="min-w-38 text-muted-foreground">{name}</span>
+      <span>{value}</span>
+    </li>
   )
 }
