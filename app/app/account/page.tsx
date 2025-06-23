@@ -43,7 +43,7 @@ export default function Page() {
         {/* Full Name */}
         <ProfileCardForm
           title="Full Name"
-          description="This will be the name on your request form."
+          description={role === "requester" ? "This will be the name on your request form." : "This is your public display name. Please keep it accurate."}
           footerNote="Name should be as it appears on official documents."
           onSubmit={async (formData) => {
             toast.promise(

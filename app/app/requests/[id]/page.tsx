@@ -1,7 +1,6 @@
 'use client'
 
-import React from 'react'
-import Loading from './loading'
+import * as React from 'react';
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
@@ -19,7 +18,21 @@ export default function Page({
   const { id } = React.use(asyncParams)
   const data = useQuery(api.requests.getRequestById, { id })
 
-  if (data === undefined) return <Loading />;
+  if (data === undefined) return (
+    <div className='grid gap-16'>
+      <div className='grid gap-8 pt-5'>
+        <Skeleton className='h-8 w-full' />
+        <Skeleton className='h-8 w-full' />
+        <Skeleton className='h-8 w-full' />
+        <Skeleton className='h-8 w-full' />
+      </div>
+      <div className='grid gap-8 pt-5'>
+        <Skeleton className='h-8 w-full' />
+        <Skeleton className='h-8 w-full' />
+        <Skeleton className='h-8 w-full' />
+      </div>
+    </div>
+  );
   if (data === null) throw new Error('Request not found');
 
   return (
@@ -27,11 +40,12 @@ export default function Page({
       <div className="w-full flex flex-col gap-16">
         <div className=''>
           <p className="text-sm font-medium text-muted-foreground mb-2">Institution</p>
-          <ul className='flex flex-col sm:gap-1 gap-5'>
+          <ul className='flex flex-col sm:gap-1 gap-5 odd:bg-accent'>
             <DataRow name={'Name'} value={data.institutionName} />
             <DataRow name={'Address'} value={data.institutionAddress} />
             <DataRow name={'Purpose'} value={capitalize(data.purpose)} />
             <DataRow name={'Deadline'} value={(new Date(data.deadline)).toUTCString()} />
+            <DataRow name={'Additional Info'} value={data.additionalInfo} />
           </ul>
         </div>
         {role !== 'requester' && <RequesterInformationSection id={data.userId} />}
@@ -58,9 +72,11 @@ function RequesterInformationSection ({id} : {id: Id<"users">}) {
         </ul>
         :
         <>
-          <Skeleton className='w-full max-w-72' />
-          <Skeleton className='w-full max-w-72' />
-          <Skeleton className='w-full max-w-72' />
+        <div className='grid gap-8 pt-5'>
+          <Skeleton className='h-8 w-full' />
+          <Skeleton className='h-8 w-full' />
+          <Skeleton className='h-8 w-full' />
+        </div>
         </>
         }
     </div>
@@ -69,7 +85,7 @@ function RequesterInformationSection ({id} : {id: Id<"users">}) {
 
 function DataRow ({name, value}: {name: string, value?: string}) {
   return (
-    <li className="flex max-sm:grid items-start sm:gap-1">
+    <li className="flex max-sm:grid items-start sm:gap-1 odd:bg-accent/60 dark:odd:bg-accent/40 p-1 px-2 rounded-sm">
       <span className="min-w-38 text-muted-foreground">{name}</span>
       <span>{value}</span>
     </li>

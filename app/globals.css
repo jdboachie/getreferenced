@@ -168,8 +168,8 @@
     ); */
     transform: translateX(-100%);
     width: 300%;
-    animation: shimmer 2.5s infinite;
-    @apply border-t border-t-border/50 bg-gradient-to-r via-border/40;
+    animation: shimmer 3s infinite;
+    @apply bg-gradient-to-r via-border/40;
   }
 
   @keyframes shimmer {

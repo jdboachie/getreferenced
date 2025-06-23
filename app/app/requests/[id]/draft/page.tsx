@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function Page() {
   return (
-    <div>requests/[id]/drafts</div>
+    <div>We are working on this for you. Please check back later.</div>
   )
 }

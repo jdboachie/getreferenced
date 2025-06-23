@@ -41,7 +41,8 @@ export default function Sidenav() {
   const links = role === 'requester' ? requesterLinks : recommenderLinks
   if (loading) {
     return (
-      <div className="md:w-72 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
+      <div className="lg:w-full lg:max-w-56 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
+        <Skeleton className="h-10 rounded-md" />
         <Skeleton className="h-10 rounded-md" />
         <Skeleton className="h-10 rounded-md" />
       </div>
