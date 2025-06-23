@@ -24,10 +24,10 @@ export default function Page({
       <div className="w-full flex flex-col gap-16">
         <div className=''>
           <p className="text-sm font-medium text-muted-foreground mb-2">Institution</p>
-          <div className='flex flex-col sm:gap-1 gap-5'>
+          <ul className='flex flex-col sm:gap-1 gap-5'>
             <DataRow name={'Name'} value={data.institutionName} />
             <DataRow name={'Address'} value={data.institutionAddress} />
-          </div>
+          </ul>
         </div>
         <RequesterInformationSection id={data.userId} />
       </div>
@@ -43,14 +43,14 @@ function RequesterInformationSection ({id} : {id: Id<"users">}) {
     <div className=''>
       <p className="text-sm font-medium text-muted-foreground mb-2">Requester</p>
       {profile ?
-        <div className='flex flex-col sm:gap-1 gap-5'>
+        <ul className='flex flex-col sm:gap-1 gap-5'>
           <DataRow name='Full name' value={profile.firstName + " " + profile.lastName} />
           <DataRow name='Email' value={profile.email} />
           <DataRow name='Year of completion' value={profile.yearOfCompletion} />
           <DataRow name='Program of study' value={profile.programOfStudy} />
           <DataRow name='Index number' value={profile.indexNumber} />
           <DataRow name='Student Number' value={profile.studentNumber} />
-        </div>
+        </ul>
         :
         <>
           <Skeleton className='w-full max-w-72' />

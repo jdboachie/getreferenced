@@ -5,7 +5,7 @@ import { useRole } from '@/hooks/use-role';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from 'next/navigation';
-import { UserSwitchIcon, PlusIcon } from "@phosphor-icons/react";
+import { UserSwitchIcon, FilePlusIcon } from "@phosphor-icons/react";
 
 
 const TitleActions = () => {
@@ -36,7 +36,7 @@ const TitleActions = () => {
           prefetch
           href="/app/requests/new"
         >
-          <PlusIcon className="size-5" />
+          <FilePlusIcon size={32} className="size-5" />
           <span className="">New request</span>
         </Link>
       )}

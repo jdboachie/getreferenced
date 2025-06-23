@@ -159,7 +159,7 @@ function CertificateCard({
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Last updated</div>
                 {fileMetadata?._creationTime ? (
-                  <p className="text-primary">
+                  <p className="text-foreground">
                     {new Date(fileMetadata._creationTime).toLocaleString(undefined, {
                       dateStyle: "medium",
                       timeStyle: "short",
@@ -172,7 +172,7 @@ function CertificateCard({
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">File type</div>
                 {fileMetadata?.contentType ? (
-                  <p className="text-primary">
+                  <p className="text-foreground">
                     {fileMetadata.contentType.split("/")[1]}
                   </p>
                 ) : (
@@ -182,7 +182,7 @@ function CertificateCard({
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Size</div>
                 {fileMetadata?.size ? (
-                  <p className="text-primary">
+                  <p className="text-foreground">
                     {(fileMetadata.size / 1024).toFixed(1)} KB
                   </p>
                 ) : (
@@ -348,7 +348,7 @@ function CVCard({ userId, cvFileId }: { userId: Id<"users">, cvFileId?: Id<"_sto
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Last updated</div>
                 {fileMetadata?._creationTime ? (
-                  <p className="text-primary">
+                  <p className="text-foreground">
                     {new Date(fileMetadata._creationTime).toLocaleString(undefined, {
                       dateStyle: "medium",
                       timeStyle: "short",
@@ -358,11 +358,11 @@ function CVCard({ userId, cvFileId }: { userId: Id<"users">, cvFileId?: Id<"_sto
               </div>
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">File type</div>
-                {fileMetadata?.contentType ? <p className="text-primary">{fileMetadata.contentType.split('/')[1]}</p> : "-"}
+                {fileMetadata?.contentType ? <p className="text-foreground">{fileMetadata.contentType.split('/')[1]}</p> : "-"}
               </div>
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Size</div>
-                {fileMetadata?.size ? <p className="text-primary">{(fileMetadata.size / 1024).toFixed(1)} KB</p> : "-"}
+                {fileMetadata?.size ? <p className="text-foreground">{(fileMetadata.size / 1024).toFixed(1)} KB</p> : "-"}
               </div>
             </TabsContent>
           </div>
@@ -507,7 +507,7 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Last updated</div>
                 {fileMetadata?._creationTime ? (
-                  <p className="text-primary">
+                  <p className="text-foreground">
                     {new Date(fileMetadata._creationTime).toLocaleString(undefined, {
                       dateStyle: "medium",
                       timeStyle: "short",
@@ -518,13 +518,13 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">File type</div>
                 {fileMetadata?.contentType ? (
-                  <p className="text-primary">{fileMetadata.contentType.split("/")[1]}</p>
+                  <p className="text-foreground">{fileMetadata.contentType.split("/")[1]}</p>
                 ) : "-"}
               </div>
               <div className="flex gap-4">
                 <div className="min-w-24 text-muted-foreground">Size</div>
                 {fileMetadata?.size ? (
-                  <p className="text-primary">{(fileMetadata.size / 1024).toFixed(1)} KB</p>
+                  <p className="text-foreground">{(fileMetadata.size / 1024).toFixed(1)} KB</p>
                 ) : "-"}
               </div>
             </TabsContent>
