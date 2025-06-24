@@ -1,6 +1,5 @@
 {
   "name": "getreferenced",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "npm-run-all --parallel dev:frontend dev:backend",

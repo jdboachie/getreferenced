@@ -1,12 +1,10 @@
 import React from 'react'
+import RequestForm from '../components/request-form'
 
 export default function Page() {
   return (
     <div>
-      <ul>
-        <li>Form</li>
-        <li>Preview</li>
-      </ul>
+      <RequestForm />
     </div>
   )
 }

@@ -20,16 +20,15 @@ export default function Page({
 
   if (data === undefined) return (
     <div className='grid gap-16'>
-      <div className='grid gap-8 pt-5'>
-        <Skeleton className='h-8 w-full' />
-        <Skeleton className='h-8 w-full' />
-        <Skeleton className='h-8 w-full' />
-        <Skeleton className='h-8 w-full' />
+      <div className='grid gap-10 pt-7'>
+        <Skeleton className='rounded-sm h-8 w-full' />
+        <Skeleton className='rounded-sm h-8 w-full' />
+        <Skeleton className='rounded-sm h-8 w-full' />
       </div>
-      <div className='grid gap-8 pt-5'>
-        <Skeleton className='h-8 w-full' />
-        <Skeleton className='h-8 w-full' />
-        <Skeleton className='h-8 w-full' />
+      <div className='grid gap-10 pt-7'>
+        <Skeleton className='rounded-sm h-8 w-full' />
+        <Skeleton className='rounded-sm h-8 w-full' />
+        <Skeleton className='rounded-sm h-8 w-full' />
       </div>
     </div>
   );
@@ -85,7 +84,7 @@ function RequesterInformationSection ({id} : {id: Id<"users">}) {
 
 function DataRow ({name, value}: {name: string, value?: string}) {
   return (
-    <li className="flex max-sm:grid items-start sm:gap-1 odd:bg-accent/60 dark:odd:bg-accent/40 p-1 px-2 rounded-sm">
+    <li className="flex max-sm:grid items-start sm:gap-1 odd:bg-accent dark:odd:bg-accent/40 p-1 px-2 rounded-sm">
       <span className="min-w-38 text-muted-foreground">{name}</span>
       <span>{value}</span>
     </li>
