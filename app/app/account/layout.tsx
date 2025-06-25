@@ -15,7 +15,7 @@ export default function Layout({
         {/* <TitleActions /> */}
       </TitleBlock>
       <div className="max-[1170px]:px-5 pb-16 max-w-6xl w-full mx-auto">
-        <div className="flex max-md:flex-col gap-12">
+        <div className="flex max-md:flex-col gap-12 w-full">
           <Sidenav
             links={[
               {

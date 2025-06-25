@@ -65,6 +65,7 @@ export const createRequest = mutation({
       ...args,
       userId,
       status: "pending",
+      complete: false,
     });
   },
 });

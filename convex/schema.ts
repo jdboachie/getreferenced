@@ -45,6 +45,7 @@ const schema = defineSchema({
 
   requests: defineTable({
     additionalInfo: v.optional(v.string()),
+    complete: v.boolean(),
     deadline: v.float64(),
     institutionAddress: v.string(),
     institutionName: v.string(),
@@ -54,13 +55,11 @@ const schema = defineSchema({
         v.literal("employment"),
         v.literal("other")
     ),
-    status: v.optional(
-      v.union(
-        v.literal("pending"),
-        v.literal("rejected"),
-        v.literal("accepted"),
-        v.literal("drafted"),
-      )
+    status: v.union(
+      v.literal("pending"),
+      v.literal("rejected"),
+      v.literal("accepted"),
+      v.literal("drafted"),
     ),
     recommenderId: v.id("users"),
     sampleLetter: v.optional(v.id("_storage")),
