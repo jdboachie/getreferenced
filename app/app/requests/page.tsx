@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 import {
   ToggleGroup,
   ToggleGroupItem,
@@ -20,11 +21,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import StatusBadge from "@/components/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ListIcon, LayoutGridIcon, SearchIcon, AlarmClockIcon, FilterIcon } from 'lucide-react';
-
+import { ListIcon, LayoutGridIcon, SearchIcon, AlarmClockIcon, ArrowUpDownIcon } from 'lucide-react';
 
 export default function Page() {
-
   const { role } = useRole();
   const endpoint =
     role === "requester"
@@ -33,6 +32,16 @@ export default function Page() {
 
   const requests = useQuery(endpoint);
   const isLoading = requests === undefined;
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const view = searchParams.get('view') ?? 'grid';
+
+  const updateView = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('view', value);
+    router.push(`?${params.toString()}`);
+  };
 
   return (
     <section className="flex flex-col gap-8">
@@ -46,7 +55,7 @@ export default function Page() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="icon" variant="outline" className="size-10">
-                <FilterIcon className="h-4 w-4" />
+                <ArrowUpDownIcon />
                 <span className="sr-only">Filter</span>
               </Button>
             </DropdownMenuTrigger>
@@ -60,12 +69,19 @@ export default function Page() {
               <div className="mt-2 md:hidden">
                 <DropdownMenuLabel>View</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Grid</DropdownMenuItem>
-                <DropdownMenuItem>List</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateView('grid')}>Grid</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateView('list')}>List</DropdownMenuItem>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <ToggleGroup type="single" size="lg" variant={'outline'} defaultValue="grid" className="max-md:hidden">
+          <ToggleGroup
+            type="single"
+            size="lg"
+            variant="outline"
+            value={view}
+            onValueChange={(val) => val && updateView(val)}
+            className="max-md:hidden"
+          >
             <ToggleGroupItem value="grid" aria-label="Toggle grid view">
               <LayoutGridIcon className="h-4 w-4" />
             </ToggleGroupItem>
@@ -76,10 +92,8 @@ export default function Page() {
         </div>
       </div>
 
-
       {isLoading &&
-        <div className="grid gap-4 lg:grid-cols-2 w-full">
-          <Skeleton className="h-34 w-full" />
+        <div className={`${view === 'grid' ? 'grid lg:grid-cols-2' : 'flex flex-col'} gap-4 w-full`}>
           <Skeleton className="h-34 w-full" />
           <Skeleton className="h-34 w-full" />
           <Skeleton className="h-34 w-full" />
@@ -87,33 +101,58 @@ export default function Page() {
         </div>
       }
 
-
       {!isLoading && requests?.length === 0 && (
         <p className="text-muted-foreground text-sm">No requests found.</p>
       )}
 
-
       {!isLoading &&
-        <ul className="grid gap-4 lg:grid-cols-2 w-full">
+        <ul
+          data-view={view}
+          className="
+            w-full grid rounded-md
+            data-[view=grid]:grid lg:data-[view=grid]:grid-cols-2 data-[view=grid]:gap-4
+            data-[view=list]:flex data-[view=list]:flex-col
+            data-[view=list]:border data-[view=list]:rounded-lg data-[view=list]:bg-background data-[view=list]:divide-y
+          "
+        >
           {requests?.map((req) => (
             <li
               key={req._id}
-              className="grid border bg-background rounded-lg h-fit hover:bg-background/80 transition"
+              className="relative grid h-fit"
             >
-              <Link href={`/app/requests/${req._id}`} className="space-y-2 size-full p-4">
-                <div className='grid gap-0.5 w-full'>
-                  <p className="">{req.institutionName}</p>
-                  <p className="text-sm text-muted-foreground">{req.institutionAddress}</p>
+              <Link
+                href={`/app/requests/${req._id}`}
+                data-view={view}
+                className="size-full p-4 data-[view=grid]:bg-background hover:bg-background/80 transition
+                  grid gap-2
+                  data-[view=list]:flex data-[view=list]:justify-between data-[view=grid]:border data-[view=grid]:rounded-lg
+                  data-[view=list]:max-lg:flex-col data-[view=list]:max-lg:gap-1"
+              >
+                <div
+                  data-view={view}
+                  className="grid gap-0.5
+                    data-[view=list]:flex data-[view=list]:lg:items-center
+                    data-[view=list]:max-lg:flex-col data-[view=list]:lg:gap-2"
+                >
+                  <p>{req.institutionName}</p>
+                  <p className="text-sm text-muted-foreground truncate">{req.institutionAddress}</p>
                 </div>
-                <StatusBadge status={req.status} />
-                <p className="text-sm flex gap-1.5 items-center">
-                  <AlarmClockIcon className="size-4" /> Due: {new Date(req.deadline).toLocaleDateString()}
-                </p>
+                <div
+                  data-view={view}
+                  className="text-sm flex items-center justify-between
+                    data-[view=list]:gap-2"
+                >
+                  <span className="flex gap-1.5 items-center">
+                    <AlarmClockIcon className="size-4" /> Due: {new Date(req.deadline).toLocaleDateString()}
+                  </span>
+                  <StatusBadge status={req.status} />
+                </div>
               </Link>
             </li>
           ))}
         </ul>
       }
+
     </section>
   )
 }
