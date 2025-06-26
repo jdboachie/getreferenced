@@ -30,6 +30,7 @@ type ProfileCardFormProps = {
   children: ReactNode | ChildrenRenderProp;
   footerNote: string;
   buttonDisabled?: boolean;
+  showButton?: boolean;
   buttonText?: string;
   defaultEditable?: boolean;
   showEditButton?: boolean;
@@ -42,8 +43,9 @@ export default function ProfileCardForm({
   onSubmit,
   children,
   footerNote,
+  showButton = true,
   buttonDisabled = false,
-  buttonText = "Save",
+  buttonText = "Save changes",
   defaultEditable = false, // Default to non-editable
   showEditButton = true, // Default to showing the edit button
   onEditToggle,
@@ -99,7 +101,7 @@ export default function ProfileCardForm({
         className={profileCardStyles.cardContent}
       >
         <div className="relative flex justify-between items-start">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             <h2 className="font-medium text-xl">{title}</h2>
             {description && <p className="text-base">{description}</p>}
           </div>
@@ -140,6 +142,7 @@ export default function ProfileCardForm({
       </div>
       <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">{footerNote}</p>
+        {showButton &&
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button size="sm" type="button" disabled={(buttonDisabled || !isEditing)}>
@@ -163,7 +166,7 @@ export default function ProfileCardForm({
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
-        </AlertDialog>
+        </AlertDialog>}
       </div>
     </form>
   );

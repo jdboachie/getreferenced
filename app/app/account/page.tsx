@@ -35,10 +35,7 @@ export default function Page() {
   if (profile && user) {
     return (
       <>
-        <UserAvatarCard
-          userImageUrl={user.image}
-          userId={profile.userId}
-        />
+        <UserAvatarCard userImageUrl={user.image} userId={profile.userId} />
 
         {/* Full Name */}
         <ProfileCardForm
@@ -61,7 +58,7 @@ export default function Page() {
           }}
         >
           {(isEditing) => (
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <label className="grid gap-1">
                 <span className="text-sm font-medium text-muted-foreground">First name</span>
                 <Input
@@ -84,6 +81,17 @@ export default function Page() {
                   onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
                 />
               </label>
+              <label className="grid gap-1">
+                <span className="text-sm font-medium text-muted-foreground">Other names (optional)</span>
+                <Input
+                  name="lastName"
+                  defaultValue={user.otherNames}
+                  placeholder="Other names"
+                  className="max-md:w-full shadow-none"
+                  disabled={!isEditing}
+                  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+                />
+              </label>
             </div>
           )}
         </ProfileCardForm>
@@ -95,6 +103,7 @@ export default function Page() {
           footerNote="Email must be verified to receive notifications."
           onSubmit={() => Promise.resolve()}
           buttonDisabled
+          showButton={false}
           showEditButton={false}
         >
           {(isEditing) => (
@@ -148,144 +157,96 @@ export default function Page() {
         </ProfileCardForm>
 
         {role === 'requester' && (
-          <>
-            {/* Program of study */}
-            <ProfileCardForm
-              title="Program of study"
-              // description=""
-              footerNote="Program should be as is on your certificate."
-              onSubmit={async (formData) => {
-                await toast.promise(
-                  updateProfile({
-                    role,
-                    userId: profile.userId,
-                    programOfStudy: formData.get('programOfStudy')?.toString(),
-                  }),
-                  {
-                    loading: 'Saving...',
-                    success: 'Program of study updated!',
-                    error: 'Problem updating program of study',
-                  }
-                );
-              }}
-            >
-              {(isEditing) => (
-                <Input
-                  name="programOfStudy"
-                  defaultValue={("programOfStudy" in profile ? profile.programOfStudy : '')}
-                  placeholder="BSc Dondology"
-                  className="w-full shadow-none"
-                  disabled={!isEditing}
-                />
-              )}
-            </ProfileCardForm>
+          <ProfileCardForm
+            title="Education Details"
+            description='Click on the edit icon in the top right to edit your education details'
+            footerNote="Ensure details match your certificate."
+            onSubmit={async (formData) => {
+              toast.promise(
+                updateProfile({
+                  role,
+                  userId: profile.userId,
+                  programOfStudy: formData.get('programOfStudy')?.toString(),
+                  yearOfCompletion: formData.get('yearOfCompletion')?.toString(),
+                  indexNumber: formData.get('indexNumber')?.toString(),
+                  studentNumber: formData.get('studentNumber')?.toString(),
+                }),
+                {
+                  loading: 'Saving...',
+                  success: 'Profile updated!',
+                  error: 'Problem updating profile',
+                }
+              );
+            }}
+          >
+            {(isEditing) => (
+              <div className={`grid gap-6 ${!isEditing && 'cursor-not-allowed'}`}>
+                {/* Program of Study */}
+                <div>
+                  <label className="block mb-1 text-sm font-medium">Program of Study</label>
+                  <Input
+                    name="programOfStudy"
+                    defaultValue={"programOfStudy" in profile ? profile.programOfStudy : ''}
+                    placeholder="BSc Dondology"
+                    className="w-full shadow-none"
+                    disabled={!isEditing}
+                  />
+                  <p className="text-sm text-muted-foreground mt-1">Program should be as is on your certificate.</p>
+                </div>
 
-            {/* Year of completion */}
-            <ProfileCardForm
-              title="Year of completion"
-              description=""
-              footerNote=""
-              onSubmit={async (formData) => {
-                await toast.promise(
-                  updateProfile({
-                    role,
-                    userId: profile.userId,
-                    yearOfCompletion: formData.get('yearOfCompletion')?.toString(),
-                  }),
-                  {
-                    loading: 'Saving...',
-                    success: 'Year of completion updated!',
-                    error: 'Problem updating year of completion',
-                  }
-                );
-              }}
-            >
-              {(isEditing) => (
-                <Select
-                  name="yearOfCompletion"
-                  defaultValue={"yearOfCompletion" in profile ? profile.yearOfCompletion : ''}
-                  disabled={!isEditing}
-                >
-                  <SelectTrigger className="w-full shadow-none">
-                    <SelectValue placeholder="Select year" />
-                    <span className="sr-only">Select year</span>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 30 }, (_, i) => {
-                      const year = String(new Date().getFullYear() - i);
-                      return (
-                        <SelectItem key={year} value={year}>
-                          {year}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-              )}
-            </ProfileCardForm>
+                {/* Year of Completion */}
+                <div>
+                  <label className="block mb-1 text-sm font-medium">Year of Completion</label>
+                  <Select
+                    name="yearOfCompletion"
+                    defaultValue={"yearOfCompletion" in profile ? profile.yearOfCompletion : ''}
+                    disabled={!isEditing}
+                  >
+                    <SelectTrigger className="w-full shadow-none">
+                      <SelectValue placeholder="Select year" />
+                      <span className="sr-only">Select year</span>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 30 }, (_, i) => {
+                        const year = String(new Date().getFullYear() - i);
+                        return (
+                          <SelectItem key={year} value={year}>
+                            {year}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            {/* Index number */}
-            <ProfileCardForm
-              title="Index Number"
-              // description=""
-              footerNote="What you used for exams"
-              onSubmit={async (formData) => {
-                await toast.promise(
-                  updateProfile({
-                    role,
-                    userId: profile.userId,
-                    indexNumber: formData.get('indexNumber')?.toString(),
-                  }),
-                  {
-                    loading: 'Saving...',
-                    success: 'Index number updated!',
-                    error: 'Problem updating index number',
-                  }
-                );
-              }}
-            >
-              {(isEditing) => (
-                <Input
-                  name="indexNumber"
-                  defaultValue={("indexNumber" in profile ? profile.indexNumber : '')}
-                  placeholder="1234567"
-                  className="w-full shadow-none"
-                  disabled={!isEditing}
-                />
-              )}
-            </ProfileCardForm>
+                {/* Index Number */}
+                <div>
+                  <label className="block mb-1 text-sm font-medium">Index Number</label>
+                  <Input
+                    name="indexNumber"
+                    defaultValue={"indexNumber" in profile ? profile.indexNumber : ''}
+                    placeholder="1234567"
+                    className="w-full shadow-none"
+                    disabled={!isEditing}
+                  />
+                  <p className="text-sm text-muted-foreground mt-1">What you used for exams.</p>
+                </div>
 
-            {/* Student number */}
-            <ProfileCardForm
-              title="Student Number"
-              // description=""
-              footerNote="8-digit number given when you applied to KNUST"
-              onSubmit={async (formData) => {
-                await toast.promise(
-                  updateProfile({
-                    role,
-                    userId: profile.userId,
-                    studentNumber: formData.get('studentNumber')?.toString(),
-                  }),
-                  {
-                    loading: 'Saving...',
-                    success: 'Student number updated!',
-                    error: 'Problem updating student number',
-                  }
-                );
-              }}
-            >
-              {(isEditing) => (
-                <Input
-                  name="studentNumber"
-                  defaultValue={("studentNumber" in profile ? profile.studentNumber : '')}
-                  placeholder="12345678"
-                  className="w-full shadow-none"
-                  disabled={!isEditing}
-                />
-              )}
-            </ProfileCardForm>
-          </>
+                {/* Student Number */}
+                <div>
+                  <label className="block mb-1 text-sm font-medium">Student Number</label>
+                  <Input
+                    name="studentNumber"
+                    defaultValue={"studentNumber" in profile ? profile.studentNumber : ''}
+                    placeholder="12345678"
+                    className="w-full shadow-none"
+                    disabled={!isEditing}
+                  />
+                  <p className="text-sm text-muted-foreground mt-1">8-digit number given when you applied to KNUST.</p>
+                </div>
+              </div>
+            )}
+          </ProfileCardForm>
         )}
 
         {role === 'recommender' && (
@@ -427,31 +388,6 @@ export default function Page() {
             </ProfileCardForm>
           </>
         )}
-
-        {/* Delete Account */}
-        {/* <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log("Delete account triggered");
-          }}
-          className={`${profileCardStyles.card} border bg-red-500/10 dark:bg-red-500/5 text-destructive-foreground`}
-        >
-          <div className={profileCardStyles.cardContent}>
-            <h3 className="font-medium text-lg">Delete Account</h3>
-            <p className="text-sm">
-              Permanently remove your account and all its contents from the GetReferenced
-              platform. This action is not reversible, so please continue with caution.
-            </p>
-          </div>
-          <div className={profileCardStyles.cardFooter}>
-            <p className="text-sm text-muted-foreground">
-              Disabled while I work on other things
-            </p>
-            <Button variant="destructive" disabled type="submit">
-              Delete Account
-            </Button>
-          </div>
-        </form> */}
       </>
     );
   } else if (profile === null) {
@@ -471,4 +407,3 @@ export default function Page() {
     return <Loading />;
   }
 }
-

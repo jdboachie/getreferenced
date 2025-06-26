@@ -14,6 +14,7 @@ const schema = defineSchema({
     name: v.optional(v.string()),
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
+    otherNames: v.optional(v.string()),
     role: v.optional(v.union(v.literal("requester"), v.literal("recommender"))),
   })
     .index("email", ["email"])

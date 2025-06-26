@@ -105,7 +105,7 @@ export default function UserAvatarCard({userImageUrl, userId}:{userImageUrl?: Id
           A display picture is optional but strongly recommended.
         </p>
         <Button type="submit" value="Send Image" size="sm" disabled={selectedImage === null}>
-          {loading ? <div className="flex gap-2"><SpinnerIcon />Uploading</div> : 'Save'}
+          {loading ? <div className="flex gap-2"><SpinnerIcon />Uploading</div> : 'Save changes'}
         </Button>
       </div>
     </form>
