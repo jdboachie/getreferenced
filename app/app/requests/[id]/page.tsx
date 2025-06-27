@@ -5,8 +5,8 @@ import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { Skeleton } from '@/components/ui/skeleton'
-import { capitalize } from '@/lib/utils'
 import { useRole } from '@/hooks/use-role'
+import { DataRow } from '../components/data-row';
 
 
 export default function Page({
@@ -42,7 +42,6 @@ export default function Page({
           <ul className='flex flex-col sm:gap-1 gap-5 odd:bg-accent'>
             <DataRow name={'Name'} value={data.institutionName} />
             <DataRow name={'Address'} value={data.institutionAddress} />
-            <DataRow name={'Purpose'} value={capitalize(data.purpose)} />
             <DataRow name={'Deadline'} value={(new Date(data.deadline)).toUTCString()} />
             <DataRow name={'Additional Info'} value={data.additionalInfo} />
           </ul>
@@ -79,14 +78,5 @@ function RequesterInformationSection ({id} : {id: Id<"users">}) {
         </>
         }
     </div>
-  )
-}
-
-function DataRow ({name, value}: {name: string, value?: string}) {
-  return (
-    <li className="flex max-sm:grid items-start sm:gap-1 odd:bg-accent dark:odd:bg-accent/40 p-1 px-2 rounded-sm">
-      <span className="min-w-38 text-muted-foreground">{name}</span>
-      <span>{value}</span>
-    </li>
   )
 }

@@ -1,8 +1,4 @@
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import Navbar from './navbar';
 import {
   Drawer,
   DrawerClose,
@@ -11,18 +7,23 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import Navbar from './navbar';
+} from "@/components/ui/drawer";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { BellIcon } from "lucide-react"
 import UserButton from "../auth/user-button";
 import { Button } from "@/components/ui/button";
-import { LeafyGreenIcon } from "lucide-react";
-import { BellIcon } from "lucide-react"
+import { FlowerLotusIcon } from "@phosphor-icons/react/dist/ssr";
+
 
 function Header() {
   return (
     <header className='sticky top-0 z-50 border-b bg-background'>
       <div className='flex justify-between items-center p-4'>
-        <LeafyGreenIcon className="size-5 stroke-2" />
+        <FlowerLotusIcon weight="duotone" size={32} className="size-7 text-violet-700" />
         <div className="flex items-center gap-2">
           <Button variant={"ghost"} className="text-muted-foreground">
             Feedback

@@ -48,12 +48,6 @@ export const createRequest = mutation({
     institutionName: v.string(),
     institutionAddress: v.string(),
     deadline: v.float64(),
-    purpose: v.union(
-        v.literal("admission"),
-        v.literal("scholarship"),
-        v.literal("employment"),
-        v.literal("other")
-    ),
     additionalInfo: v.optional(v.string()),
     sampleLetter: v.optional(v.id("_storage")),
   },

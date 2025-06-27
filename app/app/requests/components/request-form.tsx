@@ -1,13 +1,12 @@
 "use client"
 
 import { z } from "zod";
-import { toast } from "sonner";
 import Image from 'next/image';
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react"; // useMutation,
+import { useQuery, useMutation } from "convex/react";
 
 import {
   Form,
@@ -35,10 +34,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Id } from "@/convex/_generated/dataModel";
-// import { useRouter } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { scrollTo } from "./steps";
+import { DataRow } from "./data-row";
 
 
 const FormSchema = z.object({
@@ -46,15 +48,14 @@ const FormSchema = z.object({
   deadline: z.coerce.number(),
   institutionAddress: z.string(),
   institutionName: z.string(),
-  purpose: z.enum(["admission", "scholarship", "employment", "other"]),
   recommenderId: z.string(),
-  sampleLetter: z.string().optional(),
+  // sampleLetter: z.string().optional(),
 })
 
 export default function RequestForm() {
 
-  // const router = useRouter()
-  // const createRequest = useMutation(api.requests.createRequest)
+  const router = useRouter()
+  const createRequest = useMutation(api.requests.createRequest)
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -63,38 +64,37 @@ export default function RequestForm() {
       institutionAddress: "",
       institutionName: "",
       recommenderId: "",
-      sampleLetter: ""
+      // sampleLetter: ""
     },
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // const newRequestId = await createRequest({
-    //   recommenderId: data.recommenderId as Id<"users">,
-    //   institutionName: data.institutionName,
-    //   institutionAddress: data.institutionAddress,
-    //   deadline: data.deadline,
-    //   purpose: data.purpose,
-    //   additionalInfo: data.additionalInfo,
-    //   // sampleLetter: data.sampleLetter,
-    // });
+    const newRequestId = await createRequest({
+      recommenderId: data.recommenderId as Id<"users">,
+      institutionName: data.institutionName,
+      institutionAddress: data.institutionAddress,
+      deadline: data.deadline,
+      additionalInfo: data.additionalInfo,
+      // sampleLetter: data.sampleLetter,
+    });
 
     toast.success(`data submitted: ${data}`);
-    // router.push(`/app/requests/${newRequestId}`)
+    router.push(`/app/requests/${newRequestId}`)
   }
-
 
   const availableRecommenders = useQuery(api.users.getAllRecommenders)
 
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-full gap-8 bg-background p-4 sm:py-24 sm:px-12 rounded-xs max-w-4xl mx-auto border shadow">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-12 w-full">
+        <div id="institution" className="p-5 pb-6 rounded-md border bg-background shadow-xs grid gap-8">
+          <h2 className="text-xl font-medium">Institution details</h2>
           <FormField
             control={form.control}
             name="institutionName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Institution Name</FormLabel>
+                <FormLabel>Institution Name<span className="text-destructive">*</span></FormLabel>
                 <FormControl>
                   <Input placeholder="University of..." {...field} required />
                 </FormControl>
@@ -107,7 +107,7 @@ export default function RequestForm() {
             name="institutionAddress"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Institution Address</FormLabel>
+                <FormLabel>Institution Address<span className="text-destructive">*</span></FormLabel>
                 <FormControl>
                   <Textarea className="resize-none" placeholder="123 Street, City" {...field} required />
                 </FormControl>
@@ -115,6 +115,48 @@ export default function RequestForm() {
               </FormItem>
             )}
           />
+        </div>
+
+        <div id='recommenders' className="p-5 pb-6 rounded-md border bg-background shadow-xs grid gap-8">
+          <h2 className="text-xl font-medium">Recommenders</h2>
+          <FormField
+            control={form.control}
+            name="recommenderId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Recommender</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <span className="sr-only">Select recommender</span>
+                      <SelectValue placeholder="Select recommender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {(availableRecommenders?.length ?? 0) > 0 ?
+                    <>
+                      {availableRecommenders?.map((rec) => {
+
+                        return (
+                        <SelectItem key={rec._id} value={rec._id}>
+                          <RecommenderImage src={rec.image} />
+                          {rec.firstName ? rec.firstName + ' ' + rec.lastName : "Unnamed"}
+                        </SelectItem>
+                      )})}
+                    </>
+                    :
+                    <p className="text-muted-foreground p-3 text-sm">No recommenders available</p>
+                    }
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div id='details' className="p-5 pb-6 rounded-md border bg-background shadow-xs grid gap-8">
+          <h2 className="text-xl font-medium">Details & Deadline</h2>
           <FormField
             control={form.control}
             name="deadline"
@@ -161,85 +203,6 @@ export default function RequestForm() {
           />
           <FormField
             control={form.control}
-            name="purpose"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Purpose</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <span className="sr-only">Select purpose</span>
-                      <SelectValue placeholder="Select purpose" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="admission">Admission</SelectItem>
-                    <SelectItem value="scholarship">Scholarship</SelectItem>
-                    <SelectItem value="employment">Employment</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="recommenderId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Recommender</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <span className="sr-only">Select recommender</span>
-                      <SelectValue placeholder="Select recommender" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {(availableRecommenders?.length ?? 0) > 0 ?
-                    <>
-                      {availableRecommenders?.map((rec) => {
-
-                        return (
-                        <SelectItem key={rec._id} value={rec._id}>
-                          <RecommenderImage src={rec.image} />
-                          {rec.firstName ? rec.firstName + ' ' + rec.lastName : "Unnamed"}
-                        </SelectItem>
-                      )})}
-                    </>
-                    :
-                    <p className="text-muted-foreground p-3 text-sm">No recommenders available</p>
-                    }
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="sampleLetter"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Sample Letter</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    accept="application/pdf"
-                    {...field}
-                    className="p-4 border border-dashed grid place-items-center h-[100px]"
-                  />
-                </FormControl>
-                <FormDescription>
-                  This has not been implemented yet.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="additionalInfo"
             render={({ field }) => (
               <FormItem>
@@ -251,7 +214,33 @@ export default function RequestForm() {
               </FormItem>
             )}
           />
-        <Button type="submit" className="mt-4">Submit request</Button>
+        </div>
+
+        <div id='preview' className="p-5 pb-6 rounded-md border bg-background shadow-xs grid gap-8">
+          <h2 className="text-xl font-medium">Review & Submit</h2>
+          <ul className="">
+            <DataRow name={'Institution Name'} value={form.watch('institutionName')} />
+            <DataRow name={'Institution Address'} value={form.watch('institutionAddress')} />
+            <DataRow
+              name={'Deadline'}
+              value={form.watch('deadline') ? (new Date(form.watch('deadline'))).toUTCString() : undefined}
+            />
+            <DataRow
+              name={'Recommenders'}
+              value={
+                availableRecommenders?.find(r => r._id === form.watch("recommenderId"))?.firstName
+                ? availableRecommenders.find(r => r._id === form.watch("recommenderId"))?.firstName + " " +
+                availableRecommenders.find(r => r._id === form.watch("recommenderId"))?.lastName
+                : undefined
+              }
+            />
+            <DataRow name={'Additional Information'} value={form.watch('additionalInfo')} />
+          </ul>
+          <div className="flex justify-between w-full">
+            <Button onClick={() => scrollTo('institution')} type='button' variant={'outline'}>Back to top</Button>
+            <Button type="submit">Submit request</Button>
+          </div>
+        </div>
       </form>
     </Form>
   )

@@ -36,6 +36,29 @@ export default function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const view = searchParams.get('view') ?? 'grid';
+  const sort = searchParams.get("sort") ?? "deadline";
+
+  const updateSort = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sort", value);
+    router.push(`?${params.toString()}`);
+  };
+
+  const sortedRequests = [...(requests ?? [])].sort((a, b) => {
+    switch (sort) {
+      case "institution":
+        return a.institutionName.localeCompare(b.institutionName);
+      case "recommender":
+        return a.recommenderId?.localeCompare(b.recommenderId ?? "") ?? 0;
+      case "status":
+        return a.status.localeCompare(b.status);
+      case "deadline":
+      default:
+        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+    }
+  });
+
+
 
   const updateView = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -62,10 +85,10 @@ export default function Page() {
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuLabel>Sort by</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Institution</DropdownMenuItem>
-              <DropdownMenuItem>Recommender</DropdownMenuItem>
-              <DropdownMenuItem>Deadline</DropdownMenuItem>
-              <DropdownMenuItem>Status</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => updateSort("institution")}>Institution</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => updateSort("recommender")}>Recommender</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => updateSort("deadline")}>Deadline</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => updateSort("status")}>Status</DropdownMenuItem>
               <div className="mt-2 md:hidden">
                 <DropdownMenuLabel>View</DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -115,10 +138,10 @@ export default function Page() {
             data-[view=list]:border data-[view=list]:rounded-lg data-[view=list]:bg-background data-[view=list]:divide-y
           "
         >
-          {requests?.map((req) => (
+          {sortedRequests.map((req) => (
             <li
               key={req._id}
-              className="relative grid h-fit"
+              className="relative grid h-fit data-[view=grid]:rounded-lg"
             >
               <Link
                 href={`/app/requests/${req._id}`}

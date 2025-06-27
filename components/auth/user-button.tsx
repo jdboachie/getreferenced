@@ -153,15 +153,11 @@ export default function UserButton() {
         <DropdownMenuLabel className="pt-0 text-muted-foreground font-normal">{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/app/account">
               Account
             </Link>
             {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Billing
-            {/* <DropdownMenuShortcut>⌘B</DropdownMenuShortcut> */}
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

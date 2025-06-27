@@ -1,5 +1,4 @@
 import Header from "@/components/nav/header";
-// import Footer from "@/components/nav/footer";
 import { RoleProvider } from "@/hooks/use-role";
 
 export default function Layout({
@@ -11,10 +10,9 @@ export default function Layout({
     <RoleProvider>
       <>
         <Header />
-        <div className="pb-10"> {/*min-h-[calc(100dvh-218px)]*/}
+        <div className="pb-10">
           {children}
         </div>
-        {/* <Footer /> */}
       </>
     </RoleProvider>
   );

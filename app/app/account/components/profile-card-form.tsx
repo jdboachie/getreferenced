@@ -46,8 +46,8 @@ export default function ProfileCardForm({
   showButton = true,
   buttonDisabled = false,
   buttonText = "Save changes",
-  defaultEditable = false, // Default to non-editable
-  showEditButton = true, // Default to showing the edit button
+  defaultEditable = false,
+  showEditButton = true,
   onEditToggle,
 }: ProfileCardFormProps) {
 
@@ -70,7 +70,7 @@ export default function ProfileCardForm({
 
   const handleSubmit = async () => {
     setPending(true)
-    if (!formRef.current) return; // Ensure formRef is defined
+    if (!formRef.current) return;
     const form = formRef.current;
 
     if (!form) return;
