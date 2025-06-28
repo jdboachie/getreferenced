@@ -146,7 +146,7 @@ export default function RequestForm() {
                         <>
                           {availableRecommenders?.map((rec) => {
                             return (
-                            <MultiSelectItem key={rec._id} value={rec._id}>
+                            <MultiSelectItem key={rec._id} value={`${rec.firstName} ${rec.lastName}`}>
                               <RecommenderImage src={rec.image} />
                               {rec.firstName ? rec.firstName + ' ' + rec.lastName : "Unnamed"}
                             </MultiSelectItem>
