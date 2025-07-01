@@ -148,7 +148,7 @@ export default function RequestForm() {
                             return (
                             <MultiSelectItem key={rec._id} value={`${rec.firstName} ${rec.lastName}`}>
                               <RecommenderImage src={rec.image} />
-                              {rec.firstName ? rec.firstName + ' ' + rec.lastName : "Unnamed"}
+                              {rec.firstName ? rec.firstName + ' ' + rec.lastName + rec.userId : "Unnamed"}
                             </MultiSelectItem>
                           )})}
                         </>
