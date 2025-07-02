@@ -21,11 +21,11 @@ const sans = LocalFont({
       weight: '700',
     },
     {
-      path: 'fonts/medium.woff2',
+      path: 'fonts/Circular-Medium.woff2',
       weight: '500',
     },
     {
-      path: 'fonts/regular.woff2',
+      path: 'fonts/Circular-Book.woff2',
       weight: '400',
     },
   ]
