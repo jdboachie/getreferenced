@@ -5,6 +5,11 @@ import { authTables } from "@convex-dev/auth/server";
 const schema = defineSchema({
   ...authTables,
 
+  departments: defineTable({
+    name: v.string(),
+    code: v.string(),
+  }),
+
   users: defineTable({
     image: v.optional(v.union(v.id("_storage"), v.string())),
     email: v.optional(v.string()),

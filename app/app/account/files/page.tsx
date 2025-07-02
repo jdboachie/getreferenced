@@ -7,6 +7,7 @@ import Loading from '../loading';
 import { useRole } from '@/hooks/use-role';
 import { api } from '@/convex/_generated/api';
 import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from "convex/react";
@@ -157,7 +158,7 @@ function CertificateCard({
               className="p-4 grid gap-1 text-sm"
             >
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">Last updated</div>
+                <div className="min-w-22 text-muted-foreground">Last updated</div>
                 {fileMetadata?._creationTime ? (
                   <p className="text-foreground">
                     {new Date(fileMetadata._creationTime).toLocaleString(undefined, {
@@ -170,7 +171,7 @@ function CertificateCard({
                 )}
               </div>
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">File type</div>
+                <div className="min-w-22 text-muted-foreground">File type</div>
                 {fileMetadata?.contentType ? (
                   <p className="text-foreground">
                     {fileMetadata.contentType.split("/")[1]}
@@ -180,7 +181,7 @@ function CertificateCard({
                 )}
               </div>
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">Size</div>
+                <div className="min-w-22 text-muted-foreground">Size</div>
                 {fileMetadata?.size ? (
                   <p className="text-foreground">
                     {(fileMetadata.size / 1024).toFixed(1)} KB
@@ -346,7 +347,7 @@ function CVCard({ userId, cvFileId }: { userId: Id<"users">, cvFileId?: Id<"_sto
             </TabsContent>
             <TabsContent value="details" className="p-4 grid gap-1 text-sm">
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">Last updated</div>
+                <div className="min-w-22 text-muted-foreground">Last updated</div>
                 {fileMetadata?._creationTime ? (
                   <p className="text-foreground">
                     {new Date(fileMetadata._creationTime).toLocaleString(undefined, {
@@ -357,11 +358,11 @@ function CVCard({ userId, cvFileId }: { userId: Id<"users">, cvFileId?: Id<"_sto
                 ) : "-"}
               </div>
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">File type</div>
+                <div className="min-w-22 text-muted-foreground">File type</div>
                 {fileMetadata?.contentType ? <p className="text-foreground">{fileMetadata.contentType.split('/')[1]}</p> : "-"}
               </div>
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">Size</div>
+                <div className="min-w-22 text-muted-foreground">Size</div>
                 {fileMetadata?.size ? <p className="text-foreground">{(fileMetadata.size / 1024).toFixed(1)} KB</p> : "-"}
               </div>
             </TabsContent>
@@ -505,7 +506,7 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
             </TabsContent>
             <TabsContent value="details" className="p-4 grid gap-1 text-sm">
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">Last updated</div>
+                <div className="min-w-22 text-muted-foreground">Last updated</div>
                 {fileMetadata?._creationTime ? (
                   <p className="text-foreground">
                     {new Date(fileMetadata._creationTime).toLocaleString(undefined, {
@@ -516,13 +517,13 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
                 ) : "-"}
               </div>
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">File type</div>
+                <div className="min-w-22 text-muted-foreground">File type</div>
                 {fileMetadata?.contentType ? (
                   <p className="text-foreground">{fileMetadata.contentType.split("/")[1]}</p>
                 ) : "-"}
               </div>
               <div className="flex gap-4">
-                <div className="min-w-24 text-muted-foreground">Size</div>
+                <div className="min-w-22 text-muted-foreground">Size</div>
                 {fileMetadata?.size ? (
                   <p className="text-foreground">{(fileMetadata.size / 1024).toFixed(1)} KB</p>
                 ) : "-"}
@@ -544,14 +545,9 @@ function TranscriptCard({ userId, transcriptFileId }: { userId: Id<"users">, tra
             }}
           />
           {uploadProgress && (
-            <div className='flex items-center w-full h-8 py-3 gap-8'>
-              <div className="w-full h-2 bg-muted rounded-md overflow-hidden border">
-                <div
-                  className="h-full bg-primary transition-all duration-200"
-                  style={{ width: `${uploadProgress}%` }}
-                />
-              </div>
-              <p className="font-mono text-xs whitespace-nowrap">{uploadProgress}{" "}%</p>
+            <div className='w-full h-8 gap-1 grid'>
+              <div className='flex justify-between items-center text-sm'><span>Uploading...</span><p className="font-mono text-xs whitespace-nowrap">{uploadProgress}{" "}%</p></div>
+              <Progress value={uploadProgress} className="w-full" />
             </div>
           )}
           {uploadProgress === null && (

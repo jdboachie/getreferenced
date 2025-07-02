@@ -59,7 +59,7 @@
 }
 
 :root {
-  --radius: 0.6rem;
+  --radius: 0.62rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -129,7 +129,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50 font-sans;
+    @apply border-border outline-ring/50 font-sans tracking-[-0.015em];
   }
   *::selection {
     @apply bg-primary/40;
@@ -149,7 +149,6 @@
     field-sizing: content;
   }
 
-  /* skeleton css */
   .skeleton {
     position: relative;
     overflow: hidden;

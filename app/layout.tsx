@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import LocalFont from "next/font/local";
-import { Geist_Mono } from "next/font/google";
+// import LocalFont from "next/font/local";
+import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -13,22 +13,27 @@ import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { RoleProvider } from "@/hooks/use-role";
 import Footer from "@/components/nav/footer";
 
-const sans = LocalFont({
+// const sans = LocalFont({
+//   variable: "--font-sans",
+//   src: [
+//     {
+//       path: 'fonts/bold.woff2',
+//       weight: '700',
+//     },
+//     {
+//       path: 'fonts/medium.woff2',
+//       weight: '500',
+//     },
+//     {
+//       path: 'fonts/regular.woff2',
+//       weight: '400',
+//     },
+//   ]
+// })
+
+const inter = Inter({
   variable: "--font-sans",
-  src: [
-    {
-      path: 'fonts/bold.woff2',
-      weight: '700',
-    },
-    {
-      path: 'fonts/Circular-Medium.woff2',
-      weight: '500',
-    },
-    {
-      path: 'fonts/Circular-Book.woff2',
-      weight: '400',
-    },
-  ]
+  subsets: ["latin"]
 })
 
 const geistMono = Geist_Mono({
@@ -53,7 +58,7 @@ export default function RootLayout({
     <ConvexAuthNextjsServerProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${sans.variable} ${geistMono.variable} antialiased`}
+          className={`${inter.variable} ${geistMono.variable} antialiased`}
         >
           <SpeedInsights />
           <Analytics />
