@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-// import LocalFont from "next/font/local";
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -12,24 +11,6 @@ import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { RoleProvider } from "@/hooks/use-role";
 import Footer from "@/components/nav/footer";
-
-// const sans = LocalFont({
-//   variable: "--font-sans",
-//   src: [
-//     {
-//       path: 'fonts/bold.woff2',
-//       weight: '700',
-//     },
-//     {
-//       path: 'fonts/medium.woff2',
-//       weight: '500',
-//     },
-//     {
-//       path: 'fonts/regular.woff2',
-//       weight: '400',
-//     },
-//   ]
-// })
 
 const inter = Inter({
   variable: "--font-sans",
