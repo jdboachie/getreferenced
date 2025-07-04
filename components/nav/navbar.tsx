@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useRole } from "@/hooks/use-role";
+import { usePathname } from "next/navigation";
+import { buttonVariants } from "@/components/ui/button";
 
 const commonNavLinks = [
   {
@@ -90,7 +91,15 @@ export default function Navbar() {
             'font-normal relative duration-500',
           )}
         >
-          {isActive(link.url) && <div className="pointer-events-none absolute -bottom-2 w-full h-0.5 rounded-full bg-primary" />}
+          {isActive(link.url) && (
+            <motion.span
+              layoutId="bubble"
+              className="absolute inset-0 h-0.5 top-9.5 z-10 bg-black dark:bg-white mix-blend-difference"
+              style={{ borderRadius: 10 }}
+              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            />
+          )}
+          {/* {isActive(link.url) && <div className="pointer-events-none absolute -bottom-2 w-full h-0.5 rounded-full bg-primary" />} */}
           {link.title}
         </Link>
       ))}
