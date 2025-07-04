@@ -12,7 +12,7 @@ const schema = defineSchema({
 
   users: defineTable({
     image: v.optional(v.union(v.id("_storage"), v.string())),
-    email: v.optional(v.string()),
+    email: v.string(),
     emailVerificationTime: v.optional(v.number()),
     phone: v.optional(v.string()),
     phoneVerificationTime: v.optional(v.number()),

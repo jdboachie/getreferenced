@@ -1,5 +1,3 @@
-import { Steps } from "../components/steps"
-
 export default function Layout({
   children,
 }: Readonly<{
@@ -7,7 +5,6 @@ export default function Layout({
 }>) {
   return (
     <div className='flex max-md:flex-col gap-12 w-full'>
-      <Steps />
       {children}
     </div>
   )

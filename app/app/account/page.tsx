@@ -7,7 +7,6 @@ import { useRole } from '@/hooks/use-role';
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "convex/react";
 import UserAvatarCard from "./components/user-avatar-card";
 import ProfileCardForm from './components/profile-card-form';
@@ -18,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { ProfileEmptyState } from './components/profile-empty-state';
 
 // TODO: Values should go back to their original if editing is cancelled.
 
@@ -41,7 +41,7 @@ export default function Page() {
         <ProfileCardForm
           title="Full Name"
           description={role === "requester" ? "This will be the name on your request form." : "This is your public display name. Please keep it accurate."}
-          footerNote="Name should be as it appears on official documents."
+          footerNote="Autofilled from KNUST database."
           onSubmit={async (formData) => {
             toast.promise(
               updateUser({
@@ -392,15 +392,7 @@ export default function Page() {
     );
   } else if (profile === null) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-semibold mb-4">Profile Not Found</h1>
-        <p className="text-lg text-muted-foreground mb-6">
-          It seems you don&apos;t have a profile yet. Please contact support if you believe this is an error.
-        </p>
-        <Button onClick={() => window.location.href = '/auth/chooserole'}>
-          Create Profile
-        </Button>
-      </div>
+      <ProfileEmptyState role={role!} />
     );
   }
   else {

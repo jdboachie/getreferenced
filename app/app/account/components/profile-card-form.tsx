@@ -101,9 +101,9 @@ export default function ProfileCardForm({
         className={profileCardStyles.cardContent}
       >
         <div className="relative flex justify-between items-start">
-          <div className="flex flex-col gap-3">
-            <h2 className="font-medium text-xl">{title}</h2>
-            {description && <p className="text-base">{description}</p>}
+          <div className="flex flex-col gap-2">
+            <h3>{title}</h3>
+            {description && <p className="text-sm">{description}</p>}
           </div>
           {showEditButton && !isEditing && (
             <Tooltip delayDuration={300}>
@@ -142,31 +142,33 @@ export default function ProfileCardForm({
       </div>
       <div className={profileCardStyles.cardFooter}>
         <p className="text-sm text-muted-foreground">{footerNote}</p>
-        {showButton &&
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button size="sm" type="button" disabled={(buttonDisabled || !isEditing)}>
-              {pending && <SpinnerIcon />}
-              {buttonText}
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Confirm that you want to edit your {title.toLocaleLowerCase()}.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction asChild>
-                <Button size="sm" type="submit" onClick={handleSubmit}>
-                  {buttonText}
-                </Button>
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>}
+        <div className=" ">
+          {showButton &&
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button size="sm" type="button" disabled={(buttonDisabled || !isEditing)}>
+                {pending && <SpinnerIcon />}
+                {buttonText}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Confirm that you want to edit your {title.toLocaleLowerCase()}.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction asChild>
+                  <Button size="sm" type="submit" onClick={handleSubmit}>
+                    {buttonText}
+                  </Button>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>}
+        </div>
       </div>
     </form>
   );

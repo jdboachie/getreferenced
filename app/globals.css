@@ -50,12 +50,12 @@
 :root {
   --radius: 0.65rem;
   --ground: oklch(0.985 0 0);
-  --skeleton: oklch(1 0 0);
+  --skeleton: oklch(0.92 0.004 286.32);
 }
 
 .dark {
   --ground: oklch(0 0 0);
-  --skeleton: oklch(0.17 0 0);
+  --skeleton: oklch(0.175 0 0);
 }
 
 :root {
@@ -152,22 +152,53 @@
   .skeleton {
     position: relative;
     overflow: hidden;
+    background: var(--background, #f3f4f6);
   }
 
+  .skeleton::before,
   .skeleton::after {
     content: "";
     position: absolute;
     inset: 0;
-    transform: translateX(-100%);
-    width: 300%;
-    animation: shimmer 3.5s infinite;
-    @apply bg-gradient-to-r via-border/40;
+    width: 600%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--skeleton, #e5e7eb),
+      transparent
+    );
+    animation: shimmer 6s linear infinite;
+  }
+
+  .skeleton::after {
+    animation-delay: 3s;
   }
 
   @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
     100% {
       transform: translateX(100%);
     }
   }
+}
 
+@layer base {
+  h1 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-tight);
+  }
+  h2 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    padding-bottom: calc(var(--spacing) * 2);
+  }
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-tight)
+  }
 }

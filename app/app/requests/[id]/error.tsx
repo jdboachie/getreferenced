@@ -12,12 +12,12 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error(error)
+    console.error(error) // I shouldn't do console logs on client btw
   }, [error])
 
   return (
     <div className='size-full rounded-xl border-dashed border border-destructive grid place-items-center p-5 sm:p-10 gap-5'>
-      <h2 className='text-xl text-destructive'>Something went wrong</h2>
+      <h2>Something went wrong</h2>
       {error.message}
       <Button
         onClick={

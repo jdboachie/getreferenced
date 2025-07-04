@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useAuthActions } from "@convex-dev/auth/react";
-import GoogleAuthButton from "./GoogleSigninButton";
 
 import {
   Form,
@@ -28,10 +27,17 @@ import { Button } from "@/components/ui/button";
 import { SpinnerIcon } from "@/components/icons";
 import { AnimatedState } from "@/components/motion/animated-state";
 
-
 const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(6, { message: "Your password must be at least 6 characters long." }),
+  email: z.string()
+    .email("Invalid email address")
+    .refine((email) => {
+      const studentRegex = /^[^@]+@st\.knust\.edu\.gh$/i;
+      const lecturerRegex = /^[^@]+@[a-z]+\.(knust\.edu\.gh)$/i;
+      return studentRegex.test(email) || lecturerRegex.test(email);
+    }, {
+      message: "Use a valid KNUST email (e.g. user@st.knust.edu.gh or user@dept.knust.edu.gh)"
+    }),
+  password: z.string().min(6, "Your password must be at least 6 characters long."),
   confirmPassword: z.string(),
   role: z.enum(["requester", "recommender"], {
     required_error: "Please select a role",
@@ -41,19 +47,14 @@ const formSchema = z.object({
   path: ["confirmPassword"],
 });
 
-
 export default function SignUpForm() {
-
-  const router = useRouter()
-  // const searchParams = useSearchParams();
-  // const verify = searchParams.get('verify');
-
+  const router = useRouter();
   const { signIn } = useAuthActions();
 
   const [error, setError] = React.useState<string | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const [status, setStatus] = React.useState<'submitting' | 'creating' | 'success' | null>()
+  const [status, setStatus] = React.useState<'submitting' | 'success' | null>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,7 +74,6 @@ export default function SignUpForm() {
         password: values.password,
         role: values.role,
         flow: 'signUp',
-        // redirectTo: `/auth/verify?email=${values.email}`
       });
       router.push(`/auth/verify?email=${values.email}&role=${values.role}`)
     } catch (error) {
@@ -84,12 +84,9 @@ export default function SignUpForm() {
     }
   }, [router, signIn]);
 
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-        <GoogleAuthButton redirectTo="/auth/chooserole" signUp />
-        <p className="w-full text-center">OR</p>
         <FormField
           control={form.control}
           name="email"
@@ -97,10 +94,10 @@ export default function SignUpForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input required placeholder="you@example.edu" {...field} />
+                <Input required placeholder="example@st.knust.edu.gh" {...field} />
               </FormControl>
               <FormMessage />
-              <FormDescription>This will be your primary email address</FormDescription>
+              <FormDescription>Must be a KNUST email address</FormDescription>
             </FormItem>
           )}
         />
@@ -116,21 +113,19 @@ export default function SignUpForm() {
                     {...field}
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    aria-invalid={!!form.formState.errors.password}
-                    aria-describedby="password-error"
-                    />
+                  />
                 </FormControl>
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
-                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => setShowPassword(v => !v)}
                   tabIndex={-1}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
+                >
                   {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
-              <FormDescription>Your password should have a minimum of 6 characters</FormDescription>
+              <FormDescription>Your password should have at least 6 characters</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -151,8 +146,8 @@ export default function SignUpForm() {
                 </FormControl>
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
-                  onClick={() => setShowConfirmPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => setShowConfirmPassword(v => !v)}
                   tabIndex={-1}
                   aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                 >
@@ -175,7 +170,7 @@ export default function SignUpForm() {
                   defaultValue={field.value}
                   className="grid sm:grid-cols-2 gap-2"
                 >
-                  <FormItem data-checked={field.value==="requester"} className="data-[checked=true]:border-primary relative border rounded-lg space-x-3 space-y-0">
+                  <FormItem data-checked={field.value==="requester"} className="data-[checked=true]:border-primary relative border rounded-lg">
                     <FormControl className="absolute top-4 left-4">
                       <RadioGroupItem value="requester"/>
                     </FormControl>
@@ -184,7 +179,7 @@ export default function SignUpForm() {
                       <p className="text-xs text-muted-foreground">Students, grads, jobseekers</p>
                     </FormLabel>
                   </FormItem>
-                  <FormItem data-checked={field.value==="recommender"} className="data-[checked=true]:border-primary relative border rounded-lg space-x-3 space-y-0">
+                  <FormItem data-checked={field.value==="recommender"} className="data-[checked=true]:border-primary relative border rounded-lg">
                     <FormControl className="absolute top-4 left-4">
                       <RadioGroupItem value="recommender"/>
                     </FormControl>
@@ -199,11 +194,10 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" size="lg" disabled={status === 'creating' || status === 'submitting'} className="w-full">
+        <Button type="submit" size="lg" disabled={status === 'submitting'} className="w-full">
           <AnimatedState>
             {status === 'submitting' && <div className="flex gap-1.5 items-center"><SpinnerIcon /> Submitting...</div>}
-            {status === 'creating' && <div className="flex gap-1.5 items-center"><SpinnerIcon /> Creating profile...</div>}
-            {!status && 'Submit'}
+            {!status && 'Continue'}
           </AnimatedState>
         </Button>
       </form>

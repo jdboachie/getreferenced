@@ -14,7 +14,8 @@ import Footer from "@/components/nav/footer";
 
 const inter = Inter({
   variable: "--font-sans",
-  subsets: ["latin"]
+  subsets: ["latin"],
+  style: ['italic', 'normal']
 })
 
 const geistMono = Geist_Mono({
@@ -53,7 +54,6 @@ export default function RootLayout({
           <RoleProvider>
             <Toaster
               position="top-center"
-              richColors
             />
             <main className="min-h-dvh">{children}</main>
             <Footer />

@@ -49,7 +49,7 @@ export default function Sidenav() {
     )
   }
   return (
-    <nav className="lg:w-full lg:max-w-56 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
+    <nav className="lg:w-full lg:max-w-52 h-fit flex flex-col gap-2 lg:sticky lg:top-38">
       {links.map((link) => (
         <Link
           prefetch

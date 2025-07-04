@@ -32,7 +32,7 @@ export default function Layout({
               // },
             ]}
           />
-          <div className="flex flex-col gap-12 w-full">
+          <div className="flex flex-col gap-12 size-full">
             {children}
           </div>
         </div>

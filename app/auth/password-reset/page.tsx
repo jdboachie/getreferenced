@@ -1,27 +1,40 @@
 'use client';
 
+import { useState } from "react";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AlertTriangleIcon } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "sonner";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function PasswordReset() {
 
   const router = useRouter()
   const { signIn } = useAuthActions();
 
+  const [code, setCode] = useState("")
   const [step, setStep] = useState<"forgot" | { email: string }>("forgot");
   const [error, setError] = useState<string | null>(null)
 
   return(
-    <div className="w-full p-4 grid gap-8">
-      <h1 className="text-xl font-medium">Reset Password</h1>
+    <>
+      <h2>Reset Password</h2>
       {error && (
-        <div className="mb-6 p-3 rounded-lg border-destructive bg-destructive/5 text-sm text-destructive">
-          {error}
-        </div>
+        <Alert variant="destructive" className="border-destructive bg-destructive/5">
+          <AlertTriangleIcon />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            {error}
+          </AlertDescription>
+        </Alert>
       )}
       {step === "forgot" ? (
         <form
@@ -32,14 +45,22 @@ export default function PasswordReset() {
               .then(() =>
                 setStep({ email: formData.get("email") as string })
               )
-              .catch(() => {setError(`${formData.get("email")} is not registered on GetReferenced`)})
+              .catch(() => {
+                setError(`${formData.get("email")} is not registered on GetReferenced`)
+                setTimeout(() => {
+                  setError(null)
+                }, 5000)
+              })
           }}
           className="w-full grid gap-8"
           >
+          <p className="text-sm text-muted-foreground">
+            Enter the email you used to register for GetReferenced.
+          </p>
           <label className="grid gap-1">
             <span className="text-sm font-medium">Email</span>
             <Input name="email" placeholder="Email" type="text" />
-            <span className="text-sm text-muted-foreground">We will send a code to this email address.</span>
+            <span className="text-sm text-muted-foreground">We will send a code to this email address. Be sure to check your spam folder.</span>
           </label>
           <input name="flow" type="hidden" value="reset" />
           <Button type="submit">Send code</Button>
@@ -61,19 +82,44 @@ export default function PasswordReset() {
 
           className="w-full grid gap-8"
         >
-          <div className="">We have sent a code to — {step.email}.</div>
-          <Input name="code" placeholder="Code" type="text" />
-          <Input name="newPassword" placeholder="New password" type="password" />
+          <p className="text-sm text-muted-foreground">
+            Enter the code sent to — <span className="font-medium">{step.email}.</span>
+          </p>
+          <label className="grid gap-1">
+            <span className="text-sm font-medium">Verification code</span>
+            <InputOTP
+              name="code"
+              maxLength={8}
+              value={code}
+              onChange={(value) => setCode(value)}
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+                <InputOTPSeparator />
+                <InputOTPSlot className="border-l" index={4} />
+                <InputOTPSlot index={5} />
+                <InputOTPSlot index={6} />
+                <InputOTPSlot index={7} />
+              </InputOTPGroup>
+            </InputOTP>
+          </label>
+          <label className="grid gap-1">
+            <span className="text-sm font-medium">Enter a new password</span>
+            <Input name="newPassword" placeholder="New password" type="password" />
+          </label>
           <input name="email" value={step.email} type="hidden" />
           <input name="flow" value="reset-verification" type="hidden" />
           <div className="grid gap-2 w-full">
-            <Button size={'lg'} type="submit" className="grow">Continue</Button>
+            <Button size={'lg'} type="submit">Reset password</Button>
             <Button size={'lg'} variant={'outline'} type="button" onClick={() => setStep("forgot")}>
-              Cancel
+              Back
             </Button>
           </div>
         </form>
       )}
-    </div>
+    </>
   )
 }

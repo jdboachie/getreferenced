@@ -12,7 +12,7 @@ export const ResendOTPPasswordReset = Resend({
     const resend = new ResendAPI(provider.apiKey);
     const formattedToken = `${token.slice(0, 4)}-${token.slice(-4)}`;
     const { error } = await resend.emails.send({
-      from: "GetReferenced <no-reply@getreferenced.com>",
+      from: "GetReferenced <noreply@getreferenced.com>",
       to: [email],
       subject: `Reset your password for GetReferenced`,
       text: "Your password reset code is " + formattedToken,

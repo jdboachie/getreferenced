@@ -1,8 +1,8 @@
 import Password from "./CustomProfile";
-import Google from "@auth/core/providers/google";
+// import Google from "@auth/core/providers/google";
 import { convexAuth } from "@convex-dev/auth/server";
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
-  providers: [Password, Google],
+  providers: [Password], // Google
 });
 

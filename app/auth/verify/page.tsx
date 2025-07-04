@@ -1,14 +1,12 @@
+"use client";
 
-"use client"
+import { z } from "zod";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import * as React from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useAuthActions } from "@convex-dev/auth/react"
-
-import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -17,32 +15,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
-import { api } from "@/convex/_generated/api"
-import { useMutation } from "convex/react"
-// import { ForwardIcon } from "lucide-react"
+} from "@/components/ui/input-otp";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertTriangleIcon } from "lucide-react";
 
 const FormSchema = z.object({
   code: z.string().min(8, {
     message: "The code must be 8 characters.",
   }),
-})
+});
 
 export default function Page() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams.get("email")!
-  const role = searchParams.get('role')! as "requester" | "recommender"
 
   const { signIn } = useAuthActions()
-
-  const createProfile = useMutation(api.users.createProfile)
+  const [error, setError] = React.useState<string | null>(null)
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -52,26 +48,40 @@ export default function Page() {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    setError(null)
     const formData = new FormData()
     formData.append("code", data.code)
     formData.append("flow", "email-verification")
     formData.append("email", email)
 
     await signIn("password", formData)
-    setTimeout(async() => {
-      await createProfile({ role })
-      router.push("/app/account")
-    }, 700)
+      .then(() => {
+        router.push("/app/account")
+      })
+      .catch(() => {
+        setError(
+          "Verification failed. Please check your code and try again."
+        )
+      })
   }
 
   return (
-    <div className="w-full p-4">
-      <h1 className="text-2xl font-medium mb-1">Verify Email</h1>
+    <>
+      <h2>Verify Email</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full grid">
           <p className="text-sm text-muted-foreground">
             Enter the code sent to <span className="font-medium">{email}</span>
           </p>
+          {error && (
+            <Alert variant="destructive" className="border-destructive bg-destructive/5">
+              <AlertTriangleIcon />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                {error}
+              </AlertDescription>
+            </Alert>
+          )}
           <FormField
             control={form.control}
             name="code"
@@ -93,23 +103,22 @@ export default function Page() {
                         <InputOTPSlot index={7} />
                       </InputOTPGroup>
                     </InputOTP>
-                    <Button type="submit" size={'lg'}>
-                      {/* <ForwardIcon className="stroke-[2.5]" /> */}
-                      Verify email
-                    </Button>
                   </div>
                 </FormControl>
                 <FormDescription>
-                  You can find the code in your email inbox.
+                  You can find the code in your email inbox. Be sure to check your spam folder.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <Button type="submit" size={'lg'}>
+            Verify email
+          </Button>
           <input type="hidden" name="flow" value="email-verification" />
           <input type="hidden" name="email" value={email} />
         </form>
       </Form>
-    </div>
+    </>
   )
 }

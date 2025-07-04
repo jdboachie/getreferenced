@@ -21,7 +21,7 @@ export function Sidenav ({ links }: SidenavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="md:w-full md:max-w-56 h-fit flex md:flex-col gap-2 md:sticky md:top-38">
+    <nav className="md:w-full md:max-w-52 h-fit flex md:flex-col gap-2 md:sticky md:top-38">
       {links.map((link) => (
         <Link
           prefetch
