@@ -56,7 +56,7 @@ export default function Navbar() {
     >
       <span
         ref={underlineRef}
-        className="absolute bottom-0 h-0.5 bg-primary rounded-full transition-all duration-300"
+        className="absolute bottom-0 h-0.5 bg-primary rounded-full transition-all duration-250 ease-out"
       />
       {navLinks.map((link) => (
         <Link
