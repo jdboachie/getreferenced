@@ -67,7 +67,7 @@ export default function Navbar() {
             buttonVariants({ variant: "ghost", size: "sm" }),
             !isActive(link.url) && "text-muted-foreground",
             isActive(link.url) && "active-link",
-            'font-normal relative duration-500'
+            'relative duration-500'
           )}
         >
           {link.title}
