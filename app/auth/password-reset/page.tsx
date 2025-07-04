@@ -7,13 +7,14 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AlertTriangleIcon } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Link from "next/link";
 
 export default function PasswordReset() {
 
@@ -28,7 +29,7 @@ export default function PasswordReset() {
     <>
       <h2>Reset Password</h2>
       {error && (
-        <Alert variant="destructive" className="border-destructive bg-destructive/5">
+        <Alert variant="destructive" className="border-destructive bg-destructive/5 mb-4">
           <AlertTriangleIcon />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
@@ -49,7 +50,7 @@ export default function PasswordReset() {
                 setError(`${formData.get("email")} is not registered on GetReferenced`)
                 setTimeout(() => {
                   setError(null)
-                }, 5000)
+                }, 7000)
               })
           }}
           className="w-full grid gap-8"
@@ -63,7 +64,15 @@ export default function PasswordReset() {
             <span className="text-sm text-muted-foreground">We will send a code to this email address. Be sure to check your spam folder.</span>
           </label>
           <input name="flow" type="hidden" value="reset" />
-          <Button type="submit">Send code</Button>
+          <div className="grid gap-2 w-full">
+            <Button type="submit">Send code</Button>
+            <Link
+              href="/auth"
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+              >
+              Back
+            </Link>
+          </div>
         </form>
       ) : (
         <form

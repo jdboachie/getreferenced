@@ -16,7 +16,7 @@ export function ProfileEmptyState ({role}:{role: 'recommender' | 'requester'}) {
         Please contact support if you believe this is an error.
       </p>
       <div className='grid gap-2 mt-2'>
-        <Button variant={'outline'} onClick={async () => await createProfile({ role : role })}>
+        <Button disabled variant={'outline'} onClick={async () => await createProfile({ role : role })}>
           Create Profile
         </Button>
         <Link
